@@ -1,5 +1,6 @@
-import { loadFixture } from 'renovate/test/util';
+import { loadFixture } from '../test/util';
 import { extractPackageFile } from './index';
+import { expect, describe, it } from '@jest/globals';
 
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
@@ -11,9 +12,13 @@ describe('manager/commodore/index', () => {
       expect(extractPackageFile('nothing here', 'no.yml')).toBeNull();
     });
     it('extracts component versions', () => {
-      const res = extractPackageFile(params1, '1/params.yml').deps;
-      expect(res).toMatchSnapshot();
-      expect(res).toHaveLength(6);
+      const res = extractPackageFile(params1, '1/params.yml');
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(6);
+      }
     });
     it('returns no component version for files without components', () => {
       expect(extractPackageFile(kube2, '2/kubernetes.yml')).toBeNull();

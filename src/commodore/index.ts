@@ -67,5 +67,4 @@ export function extractPackageFile(
     currentValue: v.version,
   }));
   return { deps, datasource: gitRef.GitRefsDatasource.id };
-
 }
