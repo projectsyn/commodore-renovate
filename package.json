@@ -1,0 +1,23 @@
+{
+  "name": "commodore-renovate",
+  "version": "0.0.1",
+  "description": "Renovate Extension for Commodore",
+  "main": "src/index.js",
+  "repository": "git@github.com:projectsyn/commodore-renovate.git",
+  "author": "Fabian Fischer <fabian.fischer@vshn.ch>",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./bin/index.js",
+    "dev": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "@types/node": "^16.11.6",
+    "renovate": "^28.20.2",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.4",
+    "ts-node": "^10.4.0"
+  }
+}
