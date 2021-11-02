@@ -18,3 +18,5 @@ ignore:
   - node_modules
   - SECURITY.md
   - test/e2e/node_modules
+  - config.example.js
+  - README.md
