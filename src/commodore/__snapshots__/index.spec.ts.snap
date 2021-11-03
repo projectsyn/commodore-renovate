@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`manager/commodore/index extractPackageFile() extracts component versions 1`] = `
+Array [
+  Object {
+    "currentValue": "v1.1.0",
+    "depName": "appuio-cloud in 1/params.yml",
+    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+  },
+  Object {
+    "currentValue": "v1.0.0",
+    "depName": "appuio-cloud2 in 1/params.yml",
+    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+  },
+  Object {
+    "currentValue": "v1.0.0",
+    "depName": "argocd in 1/params.yml",
+    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+  },
+  Object {
+    "currentValue": "v2.1.0",
+    "depName": "backup-k8up in 1/params.yml",
+    "lookupName": "https://github.com/projectsyn/component-backup-k8up.git",
+  },
+  Object {
+    "currentValue": "v1.0.0",
+    "depName": "kyverno in 1/params.yml",
+    "lookupName": "https://github.com/projectsyn/component-kyverno.git",
+  },
+  Object {
+    "currentValue": "v2.2.0",
+    "depName": "lieutenant in 1/params.yml",
+    "lookupName": "https://github.com/projectsyn/component-lieutenant.git",
+  },
+]
+`;

@@ -1,0 +1,8 @@
+parameters:
+  global:
+    registries:
+      dockerhub: docker.io
+      quay: quay.io
+      gcr: gcr.io
+      ghcr: ghcr.io
+      redhat: registry.redhat.io
