@@ -13,7 +13,27 @@ You need the following dependencies for local development:
 - Node.js `>=14.15.4`
 - Yarn `^1.22.5`
 - C++ compiler
-- Python `^3.9`
+- Python `>=3.8`
+- [Commodore](https://github.com/projectsyn/commodore) `>=0.12.0`
+
+### Setup
+
+Run the provided `setup.sh` script to setup the local Node.js and Python environment.
+The script roughly performs the following steps
+
+```
+yarn install
+python3 -m venv /path/to/venv
+source /path/to/venv/bin/activate
+pip install -r requirements.txt
+deactivate
+```
+
+`/path/to/venv` is `~/.cache/commodore-renovate-venv` if `setup.sh` is called without any arguments.
+You can supply a custom location for the virtualenv with `./setup.sh /path/to/custom/venv`.
+It's best to not create the virtualenv in the project directory, because otherwise the Prettier linter will try to lint all JSON files in the virtualenv which takes forever.
+
+You may not need to setup the Python virtualenv, if you have a sufficiently recent Commodore version available locally.
 
 ### Run
 
@@ -29,6 +49,7 @@ There is a list of configuration options as part of the [official renovate docs]
 With a valid configuration you can now run the extended renovate with:
 
 ```
+source /path/to/venv/bin/activate
 yarn dev
 ```
 
