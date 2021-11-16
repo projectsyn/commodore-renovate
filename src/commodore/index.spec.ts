@@ -6,7 +6,7 @@ const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
 const invalid3 = loadFixture('3/params.yml');
 
-describe('manager/commodore/index', () => {
+describe('src/commodore/index', () => {
   describe('extractPackageFile()', () => {
     it('returns null for empty', () => {
       expect(extractPackageFile('nothing here', 'no.yml')).toBeNull();
