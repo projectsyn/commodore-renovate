@@ -15,7 +15,7 @@
     "prettier": "prettier --check \"**/*.{ts,js,mjs,json,md,yml}\"",
     "prettier-fix": "prettier --write \"**/*.{ts,js,mjs,json,md,yml}\"",
     "jest": "cross-env NODE_ENV=test LOG_LEVEL=fatal TZ=UTC node --expose-gc node_modules/jest/bin/jest.js --logHeapUsage",
-    "test": "run-s lint jest"
+    "test": "run-s jest"
   },
   "dependencies": {
     "@types/node": "^16.11.6",
