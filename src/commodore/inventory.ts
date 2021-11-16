@@ -69,7 +69,7 @@ export async function renderInventory(
   try {
     const result: string = execSync(command, { stdio: 'pipe' }).toString();
     const params: CommodoreParameters = {
-      components: JSON.parse(result),
+      components: new Map(Object.entries(JSON.parse(result))),
     };
     versionCache.set(ck, params);
     return params;

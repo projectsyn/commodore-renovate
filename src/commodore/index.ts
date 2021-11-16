@@ -65,9 +65,7 @@ async function extractComponents(
 
   return Object.entries(doc.parameters.components).map(([key, component]) => {
     const c = component;
-    const rc: CommodoreComponentDependency = new Map(
-      Object.entries(versions)
-    ).get(key);
+    const rc: CommodoreComponentDependency | undefined = versions.get(key);
     if (c.url === undefined || c.url === null || c.url === '') {
       if (rc !== undefined && rc !== null) {
         c.url = rc.url;
