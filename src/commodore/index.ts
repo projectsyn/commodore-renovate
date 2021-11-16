@@ -42,7 +42,7 @@ async function extractComponents(
   let versions: Map<string, CommodoreComponentDependency> = new Map();
   if (repoDir === undefined) {
     logger.warn('Unable to determine repo directory, cannot render inventory');
-  } else if (hasFact(facts)) {
+  } else {
     const renderedParams: CommodoreParameters = await renderInventory(
       repoDir,
       extraValuesPath,

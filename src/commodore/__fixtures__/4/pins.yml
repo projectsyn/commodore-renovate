@@ -1,0 +1,6 @@
+parameters:
+  components:
+    appuio-cloud:
+      version: v3.0.0
+    argocd:
+      version: v1.2.3

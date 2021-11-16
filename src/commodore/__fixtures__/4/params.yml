@@ -1,0 +1,20 @@
+parameters:
+  components:
+    appuio-cloud:
+      url: https://github.com/appuio/component-appuio-cloud.git
+      version: v1.1.0
+    appuio-cloud2:
+      url: https://github.com/appuio/component-appuio-cloud.git
+      version: v1.0.0
+    argocd:
+      url: https://github.com/projectsyn/component-argocd.git
+      version: v1.0.0
+    backup-k8up:
+      url: https://github.com/projectsyn/component-backup-k8up.git
+      version: v2.1.0
+    kyverno:
+      url: https://github.com/projectsyn/component-kyverno.git
+      version: v1.0.0
+    lieutenant:
+      url: https://github.com/projectsyn/component-lieutenant.git
+      version: v2.2.0

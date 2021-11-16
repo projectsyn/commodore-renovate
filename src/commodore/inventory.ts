@@ -16,6 +16,10 @@ function cacheKey(facts: Facts): string {
   return `${facts.distribution}-${facts.cloud}-${facts.region}`;
 }
 
+export function clearCache(): void {
+  versionCache = new Map();
+}
+
 export async function writeFactsFile(
   cacheKey: string,
   facts: Facts
