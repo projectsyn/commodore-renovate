@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { readFile, unlink } from 'fs/promises';
+import { mkdir, readFile, unlink } from 'fs/promises';
 
 import { loadFixture } from '../test/util';
 import { expect, describe, it } from '@jest/globals';
@@ -7,6 +7,10 @@ import { expect, describe, it } from '@jest/globals';
 import * as inv from './inventory';
 import { cacheDir } from './util';
 import { Facts } from './types';
+
+beforeAll(async () => {
+  await mkdir(cacheDir(), { recursive: true });
+});
 
 describe('src/commodore/inventory', () => {
   describe('writeFactsFile()', () => {
