@@ -39,18 +39,6 @@ async function extractComponents(
   extraValuesPath: string,
   facts: Facts
 ): Promise<CommodoreComponentDependency[]> {
-  let versions: Map<string, CommodoreComponentDependency> = new Map();
-  if (repoDir === undefined) {
-    logger.warn('Unable to determine repo directory, cannot infer component URLs from rendered inventory.');
-  } else {
-    const renderedParams: CommodoreParameters = await renderInventory(
-      repoDir,
-      extraValuesPath,
-      facts
-    );
-    versions = renderedParams.components;
-  }
-
   const doc: CommodoreConfig = yaml.load(content) as CommodoreConfig;
   if (
     doc === undefined ||
@@ -61,6 +49,21 @@ async function extractComponents(
     doc.parameters.components === null
   ) {
     return [];
+  }
+
+  /* Render inventory with commodore to extract full dependency information */
+  let versions: Map<string, CommodoreComponentDependency> = new Map();
+  if (repoDir === undefined) {
+    logger.warn(
+      'Unable to determine repo directory, cannot infer component URLs from rendered inventory.'
+    );
+  } else {
+    const renderedParams: CommodoreParameters = await renderInventory(
+      repoDir,
+      extraValuesPath,
+      facts
+    );
+    versions = renderedParams.components;
   }
 
   return Object.entries(doc.parameters.components).map(([key, component]) => {
