@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { readFile } from 'fs/promises';
+import { readFile, unlink } from 'fs/promises';
 
 import { loadFixture } from '../test/util';
 import { expect, describe, it } from '@jest/globals';
@@ -116,9 +116,11 @@ describe('src/commodore/util', () => {
       expect(content.a).toBe(1);
       expect(content.b).toBe('2');
       expect(content.c).toBe(3.0);
+
+      await unlink(fname);
     });
     it('writes a file from a nested object', async () => {
-      const fname = '/tmp/util-spec-1.yaml';
+      const fname = '/tmp/util-spec-2.yaml';
       await util.writeYamlFile(fname, { a: { b: '2', c: 3.0 } });
 
       const contentStr = (await readFile(fname)).toString();
@@ -128,6 +130,8 @@ describe('src/commodore/util', () => {
       expect('c' in content.a).toBe(true);
       expect(content.a.b).toBe('2');
       expect(content.a.c).toBe(3.0);
+
+      await unlink(fname);
     });
   });
 

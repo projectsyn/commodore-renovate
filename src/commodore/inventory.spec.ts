@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import { readFile } from 'fs/promises';
+import { readFile, unlink } from 'fs/promises';
 
 import { loadFixture } from '../test/util';
 import { expect, describe, it } from '@jest/globals';
@@ -32,6 +32,8 @@ describe('src/commodore/inventory', () => {
       expect(res.parameters.facts.dist_version).toBe('1.20');
       expect(res.parameters.facts.cloud).toBe('cloud');
       expect(res.parameters.facts.region).toBe('region');
+
+      await unlink(factsPath);
     });
   });
 });
