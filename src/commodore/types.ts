@@ -11,3 +11,9 @@ export interface CommodoreComponentDependency {
   url: string;
   version: string;
 }
+
+export class Facts {
+  distribution: string | null = null;
+  cloud: string | null = null;
+  region: string | null = null;
+}
