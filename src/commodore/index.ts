@@ -5,23 +5,15 @@ import { logger } from 'renovate/dist/logger';
 
 import type { PackageFile } from 'renovate/dist/manager/types';
 
+import type {
+  CommodoreConfig,
+  CommodoreParameters,
+  CommodoreComponentDependency,
+} from './types';
+
 export const defaultConfig = {
   fileMatch: ['^*.yml$'],
 };
-
-interface CommodoreConfig {
-  parameters: CommodoreParameters;
-}
-
-interface CommodoreParameters {
-  components: Map<string, CommodoreComponentDependency>;
-}
-
-interface CommodoreComponentDependency {
-  name: string;
-  url: string;
-  version: string;
-}
 
 // exctractComponents will extract all component dependencies.
 // It will return an error if the content is not valid yaml.
