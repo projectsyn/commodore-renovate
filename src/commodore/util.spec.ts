@@ -90,6 +90,8 @@ describe('src/commodore/util', () => {
       expect(f.cloud).toBe(fact.cloud);
       expect(f.region).toBe(fact.region);
     });
+  });
+  describe('parseFileName()', () => {
     it('works with regexp from string', () => {
       const regexpstr = '^distribution\\/(?<distribution>\\w+).ya?ml';
       const f = util.parseFileName(
@@ -100,6 +102,32 @@ describe('src/commodore/util', () => {
       );
       expect(util.hasFact(f)).toBe(true);
       expect(f.distribution).toBe('dist');
+      expect(f.cloud).toBeNull();
+      expect(f.region).toBeNull();
+    });
+    it('treats capture group distribution.cloud as optional', () => {
+      const f = util.parseFileName(
+        'distribution/dist.yml',
+        /^distribution\/(?<distribution>\w+)\.yml$/,
+        /^cloud\/(\w+)\.yaml$/,
+        []
+      );
+      expect(util.hasFact(f)).toBe(true);
+      expect(f.distribution).toBe('dist');
+      expect(f.cloud).toBeNull();
+      expect(f.region).toBeNull();
+    });
+    it('treats capture group cloud.region as optional', () => {
+      const f = util.parseFileName(
+        'cloud/cloud.yml',
+        /^distribution\/(?<distribution>\w+)\.yml$/,
+        /^cloud\/(?<cloud>\w+)\.yml$/,
+        []
+      );
+      expect(util.hasFact(f)).toBe(true);
+      expect(f.distribution).toBeNull();
+      expect(f.cloud).toBe('cloud');
+      expect(f.region).toBeNull();
     });
   });
 
