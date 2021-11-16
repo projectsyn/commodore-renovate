@@ -41,7 +41,7 @@ async function extractComponents(
 ): Promise<CommodoreComponentDependency[]> {
   let versions: Map<string, CommodoreComponentDependency> = new Map();
   if (repoDir === undefined) {
-    logger.warn('Unable to determine repo directory, cannot render inventory');
+    logger.warn('Unable to determine repo directory, cannot infer component URLs from rendered inventory.');
   } else {
     const renderedParams: CommodoreParameters = await renderInventory(
       repoDir,
