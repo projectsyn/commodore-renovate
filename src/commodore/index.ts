@@ -22,7 +22,7 @@ export const defaultConfig = {
   extraConfig: '',
 };
 
-const defaultExtraConfig = {
+export const defaultExtraConfig = {
   extraParameters: {},
   distributionRegex:
     /^distribution\/(?<distribution>[^\/]+)(?:\/cloud\/(?<cloud>.+)\.ya?ml|(?:\/.+)?\.ya?ml)$/,

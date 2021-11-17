@@ -4,14 +4,9 @@ import { readFile, unlink } from 'fs/promises';
 import { loadFixture } from '../test/util';
 import { expect, describe, it } from '@jest/globals';
 
+import { defaultExtraConfig } from './index';
 import * as util from './util';
 import { Facts } from './types';
-
-//TODO(sg): use default config values for the patterns
-const distributionRegex =
-  /^distribution\/(?<distribution>[^\/]+)(?:\/cloud\/(?<cloud>.+)\.ya?ml|\.ya?ml)$/;
-const cloudRegionRegex =
-  /^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>.+)\.ya?ml|\.ya?ml)$/;
 
 describe('src/commodore/util', () => {
   describe('hasFact()', () => {
@@ -64,8 +59,8 @@ describe('src/commodore/util', () => {
     it('returns empty fact on no match', () => {
       const f = util.parseFileName(
         'test.yaml',
-        distributionRegex,
-        cloudRegionRegex,
+        defaultExtraConfig.distributionRegex,
+        defaultExtraConfig.cloudRegionRegex,
         []
       );
       expect(util.hasFact(f)).toBe(false);
@@ -76,13 +71,14 @@ describe('src/commodore/util', () => {
       ${'distribution/dist.yml'}             | ${{ distribution: 'dist', cloud: null, region: null }}
       ${'cloud/cloud.yml'}                   | ${{ distribution: null, cloud: 'cloud', region: null }}
       ${'cloud/cloud/region.yml'}            | ${{ distribution: null, cloud: 'cloud', region: 'region' }}
+      ${'cloud/cloud/params.yml'}            | ${{ distribution: null, cloud: 'cloud', region: null }}
       ${'distribution/dist/cloud/cloud.yml'} | ${{ distribution: 'dist', cloud: 'cloud', region: null }}
     `('returns $fact for $file', ({ file, fact }) => {
       const f = util.parseFileName(
         file,
-        distributionRegex,
-        cloudRegionRegex,
-        []
+        defaultExtraConfig.distributionRegex,
+        defaultExtraConfig.cloudRegionRegex,
+        defaultExtraConfig.ignoreValues
       );
 
       expect(util.hasFact(f)).toBe(true);
