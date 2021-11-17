@@ -1,8 +1,17 @@
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  jest,
+} from '@jest/globals';
 import { mkdir } from 'fs/promises';
+import { getGlobalConfig } from 'renovate/dist/config/global';
+
 import { getFixturePath, loadFixture } from '../test/util';
-import { extractPackageFile, defaultConfig } from './index';
+import { defaultConfig, extractPackageFile } from './index';
 import { clearCache } from './inventory';
-import { expect, describe, it } from '@jest/globals';
 
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
@@ -10,9 +19,11 @@ const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
 
 jest.mock('renovate/dist/config/global');
-const renovate_global = require('renovate/dist/config/global');
-function mockGetGlobalConfig(fixtureId: string) {
-  renovate_global.getGlobalConfig.mockImplementation(() => {
+function mockGetGlobalConfig(fixtureId: string): void {
+  const mockGetGlobalConfigFn = getGlobalConfig as jest.MockedFunction<
+    typeof getGlobalConfig
+  >;
+  mockGetGlobalConfigFn.mockImplementation(() => {
     return {
       localDir: getFixturePath(fixtureId),
       cacheDir: '/tmp/renovate',
