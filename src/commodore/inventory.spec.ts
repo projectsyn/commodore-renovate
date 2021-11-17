@@ -1,7 +1,6 @@
 import yaml from 'js-yaml';
 import { mkdir, readFile, unlink } from 'fs/promises';
 
-import { loadFixture } from '../test/util';
 import { expect, describe, it } from '@jest/globals';
 
 import * as inv from './inventory';

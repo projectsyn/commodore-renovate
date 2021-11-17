@@ -1,10 +1,6 @@
-import { writeFile } from 'fs/promises';
 import { execSync } from 'child_process';
 
-import yaml from 'js-yaml';
-
 import { logger } from 'renovate/dist/logger';
-import { getGlobalConfig } from 'renovate/dist/config/global';
 
 import { cacheDir, pruneObject, writeYamlFile } from './util';
 

@@ -15,7 +15,7 @@ import type {
 } from './types';
 
 import { renderInventory } from './inventory';
-import { cacheDir, hasFact, parseFileName, writeYamlFile } from './util';
+import { cacheDir, parseFileName, writeYamlFile } from './util';
 
 export const defaultConfig = {
   fileMatch: ['^*.ya?ml$'],
