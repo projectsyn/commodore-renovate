@@ -7,53 +7,14 @@ import { defaultExtraConfig } from './index';
 import * as util from './util';
 import { Facts } from './types';
 
-describe('src/commodore/util', () => {
-  describe('hasFact()', () => {
-    it('returns false for empty Facts', () => {
-      expect(util.hasFact(new Facts())).toBe(false);
-    });
-    it('returns true for facts with distribution', () => {
-      const f = new Facts();
-      f.distribution = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with cloud', () => {
-      const f = new Facts();
-      f.cloud = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with region', () => {
-      const f = new Facts();
-      f.region = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with cloud & region', () => {
-      const f = new Facts();
-      f.cloud = 'a';
-      f.region = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with distribution & region', () => {
-      const f = new Facts();
-      f.distribution = 'a';
-      f.region = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with distribution & cloud', () => {
-      const f = new Facts();
-      f.distribution = 'a';
-      f.cloud = 'x';
-      expect(util.hasFact(f)).toBe(true);
-    });
-    it('returns true for facts with distribution, cloud & region', () => {
-      const f = new Facts();
-      f.distribution = 'a';
-      f.cloud = 'x';
-      f.region = 'm';
-      expect(util.hasFact(f)).toBe(true);
-    });
-  });
+/* Check whether `facts` has any non-null field */
+function hasFact(facts: Facts): boolean {
+  return (
+    facts.distribution !== null || facts.cloud !== null || facts.region !== null
+  );
+}
 
+describe('src/commodore/util', () => {
   describe('parseFileName() with default regex patterns', () => {
     it('returns empty fact on no match', () => {
       const f = util.parseFileName(
@@ -62,7 +23,7 @@ describe('src/commodore/util', () => {
         defaultExtraConfig.cloudRegionRegex,
         []
       );
-      expect(util.hasFact(f)).toBe(false);
+      expect(hasFact(f)).toBe(false);
     });
 
     it.each`
@@ -80,7 +41,7 @@ describe('src/commodore/util', () => {
         defaultExtraConfig.ignoreValues
       );
 
-      expect(util.hasFact(f)).toBe(true);
+      expect(hasFact(f)).toBe(true);
       expect(f.distribution).toBe(fact.distribution);
       expect(f.cloud).toBe(fact.cloud);
       expect(f.region).toBe(fact.region);
@@ -95,7 +56,7 @@ describe('src/commodore/util', () => {
         /^cloud\/(?<cloud>\w+).yaml/,
         []
       );
-      expect(util.hasFact(f)).toBe(true);
+      expect(hasFact(f)).toBe(true);
       expect(f.distribution).toBe('dist');
       expect(f.cloud).toBeNull();
       expect(f.region).toBeNull();
@@ -107,7 +68,7 @@ describe('src/commodore/util', () => {
         /^cloud\/(\w+)\.yaml$/,
         []
       );
-      expect(util.hasFact(f)).toBe(true);
+      expect(hasFact(f)).toBe(true);
       expect(f.distribution).toBe('dist');
       expect(f.cloud).toBeNull();
       expect(f.region).toBeNull();
@@ -119,7 +80,7 @@ describe('src/commodore/util', () => {
         /^cloud\/(?<cloud>\w+)\.yml$/,
         []
       );
-      expect(util.hasFact(f)).toBe(true);
+      expect(hasFact(f)).toBe(true);
       expect(f.distribution).toBeNull();
       expect(f.cloud).toBe('cloud');
       expect(f.region).toBeNull();

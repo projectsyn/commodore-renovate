@@ -72,10 +72,3 @@ export function parseFileName(
 
   return facts;
 }
-
-/* Check whether `facts` has any non-null field */
-export function hasFact(facts: Facts): boolean {
-  return (
-    facts.distribution !== null || facts.cloud !== null || facts.region !== null
-  );
-}
