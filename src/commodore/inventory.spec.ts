@@ -23,7 +23,7 @@ describe('src/commodore/inventory', () => {
       expect(factsPath).toBe(`${cacheDir()}/ck-facts.yaml`);
 
       const resStr = (await readFile(factsPath)).toString();
-      const res = yaml.load(resStr);
+      const res: any = yaml.load(resStr) as any;
 
       expect('parameters' in res).toBe(true);
       expect('facts' in res.parameters).toBe(true);

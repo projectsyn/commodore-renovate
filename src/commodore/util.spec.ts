@@ -132,7 +132,7 @@ describe('src/commodore/util', () => {
       await util.writeYamlFile(fname, { a: 1, b: '2', c: 3.0 });
 
       const contentStr = (await readFile(fname)).toString();
-      const content = yaml.load(contentStr);
+      const content: any = yaml.load(contentStr) as any;
       expect('a' in content).toBe(true);
       expect('b' in content).toBe(true);
       expect('c' in content).toBe(true);
@@ -147,7 +147,7 @@ describe('src/commodore/util', () => {
       await util.writeYamlFile(fname, { a: { b: '2', c: 3.0 } });
 
       const contentStr = (await readFile(fname)).toString();
-      const content = yaml.load(contentStr);
+      const content: any = yaml.load(contentStr) as any;
       expect('a' in content).toBe(true);
       expect('b' in content.a).toBe(true);
       expect('c' in content.a).toBe(true);
