@@ -6,7 +6,7 @@ import yaml from 'js-yaml';
 import { logger } from 'renovate/dist/logger';
 import { getGlobalConfig } from 'renovate/dist/config/global';
 
-import { cacheDir, mapToObject, writeYamlFile } from './util';
+import { cacheDir, pruneObject, writeYamlFile } from './util';
 
 import type { CommodoreParameters, Facts } from './types';
 
@@ -24,23 +24,11 @@ export async function writeFactsFile(
   cacheKey: string,
   facts: Facts
 ): Promise<string> {
-  /* Construct facts */
-  var factsMap = new Map();
-  if (facts.distribution) {
-    factsMap.set('distribution', facts.distribution);
-  }
-  if (facts.cloud) {
-    factsMap.set('cloud', facts.cloud);
-  }
-  if (facts.region !== null) {
-    factsMap.set('region', facts.region);
-  }
-
   /* Write facts class for `commodore inventory component` */
   const factsPath: string = `${cacheDir()}/${cacheKey}-facts.yaml`;
   try {
     await writeYamlFile(factsPath, {
-      parameters: { facts: mapToObject(factsMap) },
+      parameters: { facts: pruneObject(facts) },
     });
   } catch (err) {
     logger.error(`Error writing facts YAML: ${err}`);

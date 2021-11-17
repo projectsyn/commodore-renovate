@@ -159,14 +159,17 @@ describe('src/commodore/util', () => {
     });
   });
 
-  describe('mapToObject()', () => {
+  describe('pruneObject()', () => {
     it.each`
-      map                                  | obj
-      ${new Map().set('a', 1)}             | ${{ a: 1 }}
-      ${new Map().set('a', 1).set('b', 2)} | ${{ a: 1, b: 2 }}
-    `('transforms a Map() into an object', ({ obj, map }) => {
-      const o = util.mapToObject(map);
-      expect(o).toStrictEqual(obj);
+      orig                         | expected
+      ${{ a: 1 }}                  | ${{ a: 1 }}
+      ${{ a: 1, b: 2 }}            | ${{ a: 1, b: 2 }}
+      ${{ a: 1, b: null }}         | ${{ a: 1 }}
+      ${{ a: 1, b: undefined }}    | ${{ a: 1 }}
+      ${{ a: null, b: undefined }} | ${{}}
+    `('transforms $orig into $expected', ({ orig, expected }) => {
+      const o = util.pruneObject(orig);
+      expect(o).toStrictEqual(expected);
     });
   });
 });

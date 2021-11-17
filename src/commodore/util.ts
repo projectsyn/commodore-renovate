@@ -14,12 +14,11 @@ export function cacheDir(): string {
   return cacheDir;
 }
 
-/* Convert Map() to plain object */
-export function mapToObject(map: Map<string, any>) {
-  return Array.from(map.entries()).reduce(
-    (main, [key, value]) => ({ ...main, [key]: value }),
-    {}
-  );
+/* Prune object, removing any null or undefined keys */
+export function pruneObject(obj: Facts) {
+  return Object.entries(obj)
+    .filter(([_, v]) => v !== undefined && v !== null)
+    .reduce((main, [key, value]) => ({ ...main, [key]: value }), {});
 }
 
 /* Render object as YAML and write to file */
