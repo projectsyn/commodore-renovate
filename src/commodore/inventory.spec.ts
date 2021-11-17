@@ -29,11 +29,9 @@ describe('src/commodore/inventory', () => {
       expect('parameters' in res).toBe(true);
       expect('facts' in res.parameters).toBe(true);
       expect('distribution' in res.parameters.facts).toBe(true);
-      expect('dist_version' in res.parameters.facts).toBe(true);
       expect('cloud' in res.parameters.facts).toBe(true);
       expect('region' in res.parameters.facts).toBe(true);
       expect(res.parameters.facts.distribution).toBe('dist');
-      expect(res.parameters.facts.dist_version).toBe('1.20');
       expect(res.parameters.facts.cloud).toBe('cloud');
       expect(res.parameters.facts.region).toBe('region');
 

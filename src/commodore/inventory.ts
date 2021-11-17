@@ -28,8 +28,6 @@ export async function writeFactsFile(
   var factsMap = new Map();
   if (facts.distribution) {
     factsMap.set('distribution', facts.distribution);
-    // TODO(sg): figure out if we can externalize this
-    factsMap.set(`${facts.distribution}_version`, '1.20');
   }
   if (facts.cloud) {
     factsMap.set('cloud', facts.cloud);
