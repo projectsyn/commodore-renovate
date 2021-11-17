@@ -5,8 +5,8 @@ api.set('commodore', commodore);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
-const options_1 = require('renovate/dist/config/options');
-let options = options_1.getOptions();
+import { getOptions } from 'renovate/dist/config/options';
+let options = getOptions();
 options.push({
   name: 'extraConfig',
   description: 'Extra configuration file for commodore manager',
