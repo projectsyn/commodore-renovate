@@ -17,14 +17,16 @@ This config option is called `extraConfig` and is expected to point to another j
 The manager currently understands the following keys in the extra configuration file:
 
 - `extraParameters`: Extra parameters which are provided to Commodore when rendering the repository hierarchy with `commodore inventory components`.
+  The contents of `extraParameters` are passed to Commodore in key `parameters` of an additional inventory class.
 
 - `distributionRegex`: A regex pattern which is used to extract the distribution (and optionally cloud) name from a file name.
   The manager expects that this regex pattern has a named capture group `distribution` which corresponds to the K8s distribution name as used in the hierarchy.
   The manager will also use a named capture group `cloud` as the cloud provider name, if it exists.
+  The regex pattern should be written such that it matches the relative file path of a distribution class in the global defaults repository.
 
   Default: `/^distribution\/(?<distribution>[^\/]+)(?:\/cloud\/(?<cloud>.+)\.ya?ml|(?:\/.+)?\.ya?ml)$/`.
 
-  The default regex pattern extracts the distribution (and optionally cloud) name from file names in the following forms (and additionally the same forms with `.yaml` files extensions):
+  The default regex pattern extracts the distribution (and optionally cloud) name from file names in the following forms (and additionally the same forms with `.yaml` file extensions):
 
   - `distribution/<distribution>.yml`
   - `distribution/<distribution>/file.yml`
@@ -33,10 +35,11 @@ The manager currently understands the following keys in the extra configuration 
 - `cloudRegionRegex`: A regex pattern which is used to extract the cloud provider and cloud region name from a file name.
   The manager expects that this regex pattern has a named capture group `cloud` which corresponds to the cloud provider name as used in the hierarchy.
   The manager will also use a named capture group `region` as the cloud provider region, if it exists.
+  The regex pattern should be written such that it matches the relative file path of a cloud class in the global defaults repository.
 
   Default: `/^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>.+)\.ya?ml|\.ya?ml)$/`.
 
-  The default regex pattern extracts the cloud (and optionally cloud region) name from file names in the following forms (and additionally the same forms with `.yaml` files extensions):
+  The default regex pattern extracts the cloud (and optionally cloud region) name from file names in the following forms (and additionally the same forms with `.yaml` file extensions):
 
   - `cloud/<cloud>.yml`
   - `cloud/<cloud>/<region>.yml`
@@ -45,3 +48,19 @@ The manager currently understands the following keys in the extra configuration 
   The manager will not use distribution, cloud, or region values which match an entry in this array when calling `commodore inventory components`.
 
   Default: `['params']`.
+
+The manager uses the results of the `distributionRegex` and `cloudRegionRegex` patterns to construct an inventory class providing the matching facts to Commodore.
+This class has the following contents:
+
+```yaml
+parameters:
+  facts:
+    distribution: <distributionRegex.groups.distribution>
+    cloud:
+      # If cloudRegionRegex capture group `cloud` is present, use its value.
+      # Otherwise, if distributionRegex capture group `cloud` is present use its value.
+      (<cloudRegionRegex.groups.cloud> || <distributionRegex.groups.cloud>)
+    region: <cloudRegionRegex.groups.region>
+```
+
+Facts for which no value was extracted with the regex patterns are not present in the resulting inventory class.
