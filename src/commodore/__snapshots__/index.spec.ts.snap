@@ -1,6 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`manager/commodore/index extractPackageFile() extracts component versions 1`] = `
+exports[`src/commodore/index extractPackageFile() extracts component urls for version pins 1`] = `
+Array [
+  Object {
+    "currentValue": "v3.0.0",
+    "depName": "appuio-cloud in 4/pins.yml",
+    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+  },
+  Object {
+    "currentValue": "v1.2.3",
+    "depName": "argocd in 4/pins.yml",
+    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+  },
+]
+`;
+
+exports[`src/commodore/index extractPackageFile() extracts component versions 1`] = `
 Array [
   Object {
     "currentValue": "v1.1.0",
