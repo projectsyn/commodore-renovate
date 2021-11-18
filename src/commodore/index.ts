@@ -31,7 +31,7 @@ export const defaultExtraConfig = {
   ignoreValues: ['params'],
 };
 
-// exctractComponents will extract all component dependencies.
+// extractComponents will extract all component dependencies.
 // It will return an error if the content is not valid yaml.
 async function extractComponents(
   content: string,
