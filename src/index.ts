@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import api from 'renovate/dist/manager/api.js';
 import * as commodore from './commodore';
 
