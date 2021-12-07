@@ -15,6 +15,21 @@ Array [
 ]
 `;
 
+exports[`src/commodore/index extractPackageFile() extracts component urls for version pins in tenant repo 1`] = `
+Array [
+  Object {
+    "currentValue": "v3.0.0",
+    "depName": "appuio-cloud in 5/tenant/c-foo.yml",
+    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+  },
+  Object {
+    "currentValue": "v1.2.3",
+    "depName": "argocd in 5/tenant/c-foo.yml",
+    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+  },
+]
+`;
+
 exports[`src/commodore/index extractPackageFile() extracts component versions 1`] = `
 Array [
   Object {

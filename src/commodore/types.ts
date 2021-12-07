@@ -17,3 +17,13 @@ export class Facts {
   cloud: string | null = null;
   region: string | null = null;
 }
+
+export class ClusterData {
+  name: string | null = null;
+  tenant: string | null = null;
+}
+
+export interface RepoConfig {
+  dir: string;
+  extraConfig: any;
+}

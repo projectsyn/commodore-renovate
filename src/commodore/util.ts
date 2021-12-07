@@ -1,12 +1,15 @@
 import clone from 'just-clone';
 import yaml from 'js-yaml';
+import Git from 'simple-git';
 
-import { readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
 
 import { logger } from 'renovate/dist/logger';
 import { getGlobalConfig } from 'renovate/dist/config/global';
+import { simpleGitConfig } from 'renovate/dist/util/git/config';
 
-import type { Facts } from './types';
+import type { Facts, RepoConfig } from './types';
 
 export function cacheDir(): string {
   let cacheDir: string | undefined = getGlobalConfig().cacheDir;
@@ -100,6 +103,31 @@ export function mergeConfig(base: any, config: any): any {
     });
   }
   return output;
+}
+
+export var globalRepos: Map<string, RepoConfig> = new Map();
+
+export function globalRepoDir(tenant_id: string): string {
+  return cacheDir() + `/${tenant_id}-commodore-defaults`;
+}
+
+export async function cloneGlobalRepo(config: any): Promise<RepoConfig> {
+  if (globalRepos.has(config.tenantId)) {
+    return globalRepos.get(config.tenantId) as RepoConfig;
+  }
+
+  const dir: string = globalRepoDir(config.tenantId);
+  await mkdir(dir);
+  // TODO(sg): support Git-https?
+  const git: any = Git(dir, simpleGitConfig());
+  await git.clone(config.globalRepoURL, '.');
+  const globalExtraConfig = await parseGlobalRepoConfig(dir);
+  const rc: RepoConfig = {
+    dir: dir,
+    extraConfig: globalExtraConfig,
+  } as RepoConfig;
+  globalRepos.set(config.tenantId, rc);
+  return rc;
 }
 
 export async function parseGlobalRepoConfig(globalDir: string): Promise<any> {
