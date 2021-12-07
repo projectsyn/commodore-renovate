@@ -1,3 +1,4 @@
+import clone from 'just-clone';
 import yaml from 'js-yaml';
 
 import { writeFile } from 'fs/promises';
@@ -71,4 +72,31 @@ export function parseFileName(
   }
 
   return facts;
+}
+
+function isObject(item: any) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+// Adapted from https://stackoverflow.com/a/37164538
+export function mergeConfig(base: any, config: any): any {
+  let output = clone(base);
+  if (isObject(base) && isObject(config)) {
+    Object.keys(config).forEach((key) => {
+      if (isObject(config[key])) {
+        if (!(key in base)) Object.assign(output, { [key]: config[key] });
+        else output[key] = mergeConfig(base[key], config[key]);
+      } else if (Array.isArray(config[key])) {
+        if (!(key in base)) {
+          Object.assign(output, { [key]: Array.from(config[key]) });
+        } else if (Array.isArray(output[key])) {
+          output[key].push(...config[key]);
+        } else {
+        }
+      } else {
+        Object.assign(output, { [key]: config[key] });
+      }
+    });
+  }
+  return output;
 }

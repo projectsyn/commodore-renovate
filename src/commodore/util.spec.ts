@@ -132,4 +132,17 @@ describe('src/commodore/util', () => {
       expect(o).toStrictEqual(expected);
     });
   });
+
+  describe('mergeConfig()', () => {
+    it.each`
+      a                          | b                          | merged
+      ${{ a: 1 }}                | ${{ b: 2 }}                | ${{ a: 1, b: 2 }}
+      ${{ a: 1 }}                | ${{ a: 2 }}                | ${{ a: 2 }}
+      ${{ a: { a: 1 } }}         | ${{ a: { b: 2 } }}         | ${{ a: { a: 1, b: 2 } }}
+      ${{ a: { a: 1, c: [1] } }} | ${{ a: { b: 2, c: [2] } }} | ${{ a: { a: 1, b: 2, c: [1, 2] } }}
+    `('merges $a and $b', ({ a, b, merged }) => {
+      const m = util.mergeConfig(a, b);
+      expect(m).toStrictEqual(merged);
+    });
+  });
 });
