@@ -41,6 +41,8 @@ async function setupGlobalRepo(fixtureId: string): Promise<string> {
   await mkdir(repoDir, { recursive: true });
   const git = Git({ baseDir: repoDir });
   await git.init();
+  await git.addConfig('user.name', 'Commodore-Renovate Unit Tests');
+  await git.addConfig('user.email', 'ahoy@syn.tools');
   const sourceDir = getFixturePath(fixtureId);
   const repoContents = await readdir(sourceDir);
   repoContents.forEach((file) => {
