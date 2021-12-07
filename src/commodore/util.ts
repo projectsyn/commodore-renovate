@@ -1,8 +1,9 @@
 import clone from 'just-clone';
 import yaml from 'js-yaml';
 
-import { writeFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 
+import { logger } from 'renovate/dist/logger';
 import { getGlobalConfig } from 'renovate/dist/config/global';
 
 import type { Facts } from './types';
@@ -99,4 +100,44 @@ export function mergeConfig(base: any, config: any): any {
     });
   }
   return output;
+}
+
+export async function parseGlobalRepoConfig(globalDir: string): Promise<any> {
+  const globalDirConfigFile: string = globalDir + '/renovate.json';
+  let globalDirConfig: any = {};
+  try {
+    const globalConfigStr: string = (
+      await readFile(globalDirConfigFile)
+    ).toString();
+    globalDirConfig = JSON.parse(globalConfigStr) as any;
+  } catch (e: any) {
+    logger.info(
+      {
+        globalDir: globalDir,
+        exception: e,
+      },
+      'Exception while reading global repo config'
+    );
+  }
+  if (
+    globalDirConfig.commodore !== undefined &&
+    globalDirConfig.commodore.extraConfig !== undefined
+  ) {
+    try {
+      const globalExtraConfigStr = (
+        await readFile(globalDir + '/' + globalDirConfig.commodore.extraConfig)
+      ).toString();
+      return JSON.parse(globalExtraConfigStr) as any;
+    } catch (e: any) {
+      logger.info(
+        {
+          globalDir: globalDir,
+          extraConfig: globalDirConfig.commodore.extraConfig,
+          exception: e,
+        },
+        'Exception while reading global repo extraConfig'
+      );
+    }
+  }
+  return {};
 }

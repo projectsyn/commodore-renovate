@@ -6,6 +6,7 @@ import { expect, describe, it } from '@jest/globals';
 import { defaultExtraConfig } from './index';
 import * as util from './util';
 import { Facts } from './types';
+import { getFixturePath } from '../test/util';
 
 /* Check whether `facts` has any non-null field */
 function hasFact(facts: Facts): boolean {
@@ -143,6 +144,33 @@ describe('src/commodore/util', () => {
     `('merges $a and $b', ({ a, b, merged }) => {
       const m = util.mergeConfig(a, b);
       expect(m).toStrictEqual(merged);
+    });
+  });
+
+  describe('parseGlobalRepoConfig()', () => {
+    it('returns an empty config if no file exists', async () => {
+      const c = await util.parseGlobalRepoConfig(
+        getFixturePath('parseGlobalRepoConfig/1')
+      );
+      expect(c).toStrictEqual({});
+    });
+    it('returns an empty config if `commodore` not set in renovate.json', async () => {
+      const c = await util.parseGlobalRepoConfig(
+        getFixturePath('parseGlobalRepoConfig/2')
+      );
+      expect(c).toStrictEqual({});
+    });
+    it('returns an empty config if `commodore.extraConfig` not set in renovate.json', async () => {
+      const c = await util.parseGlobalRepoConfig(
+        getFixturePath('parseGlobalRepoConfig/3')
+      );
+      expect(c).toStrictEqual({});
+    });
+    it('returns the contents of `commodore.extraConfig` in renovate.json', async () => {
+      const c = await util.parseGlobalRepoConfig(
+        getFixturePath('parseGlobalRepoConfig/4')
+      );
+      expect(c).toStrictEqual({ extraParameters: { a: 1 } });
     });
   });
 });
