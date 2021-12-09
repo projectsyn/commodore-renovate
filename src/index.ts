@@ -39,10 +39,10 @@ options.push({
 const init = require('renovate/dist/workers/global/initialize');
 const origGlobalFinalize: any = init.globalFinalize;
 function patchedGlobalFinalize(config: any) {
-  globalRepos.forEach((repo, tenant_id) => {
+  globalRepos.forEach((repo, globalRepoURL) => {
     logger.info(
       { repo: repo.dir },
-      `deleting cloned global defaults for ${tenant_id}`
+      `deleting global defaults ${globalRepoURL}`
     );
     if (existsSync(repo.dir)) {
       rmSync(repo.dir, { recursive: true });

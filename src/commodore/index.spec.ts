@@ -107,10 +107,10 @@ describe('src/commodore/index', () => {
     });
     it('extracts component urls for version pins in tenant repo', async () => {
       mockGetGlobalConfig('5');
-      const globalRepoUrl: string = await setupGlobalRepo('5/global');
+      const globalRepoDir: string = await setupGlobalRepo('5/global');
       const config: any = { ...defaultConfig };
       config.tenantId = 't-bar';
-      config.globalRepoURL = globalRepoUrl;
+      config.globalRepoURL = `file://${globalRepoDir}`;
       const res = await extractPackageFile(
         tenant5,
         '5/tenant/c-foo.yml',
@@ -125,7 +125,7 @@ describe('src/commodore/index', () => {
       // Clean up global repo scaffolding for the test
       rmSync('/tmp/renovate/5', { recursive: true });
       // Remove global repo clone created by the test
-      rmSync('/tmp/renovate/t-bar-commodore-defaults', { recursive: true });
+      rmSync('/tmp/renovate/global-repos/', { recursive: true });
     });
   });
 });

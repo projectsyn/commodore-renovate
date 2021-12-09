@@ -111,11 +111,15 @@ export async function extractPackageFile(
     cluster.name = parse(fileName).name;
     cluster.tenant = config.tenantId;
 
-    const globalRepo: RepoConfig = await cloneGlobalRepo(config);
     logger.info(
-      { fileName: fileName, globalRepo: globalRepo, tenantId: config.tenantId },
+      {
+        fileName: fileName,
+        globalRepo: config.globalRepoURL,
+        tenantId: config.tenantId,
+      },
       `Global repo for this tenant is not initialized yet, cloning it`
     );
+    const globalRepo: RepoConfig = await cloneGlobalRepo(config);
 
     globalExtraConfig = globalRepo.extraConfig;
     globalDir = globalRepo.dir;

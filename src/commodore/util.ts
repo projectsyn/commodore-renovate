@@ -2,8 +2,9 @@ import clone from 'just-clone';
 import yaml from 'js-yaml';
 import Git from 'simple-git';
 
+import { parse } from 'path';
 import { mkdir, readFile, writeFile } from 'fs/promises';
-import { existsSync } from 'fs';
+import { URL } from 'url';
 
 import { logger } from 'renovate/dist/logger';
 import { getGlobalConfig } from 'renovate/dist/config/global';
@@ -107,17 +108,20 @@ export function mergeConfig(base: any, config: any): any {
 
 export var globalRepos: Map<string, RepoConfig> = new Map();
 
-export function globalRepoDir(tenant_id: string): string {
-  return cacheDir() + `/${tenant_id}-commodore-defaults`;
+export function globalRepoDir(globalRepoURL: string): string {
+  let repoUrl = new URL(globalRepoURL);
+  let repoPathInfo = parse(repoUrl.pathname);
+  let repoPath = `${repoUrl.host}${repoPathInfo.dir}/${repoPathInfo.name}`;
+  return cacheDir() + `/global-repos/${repoPath}`;
 }
 
 export async function cloneGlobalRepo(config: any): Promise<RepoConfig> {
-  if (globalRepos.has(config.tenantId)) {
-    return globalRepos.get(config.tenantId) as RepoConfig;
+  if (globalRepos.has(config.globalRepoURL)) {
+    return globalRepos.get(config.globalRepoURL) as RepoConfig;
   }
 
-  const dir: string = globalRepoDir(config.tenantId);
-  await mkdir(dir);
+  const dir: string = globalRepoDir(config.globalRepoURL);
+  await mkdir(dir, { recursive: true });
   // TODO(sg): support Git-https?
   const git: any = Git(dir, simpleGitConfig());
   await git.clone(config.globalRepoURL, '.');
@@ -126,7 +130,7 @@ export async function cloneGlobalRepo(config: any): Promise<RepoConfig> {
     dir: dir,
     extraConfig: globalExtraConfig,
   } as RepoConfig;
-  globalRepos.set(config.tenantId, rc);
+  globalRepos.set(config.globalRepoURL, rc);
   return rc;
 }
 
