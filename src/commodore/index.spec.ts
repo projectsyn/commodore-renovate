@@ -122,6 +122,9 @@ describe('src/commodore/index', () => {
         expect(deps).toMatchSnapshot();
         expect(deps).toHaveLength(2);
       }
+      // Clean up global repo scaffolding for the test
+      rmSync('/tmp/renovate/5', { recursive: true });
+      // Remove global repo clone created by the test
       rmSync('/tmp/renovate/t-bar-commodore-defaults', { recursive: true });
     });
   });
