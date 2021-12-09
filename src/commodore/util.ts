@@ -120,6 +120,13 @@ export async function cloneGlobalRepo(config: any): Promise<RepoConfig> {
     return globalRepos.get(config.globalRepoURL) as RepoConfig;
   }
 
+  logger.info(
+    {
+      globalRepoURL: config.globalRepoURL,
+      tenantId: config.tenantId,
+    },
+    'Global repo for this tenant is not initialized yet, cloning it'
+  );
   const dir: string = globalRepoDir(config.globalRepoURL);
   await mkdir(dir, { recursive: true });
   // TODO(sg): support Git-https?
