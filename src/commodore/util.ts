@@ -159,8 +159,8 @@ export async function parseGlobalRepoConfig(globalDir: string): Promise<any> {
     );
   }
   if (
-    globalDirConfig.commodore !== undefined &&
-    globalDirConfig.commodore.extraConfig !== undefined
+    globalDirConfig.commodore != null &&
+    globalDirConfig.commodore.extraConfig != null
   ) {
     try {
       const globalExtraConfigStr = (

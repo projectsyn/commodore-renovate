@@ -101,7 +101,7 @@ export async function extractPackageFile(
   let globalDir: string = '';
   // Tenant repos must have `commodore.tenantId` set
   const isTenantRepo: boolean =
-    config.tenantId !== undefined && config.tenantId != '';
+    config.tenantId != null && config.tenantId != '';
 
   let cluster: ClusterData = new ClusterData();
   let globalExtraConfig: any = {};
