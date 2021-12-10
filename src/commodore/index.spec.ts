@@ -15,7 +15,6 @@ import { getGlobalConfig } from 'renovate/dist/config/global';
 
 import { getFixturePath, loadFixture } from '../test/util';
 import { defaultConfig, extractPackageFile } from './index';
-import { clearCache } from './inventory';
 
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
@@ -55,11 +54,6 @@ async function setupGlobalRepo(fixtureId: string): Promise<string> {
 
 beforeAll(() => {
   return mkdir('/tmp/renovate', { recursive: true });
-});
-
-/* Clear commodore inventory components result cache before each test run */
-beforeEach(() => {
-  clearCache();
 });
 
 describe('src/commodore/index', () => {
