@@ -12,7 +12,7 @@ ignore:
   - .eslintrc.js
   - .git
   - .github/ISSUE_TEMPLATE
-  - .github/pull_request_template.md
+  - .github/PULL_REQUEST_TEMPLATE.md
   - dist
   - jest.config.ts
   - node_modules
