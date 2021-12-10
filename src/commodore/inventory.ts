@@ -8,8 +8,8 @@ import type { CommodoreParameters, Facts } from './types';
 
 let versionCache: Map<string, CommodoreParameters> = new Map();
 
-function cacheKey(facts: Facts): string {
-  return `${facts.distribution}-${facts.cloud}-${facts.region}`;
+function cacheKey(prefix: string, facts: Facts): string {
+  return `${prefix}${facts.distribution}-${facts.cloud}-${facts.region}`;
 }
 
 export function clearCache(): void {
@@ -38,14 +38,14 @@ export async function renderInventory(
   extraValuesPath: string,
   facts: Facts
 ): Promise<CommodoreParameters> {
-  const ck: string = cacheKey(facts);
+  const ck: string = cacheKey(`${repoPath}-`, facts);
   let cachedVersions = versionCache.get(ck);
   if (cachedVersions !== undefined) {
     logger.info(`Reusing cached versions for ${ck}`);
     return cachedVersions;
   }
 
-  const factsPath: string = await writeFactsFile(ck, facts);
+  const factsPath: string = await writeFactsFile(cacheKey('', facts), facts);
 
   /* construct and execute Commodore command */
   var command = `commodore inventory components ${globalPath} ${repoPath} -ojson -f ${factsPath} -f ${extraValuesPath}`;
