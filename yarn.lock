@@ -4639,6 +4639,11 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+just-clone@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/just-clone/-/just-clone-5.0.1.tgz#e2978fe886046267cad1df7c6aabcf3aa2a1b6a9"
+  integrity sha512-y6hFQ8X4fhJTZzdNvrE9mnCQX33uN4xV0hZ+5WNgs6yCcrRzs9ieFXuYRKznWqQ/gOSZpJu0yQ6hRHLCU6ezyw==
+
 keyv@^4.0.0:
   version "4.0.4"
   resolved "https://registry.npmjs.org/keyv/-/keyv-4.0.4.tgz"
@@ -6174,6 +6179,15 @@ simple-git@2.47.0:
   version "2.47.0"
   resolved "https://registry.npmjs.org/simple-git/-/simple-git-2.47.0.tgz"
   integrity sha512-+HfCpqPBEZTPWiW9fPdbiPJDslM22MLqrktfzNKyI2pWaJa6DhfNVx4Mds04KZzVv5vjC9/ksw3y5gVf8ECWDg==
+  dependencies:
+    "@kwsites/file-exists" "^1.1.1"
+    "@kwsites/promise-deferred" "^1.1.1"
+    debug "^4.3.2"
+
+simple-git@^2.48.0:
+  version "2.48.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-2.48.0.tgz#87c262dba8f84d7b96bb3a713e9e34701c1f6e3b"
+  integrity sha512-z4qtrRuaAFJS4PUd0g+xy7aN4y+RvEt/QTJpR184lhJguBA1S/LsVlvE/CM95RsYMOFJG3NGGDjqFCzKU19S/A==
   dependencies:
     "@kwsites/file-exists" "^1.1.1"
     "@kwsites/promise-deferred" "^1.1.1"

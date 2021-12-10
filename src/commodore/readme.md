@@ -11,8 +11,21 @@ See section "Configuration" for ways to configure how the inputs of the `commodo
 ## Configuration
 
 The Commodore manager requires some non-standard configurations.
-Since it's not trivial to add additional configuration options directly in `renovate.json`, the manager only has one non-standard config option in `renovate.json`.
-This config option is called `extraConfig` and is expected to point to another json file in the repository which contains the manager config.
+Since it's not trivial to add additional configuration options directly in `renovate.json`, the manager only has a few non-standard config option in `renovate.json`.
+
+The manager currently adds the following options to the standard renovate config:
+
+- `extraConfig`: This config option is expected to point to another JSON file in the repository which contains further manager config.
+  See below for supported keys in the additional config file.
+
+- `globalRepoURL`: This config option can be set either globally in Renovate's `config.js` or in a tenant repo's `renovate.json`.
+  This option is used by the Commodore manager to clone the global defaults repo when renovating a tenant repo.
+  The manager currently requires appropriate Git credentials for any global defaults to be configured in its runtime environment.
+
+- `tenantId`: This option must be set to the Project Syn tenant ID for each tenant repo since the manager cannot infer the tenant id from the repository name.
+  If this option is not set, the manager will treat the repo as a global defaults repo.
+
+### Extra configuration file
 
 The manager currently understands the following keys in the extra configuration file:
 

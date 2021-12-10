@@ -1,10 +1,10 @@
+import { parse } from 'path';
 import yaml from 'js-yaml';
 
 import * as gitRef from 'renovate/dist/datasource/git-refs';
 import { logger } from 'renovate/dist/logger';
 import { getGlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
-
 import type { PackageFile } from 'renovate/dist/manager/types';
 
 import type {
@@ -12,10 +12,19 @@ import type {
   CommodoreParameters,
   CommodoreConfig,
   Facts,
+  RepoConfig,
 } from './types';
 
+import { ClusterData } from './types';
+
 import { renderInventory } from './inventory';
-import { cacheDir, parseFileName, writeYamlFile } from './util';
+import {
+  cacheDir,
+  cloneGlobalRepo,
+  mergeConfig,
+  parseFileName,
+  writeYamlFile,
+} from './util';
 
 export const defaultConfig = {
   fileMatch: ['^*.ya?ml$'],
@@ -36,6 +45,7 @@ export const defaultExtraConfig = {
 async function extractComponents(
   content: string,
   repoDir: string | undefined,
+  globalDir: string,
   extraValuesPath: string,
   facts: Facts
 ): Promise<CommodoreComponentDependency[]> {
@@ -60,6 +70,7 @@ async function extractComponents(
   } else {
     const renderedParams: CommodoreParameters = await renderInventory(
       repoDir,
+      globalDir,
       extraValuesPath,
       facts
     );
@@ -87,20 +98,41 @@ export async function extractPackageFile(
   let components: CommodoreComponentDependency[];
 
   const repoDir: string | undefined = getGlobalConfig().localDir;
+  let globalDir: string = '';
+  // Tenant repos must have `commodore.tenantId` set
+  const isTenantRepo: boolean =
+    config.tenantId != null && config.tenantId != '';
+
+  let cluster: ClusterData = new ClusterData();
+  let globalExtraConfig: any = {};
+
+  if (isTenantRepo) {
+    logger.debug('Identified current repo as tenant repo');
+    cluster.name = parse(fileName).name;
+    cluster.tenant = config.tenantId;
+
+    const globalRepo: RepoConfig = await cloneGlobalRepo(config);
+
+    globalExtraConfig = globalRepo.extraConfig;
+    globalDir = globalRepo.dir;
+  }
+
   const extraValuesPath: string = `${cacheDir()}/extra.yaml`;
 
   const extraConfigStr: string = config.extraConfig
     ? (await readLocalFile(config.extraConfig)).toString()
     : '{}';
   // Merge user-supplied extra config with defaults
-  const extraConfig = {
-    ...defaultExtraConfig,
-    ...JSON.parse(extraConfigStr),
-  };
+  let extraConfig = { ...defaultExtraConfig };
+  extraConfig = mergeConfig(extraConfig, globalExtraConfig);
+  extraConfig = mergeConfig(extraConfig, JSON.parse(extraConfigStr));
 
   try {
     await writeYamlFile(extraValuesPath, {
-      parameters: extraConfig.extraParameters,
+      parameters: {
+        ...extraConfig.extraParameters,
+        ...{ cluster: cluster },
+      },
     });
   } catch (err) {
     logger.error(`Error while writing extra parameters YAML: ${err}`);
@@ -117,6 +149,7 @@ export async function extractPackageFile(
     components = await extractComponents(
       content,
       repoDir,
+      globalDir,
       extraValuesPath,
       facts
     );

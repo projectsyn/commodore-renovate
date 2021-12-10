@@ -34,6 +34,7 @@ export async function writeFactsFile(
 
 export async function renderInventory(
   repoPath: string,
+  globalPath: string,
   extraValuesPath: string,
   facts: Facts
 ): Promise<CommodoreParameters> {
@@ -47,7 +48,7 @@ export async function renderInventory(
   const factsPath: string = await writeFactsFile(ck, facts);
 
   /* construct and execute Commodore command */
-  var command = `commodore inventory components ${repoPath} -ojson -f ${factsPath} -f ${extraValuesPath}`;
+  var command = `commodore inventory components ${globalPath} ${repoPath} -ojson -f ${factsPath} -f ${extraValuesPath}`;
   try {
     const result: string = execSync(command, { stdio: 'pipe' }).toString();
     const params: CommodoreParameters = {
