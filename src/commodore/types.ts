@@ -27,3 +27,12 @@ export interface RepoConfig {
   dir: string;
   extraConfig: any;
 }
+
+export interface ClusterInfo {
+  id: string;
+  tenant: string;
+  displayName: string;
+  dynamicFacts: object;
+  facts: Facts;
+  gitRepo: object;
+}
