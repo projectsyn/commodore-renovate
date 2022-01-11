@@ -11,6 +11,7 @@ import type {
   CommodoreComponentDependency,
   CommodoreParameters,
   CommodoreConfig,
+  ClusterInfo,
   Facts,
   RepoConfig,
 } from './types';
@@ -18,6 +19,7 @@ import type {
 import { ClusterData } from './types';
 
 import { renderInventory } from './inventory';
+import { LieutenantError, queryLieutenant } from './lieutenant';
 import {
   cacheDir,
   cloneGlobalRepo,
@@ -105,6 +107,7 @@ export async function extractPackageFile(
 
   let cluster: ClusterData = new ClusterData();
   let globalExtraConfig: any = {};
+  let clusterInfo: ClusterInfo | undefined = undefined;
 
   if (isTenantRepo) {
     logger.debug('Identified current repo as tenant repo');
@@ -112,6 +115,26 @@ export async function extractPackageFile(
     cluster.tenant = config.tenantId;
 
     const globalRepo: RepoConfig = await cloneGlobalRepo(config);
+
+    if (config.lieutenantURL && config.lieutenantURL != '') {
+      logger.info(`Querying Lieutenant at ${config.lieutenantURL}`);
+      try {
+        clusterInfo = await queryLieutenant(config, 'clusters', cluster.name);
+      } catch (error: any) {
+        if (error instanceof LieutenantError) {
+          const err = error as LieutenantError;
+          if (err.statusCode == 404) {
+            logger.debug(`Lieutenant query returned 404 for ${cluster.name}`);
+          } else {
+            logger.info(
+              `Error querying Lieutenant for ${cluster.name}: statusCode=${err.statusCode}, reason=${err.message}`
+            );
+          }
+        } else {
+          logger.error(`Unexpected error querying Lieutenant: ${error}`);
+        }
+      }
+    }
 
     globalExtraConfig = globalRepo.extraConfig;
     globalDir = globalRepo.dir;
@@ -127,10 +150,20 @@ export async function extractPackageFile(
   extraConfig = mergeConfig(extraConfig, globalExtraConfig);
   extraConfig = mergeConfig(extraConfig, JSON.parse(extraConfigStr));
 
+  // Merge any facts/dynamic facts fetched from cluster with extraParameters
+  // given in hierarchy.
+  let params = extraConfig.extraParameters;
+  if (clusterInfo != undefined) {
+    params = mergeConfig(params, {
+      facts: clusterInfo.facts,
+      dynamic_facts: clusterInfo.dynamicFacts,
+    });
+  }
+
   try {
     await writeYamlFile(extraValuesPath, {
       parameters: {
-        ...extraConfig.extraParameters,
+        ...params,
         ...{ cluster: cluster },
       },
     });
@@ -138,12 +171,17 @@ export async function extractPackageFile(
     logger.error(`Error while writing extra parameters YAML: ${err}`);
   }
 
-  const facts: Facts = parseFileName(
+  let facts: Facts = parseFileName(
     fileName,
     new RegExp(extraConfig.distributionRegex),
     new RegExp(extraConfig.cloudRegionRegex),
     extraConfig.ignoreValues
   );
+
+  // If we have actual cluster facts, overwrite parsed facts.
+  if (clusterInfo !== undefined) {
+    facts = clusterInfo.facts;
+  }
 
   try {
     components = await extractComponents(

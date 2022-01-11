@@ -31,6 +31,13 @@ options.push({
   type: 'string',
   default: '',
 });
+options.push({
+  name: 'lieutenantURL',
+  description:
+    'URL of Lieutenant API. Used to fetch cluster facts when renovating tenant repos.',
+  type: 'string',
+  default: '',
+});
 
 // Patch renovate finalizer, we need the require() here despite what the TS
 // hint indicates. However, seems that suggestions cannot be suppressed with
