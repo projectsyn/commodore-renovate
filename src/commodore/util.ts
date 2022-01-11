@@ -80,7 +80,14 @@ export function parseFileName(
 }
 
 function isObject(item: any) {
-  return item && typeof item === 'object' && !Array.isArray(item);
+  return (
+    item &&
+    typeof item === 'object' &&
+    !Array.isArray(item) &&
+    // We don't treat RegExp as object as we want to be able to override
+    // regexp fields in `mergeConfig`.
+    !(item instanceof RegExp)
+  );
 }
 
 // Adapted from https://stackoverflow.com/a/37164538
