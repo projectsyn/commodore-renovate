@@ -140,7 +140,9 @@ export async function extractPackageFile(
     globalDir = globalRepo.dir;
   }
 
-  const extraValuesPath: string = `${cacheDir()}/extra.yaml`;
+  const extraValuesPath: string = `${cacheDir()}/${
+    parse(fileName).name
+  }-extra.yaml`;
 
   const extraConfigStr: string = config.extraConfig
     ? (await readLocalFile(config.extraConfig)).toString()
