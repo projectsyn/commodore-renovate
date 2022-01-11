@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it, jest } from '@jest/globals';
+import { beforeAll, afterAll, describe, expect, it, jest } from '@jest/globals';
 import { copyFile, mkdir, readdir } from 'fs/promises';
 import { rmSync } from 'fs';
 
@@ -9,27 +9,36 @@ import { getGlobalConfig } from 'renovate/dist/config/global';
 import { getFixturePath, loadFixture } from '../test/util';
 import { defaultConfig, extractPackageFile } from './index';
 
+import nock from 'nock';
+
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
 const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
-const tenant5 = loadFixture('5/tenant/c-foo.yml');
+const tenant1 = loadFixture('5/tenant/c-foo.yml');
+const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
 
 jest.mock('renovate/dist/config/global');
-function mockGetGlobalConfig(fixtureId: string): void {
+function mockGetGlobalConfig(
+  fixtureId: string,
+  isTenantFixture: boolean
+): void {
   const mockGetGlobalConfigFn = getGlobalConfig as jest.MockedFunction<
     typeof getGlobalConfig
   >;
   mockGetGlobalConfigFn.mockImplementation(() => {
     return {
-      localDir: getFixturePath(fixtureId),
+      localDir: getFixturePath(fixtureId) + (isTenantFixture ? '/tenant' : ''),
       cacheDir: '/tmp/renovate',
     };
   });
 }
 
-async function setupGlobalRepo(fixtureId: string): Promise<string> {
-  const repoDir = `/tmp/renovate/${fixtureId}/commodore-defaults`;
+async function setupGlobalRepo(
+  fixtureId: string,
+  targetId: string
+): Promise<string> {
+  const repoDir = `/tmp/renovate/${targetId}/commodore-defaults`;
   await mkdir(repoDir, { recursive: true });
   const git = Git({ baseDir: repoDir });
   await git.init();
@@ -45,20 +54,61 @@ async function setupGlobalRepo(fixtureId: string): Promise<string> {
   return repoDir;
 }
 
+function setupNock(
+  clusterId: string,
+  statusCode: number,
+  reason: string
+): nock.Scope {
+  const reply200 = {
+    id: clusterId,
+    tenant: 't-bar',
+    displayName: 'Foo cluster',
+    dynamicFacts: {
+      fact: '1',
+      fact2: '2',
+    },
+    facts: {
+      cloud: 'none',
+      distribution: 'k3d',
+      'lieutenant-instance': 'example-com',
+    },
+    gitRepo: {
+      deployKey: 'ssh-rsa AAAAB...',
+      hostKeys: 'git.example.com ssh-rsa AAAAB...',
+      type: 'auto',
+      url: 'ssh://git@git.example.com/cluster-catalogs/c-cluster-id-1234.git',
+    },
+  };
+  const scope = nock('https://lieutenant.example.com', {
+    reqheaders: {
+      authorization: 'Bearer mock-api-token',
+    },
+  }).get(`/clusters/${clusterId}`);
+  if (statusCode == 200) {
+    return scope.reply(statusCode, reply200);
+  }
+  return scope.reply(statusCode, { reason: reason });
+}
+
 beforeAll(() => {
   return mkdir('/tmp/renovate', { recursive: true });
+});
+
+afterAll(() => {
+  // Remove global repo clone created by the test
+  rmSync('/tmp/renovate/global-repos/', { recursive: true });
 });
 
 describe('src/commodore/index', () => {
   describe('extractPackageFile()', () => {
     it('returns null for empty', () => {
-      mockGetGlobalConfig('1');
+      mockGetGlobalConfig('1', false);
       return expect(
         extractPackageFile('nothing here', 'no.yml', defaultConfig)
       ).resolves.toBeNull();
     });
     it('extracts component versions', async () => {
-      mockGetGlobalConfig('2');
+      mockGetGlobalConfig('2', false);
       const res = await extractPackageFile(
         params1,
         '1/params.yml',
@@ -77,13 +127,13 @@ describe('src/commodore/index', () => {
       ).resolves.toBeNull();
     });
     it('returns null for invalid yaml', () => {
-      mockGetGlobalConfig('3');
+      mockGetGlobalConfig('3', false);
       return expect(
         extractPackageFile(invalid3, '3/params.yml', defaultConfig)
       ).resolves.toBeNull();
     });
     it('extracts component urls for version pins', async () => {
-      mockGetGlobalConfig('4');
+      mockGetGlobalConfig('4', false);
       const res = await extractPackageFile(pin4, '4/pins.yml', defaultConfig);
       expect(res).not.toBeNull();
       if (res) {
@@ -93,13 +143,13 @@ describe('src/commodore/index', () => {
       }
     });
     it('extracts component urls for version pins in tenant repo', async () => {
-      mockGetGlobalConfig('5');
-      const globalRepoDir: string = await setupGlobalRepo('5/global');
+      mockGetGlobalConfig('5', true);
+      const globalRepoDir: string = await setupGlobalRepo('5/global', '5');
       const config: any = { ...defaultConfig };
       config.tenantId = 't-bar';
       config.globalRepoURL = `file://${globalRepoDir}`;
       const res = await extractPackageFile(
-        tenant5,
+        tenant1,
         '5/tenant/c-foo.yml',
         config
       );
@@ -109,10 +159,60 @@ describe('src/commodore/index', () => {
         expect(deps).toMatchSnapshot();
         expect(deps).toHaveLength(2);
       }
-      // Clean up global repo scaffolding for the test
+
+      // Clean up global repo for this test case
       rmSync('/tmp/renovate/5', { recursive: true });
-      // Remove global repo clone created by the test
-      rmSync('/tmp/renovate/global-repos/', { recursive: true });
+    });
+    it('uses cluster info returned by Lieutenant', async () => {
+      mockGetGlobalConfig('5', true);
+      const globalRepoDir: string = await setupGlobalRepo('5/global', '6');
+      const scope = setupNock('c-foo-2', 200, '');
+      const config: any = { ...defaultConfig };
+      config.lieutenantURL = 'https://lieutenant.example.com';
+      config.lieutenantToken = 'mock-api-token';
+      config.tenantId = 't-bar';
+      config.globalRepoURL = `file://${globalRepoDir}`;
+      config.dynamic_facts;
+      const res = await extractPackageFile(
+        tenant2,
+        '5/tenant/c-foo-2.yml',
+        config
+      );
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(2);
+      }
+      expect(scope.isDone()).toBe(true);
+
+      // Clean up global repo for this test case
+      rmSync('/tmp/renovate/6', { recursive: true });
+    });
+    it('proceeds without cluster info on 404', async () => {
+      mockGetGlobalConfig('5', true);
+      const globalRepoDir: string = await setupGlobalRepo('5/global', '7');
+      const scope = setupNock('c-foo-3', 404, 'cluster not found');
+      const config: any = { ...defaultConfig };
+      config.lieutenantURL = 'https://lieutenant.example.com';
+      config.lieutenantToken = 'mock-api-token';
+      config.tenantId = 't-bar';
+      config.globalRepoURL = `file://${globalRepoDir}`;
+      const res = await extractPackageFile(
+        tenant2,
+        '5/tenant/c-foo-3.yml',
+        config
+      );
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(2);
+      }
+      expect(scope.isDone()).toBe(true);
+
+      // Clean up global repo for this test case
+      rmSync('/tmp/renovate/7', { recursive: true });
     });
   });
 });
