@@ -25,7 +25,7 @@ export async function queryLieutenant(
   entity: string
 ): Promise<ClusterInfo> {
   const headers = {
-    Authorization: `Bearer ${process.env.LIEUTENANT_API_TOKEN}`,
+    Authorization: `Bearer ${config.lieutenantToken}`,
   };
   const url = normalizeUrl(`${config.lieutenantURL}/${endpoint}/${entity}`);
   return new Promise((resolve, reject) => {

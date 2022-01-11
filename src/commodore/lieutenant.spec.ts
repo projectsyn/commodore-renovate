@@ -1,14 +1,11 @@
-import { beforeAll, expect, describe, it } from '@jest/globals';
+import { expect, describe, it } from '@jest/globals';
 import nock from 'nock';
 
 import * as lieutenant from './lieutenant';
 
-beforeAll(() => {
-  process.env.LIEUTENANT_API_TOKEN = 'mock-api-token';
-});
-
 const lieutenantConfig = {
   lieutenantURL: 'https://lieutenant.example.com',
+  lieutenantToken: 'mock-api-token',
 };
 const lieutenantResponse = {
   id: 'c-cluster-id-1234',
