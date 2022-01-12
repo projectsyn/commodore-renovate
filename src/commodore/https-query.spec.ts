@@ -35,13 +35,11 @@ describe('src/commodore/https-query', () => {
         .get('/large-json')
         .reply(
           200,
-          () => {
-            // Create read stream with 4096 byte chunks to test reassembling
-            // logic in `httpsQuery`
-            return createReadStream(getFixturePath('test.json'), {
-              highWaterMark: 4096,
-            });
-          },
+          // Create read stream with 4096 byte chunks to test reassembling
+          // logic in `httpsQuery`
+          createReadStream(getFixturePath('test.json'), {
+            highWaterMark: 4096,
+          }),
           {
             'transfer-encoding': 'chunked',
             'content-type': 'application/json; encoding=UTF-8',
