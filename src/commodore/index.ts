@@ -40,6 +40,8 @@ export const defaultExtraConfig = {
   cloudRegionRegex:
     /^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>.+)\.ya?ml|\.ya?ml)$/,
   ignoreValues: ['params'],
+  // map facts to files
+  factsMap: {} as any,
 };
 
 function factsFromAny(facts: any): Facts {
@@ -187,6 +189,10 @@ export async function extractPackageFile(
     new RegExp(extraConfig.cloudRegionRegex),
     extraConfig.ignoreValues
   );
+
+  if (extraConfig.factsMap[fileName]) {
+    facts = factsFromAny(extraConfig.factsMap[fileName]);
+  }
 
   // If we have actual cluster facts, overwrite parsed facts.
   if (clusterInfo !== undefined) {
