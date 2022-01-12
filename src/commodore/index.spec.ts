@@ -214,5 +214,26 @@ describe('src/commodore/index', () => {
       // Clean up global repo for this test case
       rmSync('/tmp/renovate/7', { recursive: true });
     });
+    it('uses facts from factsMap', async () => {
+      const globalRepoDir: string = await setupGlobalRepo('5/global', '8');
+      const config: any = { ...defaultConfig };
+      config.tenantId = 't-bar';
+      config.globalRepoURL = `file://${globalRepoDir}`;
+      config.extraConfig = 'renovate.commodore.json';
+      const res = await extractPackageFile(
+        tenant2,
+        '5/tenant/test.yml',
+        config
+      );
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(2);
+      }
+
+      // Clean up global repo for this test case
+      rmSync('/tmp/renovate/8', { recursive: true });
+    });
   });
 });
