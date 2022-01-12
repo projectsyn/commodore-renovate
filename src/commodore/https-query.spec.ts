@@ -1,7 +1,8 @@
+import { createReadStream } from 'fs';
 import { expect, describe, it } from '@jest/globals';
 import nock from 'nock';
 
-import { loadFixture } from '../test/util';
+import { loadFixture, getFixturePath } from '../test/util';
 
 import * as httpsq from './https-query';
 
@@ -28,13 +29,24 @@ describe('src/commodore/https-query', () => {
       expect(scope.isDone()).toBe(true);
     });
     it('reassembles large responses', async () => {
-      // XXX(sg): Doesn't actually test the reassembling functionality as nock
-      // doesn't split the response into chunks regardless of its size.
       const largeJsonStr = loadFixture('test.json');
       const largeJson = JSON.parse(largeJsonStr);
       const scope = nock('https://example.com')
         .get('/large-json')
-        .reply(200, largeJson);
+        .reply(
+          200,
+          () => {
+            // Create read stream with 4096 byte chunks to test reassembling
+            // logic in `httpsQuery`
+            return createReadStream(getFixturePath('test.json'), {
+              highWaterMark: 4096,
+            });
+          },
+          {
+            'transfer-encoding': 'chunked',
+            'content-type': 'application/json; encoding=UTF-8',
+          }
+        );
       const resp = await httpsq.httpsQuery(
         'https://example.com/large-json',
         {}
