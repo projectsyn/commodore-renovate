@@ -1,0 +1,7 @@
+{
+  "factsMap": {
+    "5/tenant/test.yml": {
+      "distribution": "k3d"
+    }
+  }
+}

@@ -1,3 +1,4 @@
 classes:
   - global.params
+  - global.${facts:distribution}
   - ${cluster:tenant}.${cluster:name}

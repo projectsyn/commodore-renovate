@@ -1,0 +1,4 @@
+parameters:
+  components:
+    argocd:
+      url: https://github.com/projectsyn/component-argocd-k3d.git
