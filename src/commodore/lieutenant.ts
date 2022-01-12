@@ -19,15 +19,14 @@ export class LieutenantError extends Error {
   }
 }
 
-export async function queryLieutenant(
+export async function fetchClusterInfo(
   config: any,
-  endpoint: string,
-  entity: string
+  clusterId: string
 ): Promise<ClusterInfo> {
   const headers = {
     Authorization: `Bearer ${config.lieutenantToken}`,
   };
-  const url = normalizeUrl(`${config.lieutenantURL}/${endpoint}/${entity}`);
+  const url = normalizeUrl(`${config.lieutenantURL}/clusters/${clusterId}`);
   return new Promise((resolve, reject) => {
     let res = httpsQuery(url, headers);
     res

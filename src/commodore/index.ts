@@ -19,7 +19,7 @@ import type {
 import { ClusterData } from './types';
 
 import { renderInventory } from './inventory';
-import { LieutenantError, queryLieutenant } from './lieutenant';
+import { LieutenantError, fetchClusterInfo } from './lieutenant';
 import {
   cacheDir,
   cloneGlobalRepo,
@@ -129,7 +129,7 @@ export async function extractPackageFile(
     if (config.lieutenantURL && config.lieutenantURL != '') {
       logger.info(`Querying Lieutenant at ${config.lieutenantURL}`);
       try {
-        clusterInfo = await queryLieutenant(config, 'clusters', cluster.name);
+        clusterInfo = await fetchClusterInfo(config, cluster.name);
       } catch (error: any) {
         if (error instanceof LieutenantError) {
           const err = error as LieutenantError;

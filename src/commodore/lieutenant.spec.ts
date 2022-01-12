@@ -45,7 +45,7 @@ describe('src/commodore/lieutenant', () => {
     });
   });
 
-  describe('queryLieutenant', () => {
+  describe('fetchClusterInfo', () => {
     it('returns clusterInfo for successful request', async () => {
       const scope = nock('https://lieutenant.example.com', {
         reqheaders: {
@@ -54,9 +54,8 @@ describe('src/commodore/lieutenant', () => {
       })
         .get('/clusters/c-cluster-id-1234')
         .reply(200, lieutenantResponse);
-      const resp = await lieutenant.queryLieutenant(
+      const resp = await lieutenant.fetchClusterInfo(
         lieutenantConfig,
-        'clusters',
         'c-cluster-id-1234'
       );
       expect(resp).toStrictEqual(lieutenantResponse);
@@ -70,9 +69,8 @@ describe('src/commodore/lieutenant', () => {
       })
         .get('/clusters/c-cluster-id-1234')
         .reply(404, { reason: 'Cluster not found' });
-      const resp = lieutenant.queryLieutenant(
+      const resp = lieutenant.fetchClusterInfo(
         lieutenantConfig,
-        'clusters',
         'c-cluster-id-1234'
       );
       await expect(resp).rejects.toStrictEqual(
@@ -88,9 +86,8 @@ describe('src/commodore/lieutenant', () => {
       })
         .get('/clusters/c-cluster-id-1234')
         .reply(500, 'Internal server error');
-      const resp = lieutenant.queryLieutenant(
+      const resp = lieutenant.fetchClusterInfo(
         lieutenantConfig,
-        'clusters',
         'c-cluster-id-1234'
       );
       await expect(resp).rejects.toStrictEqual(
@@ -106,9 +103,8 @@ describe('src/commodore/lieutenant', () => {
       })
         .get('/clusters/c-cluster-id-1234')
         .replyWithError('request error');
-      const resp = lieutenant.queryLieutenant(
+      const resp = lieutenant.fetchClusterInfo(
         lieutenantConfig,
-        'clusters',
         'c-cluster-id-1234'
       );
       await expect(resp).rejects.toStrictEqual(new Error('request error'));
