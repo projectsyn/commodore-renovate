@@ -42,6 +42,14 @@ export const defaultExtraConfig = {
   ignoreValues: ['params'],
 };
 
+function factsFromAny(facts: any): Facts {
+  return {
+    distribution: facts.distribution || null,
+    cloud: facts.cloud || null,
+    region: facts.region || null,
+  } as Facts;
+}
+
 // extractComponents will extract all component dependencies.
 // It will return an error if the content is not valid yaml.
 async function extractComponents(
@@ -182,7 +190,7 @@ export async function extractPackageFile(
 
   // If we have actual cluster facts, overwrite parsed facts.
   if (clusterInfo !== undefined) {
-    facts = clusterInfo.facts;
+    facts = factsFromAny(clusterInfo.facts);
   }
 
   try {
