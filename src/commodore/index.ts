@@ -129,20 +129,39 @@ export async function extractPackageFile(
     if (config.lieutenantURL && config.lieutenantURL != '') {
       if (config.lieutenantToken == '') {
         logger.warn(
-          `Lieutenant token is empty. Renovate won't try to query the Lieutenant API at ${config.lieutenantURL}`
+          {
+            cluster: cluster.name,
+            lieutenantURL: config.lieutenantURL,
+          },
+          "Lieutenant token is empty. Renovate won't try to query the Lieutenant API"
         );
       } else {
-        logger.info(`Querying Lieutenant at ${config.lieutenantURL}`);
+        logger.debug(
+          {
+            lieutenantURL: config.lieutenantURL,
+          },
+          'Querying Lieutenant'
+        );
         try {
           clusterInfo = await fetchClusterInfo(config, cluster.name);
         } catch (error: any) {
           if (error instanceof LieutenantError) {
             const err = error as LieutenantError;
             if (err.statusCode == 404) {
-              logger.debug(`Lieutenant query returned 404 for ${cluster.name}`);
+              logger.debug(
+                {
+                  cluster: cluster.name,
+                },
+                'Lieutenant query returned 404'
+              );
             } else {
               logger.info(
-                `Error querying Lieutenant for ${cluster.name}: statusCode=${err.statusCode}, reason=${err.message}`
+                {
+                  cluster: cluster.name,
+                  statusCode: err.statusCode,
+                  reason: err.message,
+                },
+                'Error querying Lieutenant'
               );
             }
           } else {
