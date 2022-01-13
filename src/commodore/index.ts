@@ -127,21 +127,27 @@ export async function extractPackageFile(
     const globalRepo: RepoConfig = await cloneGlobalRepo(config);
 
     if (config.lieutenantURL && config.lieutenantURL != '') {
-      logger.info(`Querying Lieutenant at ${config.lieutenantURL}`);
-      try {
-        clusterInfo = await fetchClusterInfo(config, cluster.name);
-      } catch (error: any) {
-        if (error instanceof LieutenantError) {
-          const err = error as LieutenantError;
-          if (err.statusCode == 404) {
-            logger.debug(`Lieutenant query returned 404 for ${cluster.name}`);
+      if (config.lieutenantToken == '') {
+        logger.warn(
+          `Lieutenant token is empty. Renovate won't try to query the Lieutenant API at ${config.lieutenantURL}`
+        );
+      } else {
+        logger.info(`Querying Lieutenant at ${config.lieutenantURL}`);
+        try {
+          clusterInfo = await fetchClusterInfo(config, cluster.name);
+        } catch (error: any) {
+          if (error instanceof LieutenantError) {
+            const err = error as LieutenantError;
+            if (err.statusCode == 404) {
+              logger.debug(`Lieutenant query returned 404 for ${cluster.name}`);
+            } else {
+              logger.info(
+                `Error querying Lieutenant for ${cluster.name}: statusCode=${err.statusCode}, reason=${err.message}`
+              );
+            }
           } else {
-            logger.info(
-              `Error querying Lieutenant for ${cluster.name}: statusCode=${err.statusCode}, reason=${err.message}`
-            );
+            logger.error(`Unexpected error querying Lieutenant: ${error}`);
           }
-        } else {
-          logger.error(`Unexpected error querying Lieutenant: ${error}`);
         }
       }
     }
