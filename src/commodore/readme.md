@@ -32,10 +32,10 @@ The manager currently adds the following options to the standard renovate config
 - `lieutenantURL`: The URL of the Lieutenant API to query for cluster facts when renovating tenant repos.
   If this option is not set or the empty string, the manager will not try to query the Lieutenant API.
 
-- `lieutenantToken`: The API token for the configured Lieutenant API.
-  By default, the manager extracts the API token from environment variable `LIEUTENANT_API_TOKEN`.
-  If a different environment variable should be used, users can set this parameter to `process.env.<API_TOKEN_VAR>` in `config.js`, replacing `<API_TOKEN_VAR>` with the name of the environment variable to use.
-  We don't recommend configuring the Lieutenant token in plain text in `renovate.json`.
+- `lieutenantTokenEnvVar`: The environment variable from which the Lieutenant API token is read.
+  We suggest to configure a token for each required Lieutenant API as an environment variable in the Renovate runner execution environment.
+  With that setup, users can select the token to use by specifying the corresponding environment variable in `lieutenantTokenEnvVar`.
+  This option defaults to `LIEUTENANT_API_TOKEN`.
 
 ### Extra configuration file
 
