@@ -52,6 +52,14 @@ function factsFromAny(facts: any): Facts {
   } as Facts;
 }
 
+function dynamicFactsFromAny(dynamicFacts: any): any {
+  if (dynamicFacts) {
+    return dynamicFacts;
+  } else {
+    return {};
+  }
+}
+
 // extractComponents will extract all component dependencies.
 // It will return an error if the content is not valid yaml.
 async function extractComponents(
@@ -190,10 +198,10 @@ export async function extractPackageFile(
   // Merge any facts/dynamic facts fetched from cluster with extraParameters
   // given in hierarchy.
   let params = extraConfig.extraParameters;
-  if (clusterInfo != undefined) {
+  if (clusterInfo !== undefined) {
     params = mergeConfig(params, {
-      facts: clusterInfo.facts,
-      dynamic_facts: clusterInfo.dynamicFacts,
+      facts: factsFromAny(clusterInfo.facts),
+      dynamic_facts: dynamicFactsFromAny(clusterInfo.dynamicFacts),
     });
   }
 
