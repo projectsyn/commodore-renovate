@@ -2,7 +2,6 @@
 import { existsSync, rmSync } from 'fs';
 import api from 'renovate/dist/manager/api.js';
 import { logger } from 'renovate/dist/logger';
-import type { AllConfig } from 'renovate/dist/config/types';
 
 import * as commodore from './commodore';
 import { globalRepos } from './commodore/util';
@@ -45,32 +44,6 @@ options.push({
   type: 'string',
   default: 'LIEUTENANT_API_TOKEN',
 });
-
-// Patch Renovate's `filterConfig` so we can implement the dynamic Env var
-// config for the Lieutenant token. We need the require() here so we can
-// overwrite the exported function.
-// Note: We don't patch `getRepositoryConfig`, but instead `filterConfig`
-// which is called by `getRepositoryConfig`. This is because the call site of
-// `getRepositoryConfig` doesn't use the exported function but rather calls
-// the original function in the same module directly, so patching the exported
-// `getRepositoryConfig` here has no effect.
-// @ts-ignore
-const renovate_config = require('renovate/dist/config');
-const origFilterConfig = renovate_config.filterConfig;
-function patchedFilterConfig(
-  inputConfig: AllConfig,
-  manager: string
-): AllConfig {
-  let cfg = origFilterConfig(inputConfig, manager);
-  if (cfg.lieutenantTokenEnvVar) {
-    const token = process.env[cfg.lieutenantTokenEnvVar];
-    if (token) {
-      cfg.lieutenantToken = token;
-    }
-  }
-  return cfg;
-}
-renovate_config.filterConfig = patchedFilterConfig;
 
 // Patch renovate finalizer, we need the require() here despite what the TS
 // hint indicates. However, seems that suggestions cannot be suppressed with
