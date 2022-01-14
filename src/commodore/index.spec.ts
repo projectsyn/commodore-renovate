@@ -11,12 +11,22 @@ import { defaultConfig, extractPackageFile } from './index';
 
 import nock from 'nock';
 
+import type { BunyanRecord } from 'renovate/dist/logger/types';
+import { ERROR } from 'bunyan';
+
+import { clearProblems, getProblems } from 'renovate/dist/logger';
+
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
 const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
 const tenant1 = loadFixture('5/tenant/c-foo.yml');
 const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
+
+function getLoggerErrors(): BunyanRecord[] {
+  const loggerErrors = getProblems().filter((p) => p.level >= ERROR);
+  return loggerErrors;
+}
 
 jest.mock('renovate/dist/config/global');
 function mockGetGlobalConfig(
@@ -94,6 +104,11 @@ beforeAll(() => {
   return mkdir('/tmp/renovate', { recursive: true });
 });
 
+beforeEach(() => {
+  // clear logger
+  clearProblems();
+});
+
 afterAll(() => {
   // Remove global repo clone created by the test
   rmSync('/tmp/renovate/global-repos/', { recursive: true });
@@ -153,6 +168,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -178,6 +198,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo-2.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -203,6 +228,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo-3.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -225,6 +255,11 @@ describe('src/commodore/index', () => {
         '5/tenant/test.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
