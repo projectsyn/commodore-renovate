@@ -110,11 +110,22 @@ async function extractComponents(
   });
 }
 
+function injectLieutenantToken(config: any) {
+  let token = process.env[config.lieutenantTokenEnvVar];
+  if (!token) {
+    token = '';
+  }
+  config.lieutenantToken = token;
+}
+
 export async function extractPackageFile(
   content: string,
   fileName: string,
   config: any
 ): Promise<PackageFile | null> {
+  // Inject Lieutenant token into config object
+  injectLieutenantToken(config);
+
   let components: CommodoreComponentDependency[];
 
   const repoDir: string | undefined = getGlobalConfig().localDir;
