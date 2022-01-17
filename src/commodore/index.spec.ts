@@ -11,12 +11,22 @@ import { defaultConfig, extractPackageFile } from './index';
 
 import nock from 'nock';
 
+import type { BunyanRecord } from 'renovate/dist/logger/types';
+import { ERROR } from 'bunyan';
+
+import { clearProblems, getProblems } from 'renovate/dist/logger';
+
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
 const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
 const tenant1 = loadFixture('5/tenant/c-foo.yml');
 const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
+
+function getLoggerErrors(): BunyanRecord[] {
+  const loggerErrors = getProblems().filter((p) => p.level >= ERROR);
+  return loggerErrors;
+}
 
 jest.mock('renovate/dist/config/global');
 function mockGetGlobalConfig(
@@ -57,16 +67,13 @@ async function setupGlobalRepo(
 function setupNock(
   clusterId: string,
   statusCode: number,
-  reason: string
+  reason: string,
+  dynamicFacts: boolean
 ): nock.Scope {
-  const reply200 = {
+  let reply200: any = {
     id: clusterId,
     tenant: 't-bar',
     displayName: 'Foo cluster',
-    dynamicFacts: {
-      fact: '1',
-      fact2: '2',
-    },
     facts: {
       cloud: 'none',
       distribution: 'k3d',
@@ -79,6 +86,16 @@ function setupNock(
       url: 'ssh://git@git.example.com/cluster-catalogs/c-cluster-id-1234.git',
     },
   };
+  if (dynamicFacts) {
+    // Change facts when testing response without dynamic facts to avoid
+    // reusing cached response, since we don't consider dynamic facts when
+    // caching commodore results at the moment.
+    reply200.facts.cloud = 'local';
+    reply200.dynamicFacts = {
+      fact: '1',
+      fact2: '2',
+    };
+  }
   const scope = nock('https://lieutenant.example.com', {
     reqheaders: {
       authorization: 'Bearer mock-api-token',
@@ -92,6 +109,11 @@ function setupNock(
 
 beforeAll(() => {
   return mkdir('/tmp/renovate', { recursive: true });
+});
+
+beforeEach(() => {
+  // clear logger
+  clearProblems();
 });
 
 afterAll(() => {
@@ -153,6 +175,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -166,7 +193,7 @@ describe('src/commodore/index', () => {
     it('uses cluster info returned by Lieutenant', async () => {
       mockGetGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '6');
-      const scope = setupNock('c-foo-2', 200, '');
+      const scope = setupNock('c-foo-2', 200, '', true);
       const config: any = { ...defaultConfig };
       config.lieutenantURL = 'https://lieutenant.example.com';
       config.lieutenantToken = 'mock-api-token';
@@ -178,6 +205,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo-2.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -192,7 +224,7 @@ describe('src/commodore/index', () => {
     it('proceeds without cluster info on 404', async () => {
       mockGetGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '7');
-      const scope = setupNock('c-foo-3', 404, 'cluster not found');
+      const scope = setupNock('c-foo-3', 404, 'cluster not found', false);
       const config: any = { ...defaultConfig };
       config.lieutenantURL = 'https://lieutenant.example.com';
       config.lieutenantToken = 'mock-api-token';
@@ -203,6 +235,11 @@ describe('src/commodore/index', () => {
         '5/tenant/c-foo-3.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -225,6 +262,11 @@ describe('src/commodore/index', () => {
         '5/tenant/test.yml',
         config
       );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
@@ -234,6 +276,36 @@ describe('src/commodore/index', () => {
 
       // Clean up global repo for this test case
       rmSync('/tmp/renovate/8', { recursive: true });
+    });
+    it('generates valid Commodore parameters for clusters with no dynamic facts', async () => {
+      mockGetGlobalConfig('5', true);
+      const globalRepoDir: string = await setupGlobalRepo('5/global', '9');
+      const scope = setupNock('c-foo-4', 200, '', false);
+      const config: any = { ...defaultConfig };
+      config.lieutenantURL = 'https://lieutenant.example.com';
+      config.lieutenantToken = 'mock-api-token';
+      config.tenantId = 't-bar';
+      config.globalRepoURL = `file://${globalRepoDir}`;
+      const res = await extractPackageFile(
+        tenant2,
+        '5/tenant/c-foo-4.yml',
+        config
+      );
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(2);
+      }
+      expect(scope.isDone()).toBe(true);
+
+      // Clean up global repo for this test case
+      rmSync('/tmp/renovate/9', { recursive: true });
     });
   });
 });
