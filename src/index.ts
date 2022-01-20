@@ -4,9 +4,11 @@ import api from 'renovate/dist/manager/api.js';
 import { logger } from 'renovate/dist/logger';
 
 import * as commodore from './commodore';
+import * as component from './component';
 import { globalRepos } from './commodore/util';
 
 api.set('commodore', commodore);
+api.set('commodore-component', component);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
