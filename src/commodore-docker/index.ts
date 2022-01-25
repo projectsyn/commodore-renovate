@@ -27,11 +27,7 @@ export function extractPackageFile(
     return null;
   }
 
-  const deps = Object.values(doc.parameters).flatMap((component: any) =>
-    component.images !== undefined
-      ? extractImageDependencies(component.images)
-      : []
-  );
+  const deps = extractImageDependencies(doc.parameters);
 
   if (deps.length == 0) {
     return null;
@@ -41,11 +37,15 @@ export function extractPackageFile(
 }
 
 function extractImageDependencies(
-  images: Record<string, any>
+  obj: Record<string, any>
 ): PackageDependency[] {
-  return Object.values(images)
+  if (obj === undefined || obj === null || typeof obj !== 'object') {
+    return [];
+  }
+  return Object.values(obj)
     .map(parseImageDependency)
-    .filter((dep): dep is PackageDependency => dep !== null);
+    .filter((dep): dep is PackageDependency => dep !== null)
+    .concat(Object.values(obj).flatMap(extractImageDependencies));
 }
 
 export function parseImageDependency(image: any): PackageDependency | null {
