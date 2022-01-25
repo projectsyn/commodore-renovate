@@ -74,6 +74,42 @@ describe('manager/commodore/index/parseImageDependency', () => {
     },
     {
       image: {
+        registry: {
+          something: 'unrelated',
+        },
+        image: 'bitnami/kubectl',
+        version: '1.21.2',
+      },
+      depName: 'bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        registry: 'quay.io',
+        repository: {
+          something: 'unrelated',
+        },
+        image: 'bitnami/kubectl',
+        version: '1.21.2',
+        tag: {
+          something: 'unrelated',
+        },
+      },
+      depName: 'quay.io/bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        registry: 'quay.io',
+        image: 'bitnami/kubectl',
+        version: {
+          something: 'unrelated',
+        },
+      },
+      noImage: true,
+    },
+    {
+      image: {
         image: 'bitnami/kubectl:1.21.2',
       },
       noImage: true,
@@ -87,6 +123,12 @@ describe('manager/commodore/index/parseImageDependency', () => {
     },
     {
       image: 'blub',
+      noImage: true,
+    },
+    {
+      repository: {
+        other: 'blub',
+      },
       noImage: true,
     },
     {

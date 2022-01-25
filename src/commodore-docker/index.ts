@@ -53,11 +53,19 @@ export function parseImageDependency(image: any): PackageDependency | null {
     return null;
   }
 
-  const registry = image.registry !== undefined ? image.registry + '/' : '';
-  const repository = image.repository ?? image.image;
-  const tag = image.tag ?? image.version;
+  let registry = asString(image.registry) ?? '';
+  if (registry != '') {
+    registry = registry + '/';
+  }
+  const repository = asString(image.repository) ?? asString(image.image);
+  const tag = asString(image.tag) ?? asString(image.version);
 
-  if (repository === undefined || tag === undefined) {
+  if (
+    repository === undefined ||
+    repository === null ||
+    tag === undefined ||
+    tag == null
+  ) {
     return null;
   }
 
@@ -67,4 +75,10 @@ export function parseImageDependency(image: any): PackageDependency | null {
   dep.autoReplaceStringTemplate =
     '{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}';
   return dep;
+}
+
+function asString(value: any): string | null {
+  return typeof value === 'string' || value instanceof String
+    ? (value as string)
+    : null;
 }
