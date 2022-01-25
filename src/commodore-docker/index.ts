@@ -9,7 +9,7 @@ import { getDep } from 'renovate/dist/manager/dockerfile/extract';
 import { id as dockerVersioning } from 'renovate/dist/versioning/docker';
 
 export const defaultConfig = {
-  fileMatch: ['^*.ya?ml$'],
+  fileMatch: ['class/defaults.ya?ml$'],
 };
 
 export function extractPackageFile(

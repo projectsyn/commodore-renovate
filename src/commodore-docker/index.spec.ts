@@ -35,7 +35,6 @@ describe('manager/commodore/index', () => {
   });
 });
 
-
 describe('manager/commodore/index/parseImageDependency', () => {
   const table = [
     {
@@ -93,13 +92,15 @@ describe('manager/commodore/index/parseImageDependency', () => {
     {
       noImage: true,
     },
-  ]
+  ];
   describe.each(table)('parseImageDependency', (tc) => {
     if (tc?.noImage) {
-      expect(parseImageDependency(tc.image)).toBeNull()
+      expect(parseImageDependency(tc.image)).toBeNull();
     } else {
-      expect(parseImageDependency(tc.image)?.depName).toBe(tc.depName)
-      expect(parseImageDependency(tc.image)?.currentValue).toBe(tc.currentValue)
+      expect(parseImageDependency(tc.image)?.depName).toBe(tc.depName);
+      expect(parseImageDependency(tc.image)?.currentValue).toBe(
+        tc.currentValue
+      );
     }
-  })
-})
+  });
+});
