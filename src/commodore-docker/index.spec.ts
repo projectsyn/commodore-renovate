@@ -1,5 +1,5 @@
 import { loadFixture } from '../test/util';
-import { extractPackageFile } from './index';
+import { extractPackageFile, parseImageDependency } from './index';
 import { expect, describe, it } from '@jest/globals';
 
 const params1 = loadFixture('1/params.yml');
@@ -34,3 +34,72 @@ describe('manager/commodore/index', () => {
     });
   });
 });
+
+
+describe('manager/commodore/index/parseImageDependency', () => {
+  const table = [
+    {
+      image: {
+        registry: 'quay.io',
+        repository: 'bitnami/kubectl',
+        tag: '1.21.2',
+      },
+      depName: 'quay.io/bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        repository: 'quay.io/bitnami/kubectl',
+        tag: '1.21.2',
+      },
+      depName: 'quay.io/bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        registry: 'quay.io',
+        image: 'bitnami/kubectl',
+        tag: '1.21.2',
+      },
+      depName: 'quay.io/bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        registry: 'quay.io',
+        image: 'bitnami/kubectl',
+        version: '1.21.2',
+      },
+      depName: 'quay.io/bitnami/kubectl',
+      currentValue: '1.21.2',
+    },
+    {
+      image: {
+        image: 'bitnami/kubectl:1.21.2',
+      },
+      noImage: true,
+    },
+    {
+      image: {
+        registry: 'quay.io',
+        tag: '1.21.2',
+      },
+      noImage: true,
+    },
+    {
+      image: 'blub',
+      noImage: true,
+    },
+    {
+      noImage: true,
+    },
+  ]
+  describe.each(table)('parseImageDependency', (tc) => {
+    if (tc?.noImage) {
+      expect(parseImageDependency(tc.image)).toBeNull()
+    } else {
+      expect(parseImageDependency(tc.image)?.depName).toBe(tc.depName)
+      expect(parseImageDependency(tc.image)?.currentValue).toBe(tc.currentValue)
+    }
+  })
+})

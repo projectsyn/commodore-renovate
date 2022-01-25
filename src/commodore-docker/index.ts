@@ -48,7 +48,11 @@ function extractImageDependencies(
     .filter((dep): dep is PackageDependency => dep !== null);
 }
 
-function parseImageDependency(image: any): PackageDependency | null {
+export function parseImageDependency(image: any): PackageDependency | null {
+  if (image == undefined || image == null) {
+    return null;
+  }
+
   const registry = image.registry !== undefined ? image.registry + '/' : '';
   const repository = image.repository ?? image.image;
   const tag = image.tag ?? image.version;
