@@ -1,0 +1,25 @@
+parameters:
+  allover:
+    images:
+      steward:
+        image: docker.io/projectsyn/steward
+        tag: 'v0.6.0@sha256:36468cfc3cdd3877e80b08a68426530a1bcd5a17fe03bfc301e63027ded30272'
+        unrelated:
+          tag: 5
+      argocd:
+        registry:
+          acutally: 'something else'
+        image: quay.io/argoproj/argocd
+        tag: 'v2.0.4@sha256:976dfbfadb817ba59f4f641597a13df7b967cd5a1059c966fa843869c9463348'
+    helm_values:
+      image:
+        repository: quay.io/keycloak/keycloak
+        tag: '15.0.2'
+    other:
+      incomplete:
+        registry: quay.io
+      bar:
+        buzz:
+          registry: docker.io
+          repository: projectsyn/buzz
+          version: v0.6.0

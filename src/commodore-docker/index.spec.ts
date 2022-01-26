@@ -5,6 +5,8 @@ import { expect, describe, it } from '@jest/globals';
 const params1 = loadFixture('1/params.yml');
 const params2 = loadFixture('2/params.yml');
 const params3 = loadFixture('3/params.yml');
+const params4 = loadFixture('4/params.yml');
+const params5 = loadFixture('5/params.yml');
 
 describe('manager/commodore/index', () => {
   describe('extractPackageFile()', () => {
@@ -25,6 +27,24 @@ describe('manager/commodore/index', () => {
     });
     it('returns images for non standard but common formats', () => {
       const res = extractPackageFile(params3, '3/params.yml');
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(4);
+      }
+    });
+    it('returns images that are not declared in parameters.<component>.images', () => {
+      const res = extractPackageFile(params4, '4/params.yml');
+      expect(res).not.toBeNull();
+      if (res) {
+        const deps = res.deps;
+        expect(deps).toMatchSnapshot();
+        expect(deps).toHaveLength(4);
+      }
+    });
+    it('returns images that are deeply nested in each other', () => {
+      const res = extractPackageFile(params5, '5/params.yml');
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
