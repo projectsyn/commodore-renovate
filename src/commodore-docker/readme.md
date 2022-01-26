@@ -32,4 +32,4 @@ parameters:
 ```
 
 > :warning: Although the **Commodore Docker manager** is able to parse these formats, only the official best practice is supported.
-> Support for any of the other formats might be dropped without prior notice.
+> Support for any of the other formats may be dropped without prior notice.
