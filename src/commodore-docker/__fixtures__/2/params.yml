@@ -1,0 +1,8 @@
+parameters:
+  no-images:
+    other:
+      enabled: true
+    images:
+      cat: example.com/cat
+      dog:
+        repository: dogs

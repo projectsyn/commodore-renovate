@@ -1,0 +1,20 @@
+
+parameters:
+  standard:
+    images:
+      kubectl:
+        registry: quay.io
+        repository: bitnami/kubectl
+        tag: '1.21.2'
+      foo:
+        registry: quay.io
+        repository: projectsyn/foo
+        tag: '1.1.2'
+      bar:
+        registry: docker.io
+        repository: projectsyn/bar
+        tag: v0.8.0
+      buzz:
+        registry: docker.io
+        repository: projectsyn/buzz
+        tag: v0.6.0
