@@ -81,3 +81,85 @@ Array [
   },
 ]
 `;
+
+exports[`manager/commodore/index extractPackageFile() returns images that are deeply nested in each other 1`] = `
+Array [
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": "sha256:36468cfc3cdd3877e80b08a68426530a1bcd5a17fe03bfc301e63027ded30272",
+    "currentValue": "v0.6.0",
+    "datasource": "docker",
+    "depName": "docker.io/projectsyn/steward",
+    "replaceString": "v0.6.0@sha256:36468cfc3cdd3877e80b08a68426530a1bcd5a17fe03bfc301e63027ded30272",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": "sha256:976dfbfadb817ba59f4f641597a13df7b967cd5a1059c966fa843869c9463348",
+    "currentValue": "v2.0.4",
+    "datasource": "docker",
+    "depName": "quay.io/argoproj/argocd",
+    "replaceString": "v2.0.4@sha256:976dfbfadb817ba59f4f641597a13df7b967cd5a1059c966fa843869c9463348",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": undefined,
+    "currentValue": "15.0.2",
+    "datasource": "docker",
+    "depName": "quay.io/keycloak/keycloak",
+    "replaceString": "15.0.2",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": undefined,
+    "currentValue": "v0.6.0",
+    "datasource": "docker",
+    "depName": "docker.io/projectsyn/buzz",
+    "replaceString": "v0.6.0",
+    "versioning": "docker",
+  },
+]
+`;
+
+exports[`manager/commodore/index extractPackageFile() returns images that are not declared in parameters.<component>.images 1`] = `
+Array [
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": "sha256:36468cfc3cdd3877e80b08a68426530a1bcd5a17fe03bfc301e63027ded30272",
+    "currentValue": "v0.6.0",
+    "datasource": "docker",
+    "depName": "docker.io/projectsyn/steward",
+    "replaceString": "v0.6.0@sha256:36468cfc3cdd3877e80b08a68426530a1bcd5a17fe03bfc301e63027ded30272",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": "sha256:976dfbfadb817ba59f4f641597a13df7b967cd5a1059c966fa843869c9463348",
+    "currentValue": "v2.0.4",
+    "datasource": "docker",
+    "depName": "quay.io/argoproj/argocd",
+    "replaceString": "v2.0.4@sha256:976dfbfadb817ba59f4f641597a13df7b967cd5a1059c966fa843869c9463348",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": undefined,
+    "currentValue": "15.0.2",
+    "datasource": "docker",
+    "depName": "quay.io/keycloak/keycloak",
+    "replaceString": "15.0.2",
+    "versioning": "docker",
+  },
+  Object {
+    "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
+    "currentDigest": undefined,
+    "currentValue": "v0.6.0",
+    "datasource": "docker",
+    "depName": "docker.io/projectsyn/buzz",
+    "replaceString": "v0.6.0",
+    "versioning": "docker",
+  },
+]
+`;
