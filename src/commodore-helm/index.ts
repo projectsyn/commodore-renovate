@@ -19,6 +19,10 @@ export const defaultConfig = {
   fileMatch: ['class/[^.]+.ya?ml$'],
 };
 
+function componentKeyFromName(componentName: string): string {
+  return componentName.replace(/-/g, '_');
+}
+
 // We need `extractPackageFile` since it gets called by `confirmIfDepUpdated`
 // via `doAutoReplace` because we don't provide a custom `updateDependency`
 // function ourselves.
@@ -43,7 +47,7 @@ export function extractPackageFile(
   const dep = config.baseDeps.find((d: PackageDependency) => {
     return d.depName === config.depName;
   });
-  const componentKey: string = dep.groupName.replace('-', '_');
+  const componentKey: string = componentKeyFromName(dep.groupName);
   const charts: Map<string, string> = defaults.parameters[componentKey].charts;
   if (!charts) {
     return null;
@@ -158,7 +162,7 @@ function extractHelmChartDependencies(
     return [];
   }
 
-  const componentKey = componentName.replace('-', '_');
+  const componentKey: string = componentKeyFromName(componentName);
 
   const chartVersions: Map<string, string> = defaults[componentKey].charts;
   if (!chartVersions) {
