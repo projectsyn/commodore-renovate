@@ -38,11 +38,17 @@ export function extractPackageFile(
     'extractPackageFile upgrade'
   );
   if (!config.depName || !config.baseDeps) {
-    logger.warn({ fileName }, 'extractPackageFile() called for file without dependency info in config');
+    logger.warn(
+      { fileName },
+      'extractPackageFile() called for file without dependency info in config'
+    );
     return null;
   }
   if (path.parse(fileName).name != 'defaults') {
-    logger.warn({ fileName }, 'extractPackageFile() called for a package file other than `defaults.yml`, returning null');
+    logger.warn(
+      { fileName },
+      'extractPackageFile() called for a package file other than `defaults.yml`, returning null'
+    );
     return null;
   }
   const defaults: any = yaml.load(content);

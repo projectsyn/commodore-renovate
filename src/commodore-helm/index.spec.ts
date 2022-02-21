@@ -1,5 +1,9 @@
 import { loadFixture, getFixturePath } from '../test/util';
-import { extractPackageFile, extractAllPackageFiles, extractHelmChartDependencies } from './index';
+import {
+  extractPackageFile,
+  extractAllPackageFiles,
+  extractHelmChartDependencies,
+} from './index';
 import { beforeEach, expect, describe, it } from '@jest/globals';
 
 import { getGlobalConfig } from 'renovate/dist/config/global';
@@ -10,9 +14,7 @@ import { ERROR } from 'bunyan';
 import { clearProblems, getProblems } from 'renovate/dist/logger';
 
 jest.mock('renovate/dist/config/global');
-function mockGetGlobalConfig(
-  fixtureId: string,
-): void {
+function mockGetGlobalConfig(fixtureId: string): void {
   const mockGetGlobalConfigFn = getGlobalConfig as jest.MockedFunction<
     typeof getGlobalConfig
   >;
@@ -47,23 +49,26 @@ const config1 = {
       depName: 'chart-2',
       propSource: 'chart-2',
       groupName: 'component-name',
-    }
-  ]
+    },
+  ],
 };
-
 
 describe('manager/commodore-helm/index', () => {
   describe('extractPackageFile()', () => {
     it('returns null when called to discover dependencies', () => {
-      const res = extractPackageFile(defaults1, 'class/defaults.yml', {})
+      const res = extractPackageFile(defaults1, 'class/defaults.yml', {});
       expect(res).toBeNull();
     });
     it('returns null when called on a file other than `class/defaults.ya?ml`', () => {
-      const res = extractPackageFile(defaults1, 'class/component-name.yml', config1)
+      const res = extractPackageFile(
+        defaults1,
+        'class/component-name.yml',
+        config1
+      );
       expect(res).toBeNull();
     });
     it('extracts Helm chart versions when called with sufficient config', () => {
-      const res = extractPackageFile(defaults1, 'class/defaults.yml', config1)
+      const res = extractPackageFile(defaults1, 'class/defaults.yml', config1);
       expect(res).not.toBeNull();
       if (res) {
         expect(res.deps).toMatchSnapshot();
@@ -76,7 +81,10 @@ describe('manager/commodore-helm/index', () => {
   describe('extractAllPackageFiles()', () => {
     it('extracts standard Helm dependencies', async () => {
       mockGetGlobalConfig('1');
-      const res = await extractAllPackageFiles({}, ['class/defaults.yml', 'class/component-name.yml']);
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
       const errors = getLoggerErrors();
       if (errors.length > 0) {
         console.log(errors);
@@ -96,7 +104,10 @@ describe('manager/commodore-helm/index', () => {
     });
     it('extracts standard Helm dependencies for components with long names', async () => {
       mockGetGlobalConfig('2');
-      const res = await extractAllPackageFiles({}, ['class/defaults.yml', 'class/long-component-name.yml']);
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/long-component-name.yml',
+      ]);
       const errors = getLoggerErrors();
       if (errors.length > 0) {
         console.log(errors);
@@ -116,7 +127,10 @@ describe('manager/commodore-helm/index', () => {
     });
     it('extracts Helm dependencies with mismatched names', async () => {
       mockGetGlobalConfig('3');
-      const res = await extractAllPackageFiles({}, ['class/defaults.yml', 'class/component-name.yml']);
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
       const errors = getLoggerErrors();
       if (errors.length > 0) {
         console.log(errors);
