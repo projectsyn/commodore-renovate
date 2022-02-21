@@ -55,8 +55,11 @@ export function extractPackageFile(
 
   let deps: PackageDependency[] = Object.entries(charts).map(
     ([chartName, chartVersion]) => {
+      let d = config.baseDeps.find((d: PackageDependency) => {
+        return d.propSource == chartName;
+      });
       let res: PackageDependency = {
-        depName: chartName,
+        depName: d.depName,
         currentValue: chartVersion,
       };
       return res;
@@ -182,6 +185,13 @@ function extractHelmChartDependencies(
     ([chartName, chartVersion]) => {
       let res: PackageDependency = {
         depName: chartName,
+        // store name of chart version in `class/defaults.yml` in propSource.
+        // This field is only used by the Maven manager, so we should be able
+        // to safely use it to propagate the chart's version field.
+        // This is technically only necessary for charts whose version field
+        // in the component doesn't match the chart's name, but we just set
+        // and use the field unconditionally to keep the code simpler.
+        propSource: chartName,
         groupName: componentName,
         currentValue: chartVersion,
       };
