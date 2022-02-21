@@ -1,4 +1,4 @@
-import { loadFixture, getFixturePath } from '../test/util';
+import { loadFixture, getFixturePath, getLoggerErrors } from '../test/util';
 import {
   extractPackageFile,
   extractAllPackageFiles,
@@ -8,10 +8,7 @@ import { beforeEach, expect, describe, it } from '@jest/globals';
 
 import { getGlobalConfig } from 'renovate/dist/config/global';
 
-import type { BunyanRecord } from 'renovate/dist/logger/types';
-import { ERROR } from 'bunyan';
-
-import { clearProblems, getProblems } from 'renovate/dist/logger';
+import { clearProblems } from 'renovate/dist/logger';
 
 jest.mock('renovate/dist/config/global');
 function mockGetGlobalConfig(fixtureId: string): void {
@@ -24,11 +21,6 @@ function mockGetGlobalConfig(fixtureId: string): void {
       cacheDir: '/tmp/renovate',
     };
   });
-}
-
-function getLoggerErrors(): BunyanRecord[] {
-  const loggerErrors = getProblems().filter((p) => p.level >= ERROR);
-  return loggerErrors;
 }
 
 beforeEach(() => {

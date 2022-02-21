@@ -6,15 +6,12 @@ import Git from 'simple-git';
 
 import { getGlobalConfig } from 'renovate/dist/config/global';
 
-import { getFixturePath, loadFixture } from '../test/util';
+import { getFixturePath, getLoggerErrors, loadFixture } from '../test/util';
 import { defaultConfig, extractPackageFile } from './index';
 
 import nock from 'nock';
 
-import type { BunyanRecord } from 'renovate/dist/logger/types';
-import { ERROR } from 'bunyan';
-
-import { clearProblems, getProblems } from 'renovate/dist/logger';
+import { clearProblems } from 'renovate/dist/logger';
 
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
@@ -22,11 +19,6 @@ const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
 const tenant1 = loadFixture('5/tenant/c-foo.yml');
 const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
-
-function getLoggerErrors(): BunyanRecord[] {
-  const loggerErrors = getProblems().filter((p) => p.level >= ERROR);
-  return loggerErrors;
-}
 
 jest.mock('renovate/dist/config/global');
 function mockGetGlobalConfig(
