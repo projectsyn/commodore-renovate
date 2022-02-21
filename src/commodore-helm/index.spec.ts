@@ -1,9 +1,5 @@
 import { loadFixture, getFixturePath, getLoggerErrors } from '../test/util';
-import {
-  extractPackageFile,
-  extractAllPackageFiles,
-  extractHelmChartDependencies,
-} from './index';
+import { extractPackageFile, extractAllPackageFiles } from './index';
 import { beforeEach, expect, describe, it } from '@jest/globals';
 
 import { getGlobalConfig } from 'renovate/dist/config/global';
