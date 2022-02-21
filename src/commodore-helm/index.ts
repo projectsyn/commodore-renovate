@@ -33,11 +33,16 @@ export function extractPackageFile(
   fileName: string,
   config: any
 ): PackageFile | null {
-  logger.info(
-    { depName: config.depName, baseDeps: config.baseDeps },
+  logger.debug(
+    { fileName, depName: config.depName, baseDeps: config.baseDeps },
     'extractPackageFile upgrade'
   );
+  if (!config.depName || !config.baseDeps) {
+    logger.warn({ fileName }, 'extractPackageFile() called for file without dependency info in config');
+    return null;
+  }
   if (path.parse(fileName).name != 'defaults') {
+    logger.warn({ fileName }, 'extractPackageFile() called for a package file other than `defaults.yml`, returning null');
     return null;
   }
   const defaults: any = yaml.load(content);
