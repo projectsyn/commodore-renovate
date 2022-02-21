@@ -68,3 +68,16 @@ Array [
   },
 ]
 `;
+
+exports[`manager/commodore-helm/index extractPackageFile() extracts Helm chart versions when called with sufficient config 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+  },
+]
+`;
