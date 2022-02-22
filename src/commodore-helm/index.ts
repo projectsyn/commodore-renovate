@@ -14,6 +14,17 @@ import { logger } from 'renovate/dist/logger';
 
 import { readLocalFile } from 'renovate/dist/util/fs';
 
+interface KapitanDependency {
+  type: string;
+  source: string;
+  output_path: string;
+}
+
+interface KapitanHelmDependency extends KapitanDependency {
+  chart_name: string;
+  version: string;
+}
+
 export const defaultConfig = {
   // match all class files of the component
   fileMatch: ['class/[^.]+.ya?ml$'],
@@ -154,16 +165,6 @@ export async function extractAllPackageFiles(
   }
 
   return [{ packageFile: defaults_file, datasource: 'helm', deps }];
-}
-
-interface KapitanDependency {
-  type: string;
-  source: string;
-  output_path: string;
-}
-interface KapitanHelmDependency extends KapitanDependency {
-  chart_name: string;
-  version: string;
 }
 
 function extractHelmChartDependencies(
