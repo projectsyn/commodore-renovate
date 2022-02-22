@@ -1,0 +1,16 @@
+parameters:
+  kapitan:
+    dependencies:
+      - type: https
+        source: https://example.com/test.yaml
+        output_path: test.yaml
+      - type: helm
+        source: https://charts.example.com/
+        chart_name: chart-1
+        version: ${long_component_name:charts:chart-1}
+        output_path: charts/chart-1
+      - type: helm
+        source: https://charts2.example.com/
+        chart_name: chart-2
+        version: ${long_component_name:charts:chart-2}
+        output_path: charts/chart-2

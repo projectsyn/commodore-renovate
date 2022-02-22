@@ -1,0 +1,4 @@
+parameters:
+  component_name:
+    test: testing
+    namespace: syn-ns

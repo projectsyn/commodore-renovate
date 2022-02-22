@@ -1,0 +1,22 @@
+parameters:
+  kapitan:
+    dependencies:
+      - type: https
+        source: https://example.com/test.yaml
+        output_path: test.yaml
+      - type: helm
+        source: https://charts.example.com/
+        chart_name: chart-1
+        version: ${component_name:charts:chart-1}
+        output_path: charts/chart-1
+      - type: helm
+        source: https://charts2.example.com/
+        chart_name: chart-2
+        version: ${component_name:charts:chart-2}
+        output_path: charts/chart-2
+      # This entry should be ignored
+      - type: helm
+        source: https://charts3.example.com/
+        chart_name: chart-3
+        version: v0.0.1
+        output_path: charts/chart-3

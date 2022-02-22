@@ -1,0 +1,8 @@
+parameters:
+  component_name:
+    charts:
+      chart-1: '1.2.3'
+
+  component_name_2:
+    charts:
+      chart-1: '4.5.6'

@@ -1,6 +1,11 @@
 import { readFileSync } from 'fs';
 import upath from 'upath';
 
+import type { BunyanRecord } from 'renovate/dist/logger/types';
+import { ERROR } from 'bunyan';
+
+import { getProblems } from 'renovate/dist/logger';
+
 function getCallerFileName(): string {
   let result = '';
 
@@ -43,4 +48,9 @@ export function getFixturePath(fixtureFile: string, fixtureRoot = '.'): string {
 export function loadFixture(fixtureFile: string, fixtureRoot = '.'): string {
   const fixtureAbsFile = getFixturePath(fixtureFile, fixtureRoot);
   return readFileSync(fixtureAbsFile, { encoding: 'utf8' });
+}
+
+export function getLoggerErrors(): BunyanRecord[] {
+  const loggerErrors = getProblems().filter((p) => p.level >= ERROR);
+  return loggerErrors;
 }

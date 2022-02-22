@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`manager/commodore-helm/index extractAllPackageFiles() extracts Helm dependencies with mismatched names 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "groupName": "component-name",
+    "propSource": "chart_1",
+    "registryUrls": Array [
+      "https://charts.example.com/",
+    ],
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+    "groupName": "component-name",
+    "propSource": "chart2",
+    "registryUrls": Array [
+      "https://charts2.example.com/",
+    ],
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractAllPackageFiles() extracts standard Helm dependencies 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "groupName": "component-name",
+    "propSource": "chart-1",
+    "registryUrls": Array [
+      "https://charts.example.com/",
+    ],
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+    "groupName": "component-name",
+    "propSource": "chart-2",
+    "registryUrls": Array [
+      "https://charts2.example.com/",
+    ],
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractAllPackageFiles() extracts standard Helm dependencies for components with long names 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "groupName": "long-component-name",
+    "propSource": "chart-1",
+    "registryUrls": Array [
+      "https://charts.example.com/",
+    ],
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+    "groupName": "long-component-name",
+    "propSource": "chart-2",
+    "registryUrls": Array [
+      "https://charts2.example.com/",
+    ],
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractPackageFile() extracts Helm chart versions for mismatched keys when called with sufficient config 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractPackageFile() extracts Helm chart versions when called with sufficient config 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractPackageFile() handles wrong dependency info gracefully 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "skipReason": "invalid-dependency-specification",
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "skipReason": "invalid-dependency-specification",
+  },
+]
+`;

@@ -5,10 +5,12 @@ import { logger } from 'renovate/dist/logger';
 
 import * as commodore from './commodore';
 import * as commodoreDocker from './commodore-docker';
+import * as commodoreHelm from './commodore-helm';
 import { globalRepos } from './commodore/util';
 
 api.set('commodore', commodore);
 api.set('commodore-docker', commodoreDocker);
+api.set('commodore-helm', commodoreHelm);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
