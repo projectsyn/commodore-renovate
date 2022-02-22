@@ -149,6 +149,32 @@ describe('manager/commodore-helm/index', () => {
       expect(errors.length).toBe(0);
       expect(res).toBeNull();
     });
+    it('gracefully ignores components with `charts` parameter but no Kapitan config', async () => {
+      mockGetGlobalConfig('5');
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).toBeNull();
+    });
+    it('gracefully ignores components with `charts` parameter but no Kapitan helm dependencies', async () => {
+      mockGetGlobalConfig('5');
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name-2.yml',
+      ]);
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).toBeNull();
+    });
     it("records an error for repositories which don't have exactly 2 package files", async () => {
       const res = await extractAllPackageFiles({}, ['class/defaults.yml']);
       expect(res).toBeNull();

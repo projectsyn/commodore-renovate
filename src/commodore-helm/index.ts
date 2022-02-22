@@ -193,6 +193,11 @@ function extractHelmChartDependencies(
   }
   logger.debug({ chartVersions }, 'chart versions');
 
+  if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
+    logger.info('No Kapitan dependencies found');
+    return [];
+  }
+
   const kapitanHelmDeps: KapitanHelmDependency[] =
     componentParams.kapitan.dependencies.filter(
       (dep: KapitanDependency): dep is KapitanHelmDependency =>
