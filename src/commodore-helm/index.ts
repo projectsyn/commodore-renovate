@@ -101,7 +101,9 @@ export async function extractAllPackageFiles(
 
   if (!fileContents.has('defaults')) {
     logger.error('Component repository has no `class/defaults.ya?ml`');
+    return null;
   }
+
   if (!componentName) {
     logger.error(
       { packageFiles },
@@ -109,17 +111,7 @@ export async function extractAllPackageFiles(
     );
     return null;
   }
-  if (!defaults_file) {
-    logger.error({ packageFiles }, 'Could not identify defaults file');
-    return null;
-  }
-  if (!fileContents.has('defaults') || !fileContents.has(componentName)) {
-    logger.error(
-      { classes: fileContents.keys() },
-      'One or more class files are missing'
-    );
-    return null;
-  }
+
   const defaults: any = yaml.load(fileContents.get('defaults') ?? '');
   const component: any = yaml.load(fileContents.get(componentName) ?? '');
 
