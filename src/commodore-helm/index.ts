@@ -178,6 +178,14 @@ function extractHelmChartDependencies(
 
   const componentKey: string = componentKeyFromName(componentName);
 
+  if (!defaults[componentKey]) {
+    logger.warn(
+      { defaults, componentKey },
+      "Couldn't find component key in defaults class"
+    );
+    return [];
+  }
+
   const chartVersions: Map<string, string> = defaults[componentKey].charts;
   if (!chartVersions) {
     logger.info('No Helm chart versions found');
