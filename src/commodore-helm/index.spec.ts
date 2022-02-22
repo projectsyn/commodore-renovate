@@ -149,5 +149,27 @@ describe('manager/commodore-helm/index', () => {
       expect(errors.length).toBe(0);
       expect(res).toBeNull();
     });
+    it('records an error for non-component repositories', async () => {
+      mockGetGlobalConfig('5');
+      const res = await extractAllPackageFiles({}, ['class/yuhu.yml']);
+      expect(res).toBeNull();
+      const errors = getLoggerErrors();
+      expect(errors.length).toBe(1);
+      const err0 = errors[0];
+      expect(err0.msg).toBe(
+        'Component repository has no `class/defaults.ya?ml`'
+      );
+    });
+    it('records an error for non-component repositories which have `class/defaults.yml`', async () => {
+      mockGetGlobalConfig('5');
+      const res = await extractAllPackageFiles({}, ['class/defaults.yml']);
+      expect(res).toBeNull();
+      const errors = getLoggerErrors();
+      expect(errors.length).toBe(1);
+      const err0 = errors[0];
+      expect(err0.msg).toBe(
+        'Unable to identify component name from package files'
+      );
+    });
   });
 });
