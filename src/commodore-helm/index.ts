@@ -58,8 +58,11 @@ export function extractPackageFile(
   const dep = config.baseDeps.find((d: PackageDependency) => {
     return d.depName === config.depName;
   });
+  if (!dep || !dep.groupName) {
+    return null;
+  }
   const componentKey: string = componentKeyFromName(dep.groupName);
-  const charts: Map<string, string> = defaults.parameters[componentKey].charts;
+  const charts: Map<string, string> = defaults.parameters[componentKey]?.charts;
   if (!charts) {
     return null;
   }
@@ -70,9 +73,13 @@ export function extractPackageFile(
         return d.propSource == chartName;
       });
       let res: PackageDependency = {
-        depName: d.depName,
         currentValue: chartVersion,
       };
+      if (d && d.depName) {
+        res.depName = d.depName;
+      } else {
+        res.skipReason = SkipReason.InvalidDependencySpecification;
+      }
       return res;
     }
   );

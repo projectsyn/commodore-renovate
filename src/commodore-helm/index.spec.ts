@@ -25,6 +25,8 @@ beforeEach(() => {
 });
 
 const defaults1 = loadFixture('1/class/defaults.yml');
+const defaults3 = loadFixture('3/class/defaults.yml');
+const defaults4 = loadFixture('4/class/defaults.yml');
 const config1 = {
   depName: 'chart-1',
   baseDeps: [
@@ -36,6 +38,52 @@ const config1 = {
     {
       depName: 'chart-2',
       propSource: 'chart-2',
+      groupName: 'component-name',
+    },
+  ],
+};
+const config1partial1 = {
+  depName: 'chart-1',
+  baseDeps: [],
+};
+const config1partial2 = {
+  depName: 'chart-1',
+  baseDeps: [
+    {
+      depName: 'chart-1',
+      propSource: 'chart-1',
+    },
+    {
+      depName: 'chart-2',
+      propSource: 'chart-2',
+    },
+  ],
+};
+const config1wrong1 = {
+  depName: 'chart-1',
+  baseDeps: [
+    {
+      depName: 'chart-1',
+      groupName: 'component-name',
+    },
+    {
+      depName: 'chart-2',
+      groupName: 'component-name',
+      propSource: 'chart-5',
+    },
+  ],
+};
+const config3 = {
+  depName: 'chart-1',
+  baseDeps: [
+    {
+      depName: 'chart-1',
+      propSource: 'chart_1',
+      groupName: 'component-name',
+    },
+    {
+      depName: 'chart-2',
+      propSource: 'chart2',
       groupName: 'component-name',
     },
   ],
@@ -55,6 +103,34 @@ describe('manager/commodore-helm/index', () => {
       );
       expect(res).toBeNull();
     });
+    it('returns null when provided empty dependency info', () => {
+      const res = extractPackageFile(
+        defaults1,
+        'class/defaults.yml',
+        config1partial1
+      );
+      expect(res).toBeNull();
+    });
+    it('returns null when provided incomplete dependency info', () => {
+      const res = extractPackageFile(
+        defaults1,
+        'class/defaults.yml',
+        config1partial2
+      );
+      expect(res).toBeNull();
+    });
+    it('handles wrong dependency info gracefully', () => {
+      const res = extractPackageFile(
+        defaults1,
+        'class/defaults.yml',
+        config1wrong1
+      );
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.deps).toMatchSnapshot();
+        expect(res.deps.length).toBe(2);
+      }
+    });
     it('extracts Helm chart versions when called with sufficient config', () => {
       const res = extractPackageFile(defaults1, 'class/defaults.yml', config1);
       expect(res).not.toBeNull();
@@ -62,6 +138,18 @@ describe('manager/commodore-helm/index', () => {
         expect(res.deps).toMatchSnapshot();
         expect(res.deps.length).toBe(2);
       }
+    });
+    it('extracts Helm chart versions for mismatched keys when called with sufficient config', () => {
+      const res = extractPackageFile(defaults3, 'class/defaults.yml', config3);
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.deps).toMatchSnapshot();
+        expect(res.deps.length).toBe(2);
+      }
+    });
+    it('gracefully ignores components without `charts` field', () => {
+      const res = extractPackageFile(defaults4, 'class/defaults.yml', config1);
+      expect(res).toBeNull();
     });
   });
   // This test also covers `extractHelmChartDependencies()`, since that's the
