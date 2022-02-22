@@ -136,5 +136,18 @@ describe('manager/commodore-helm/index', () => {
         }
       }
     });
+    it('gracefully ignores components without Helm chart dependencies', async () => {
+      mockGetGlobalConfig('4');
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).toBeNull();
+    });
   });
 });
