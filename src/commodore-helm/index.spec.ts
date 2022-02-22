@@ -149,26 +149,25 @@ describe('manager/commodore-helm/index', () => {
       expect(errors.length).toBe(0);
       expect(res).toBeNull();
     });
-    it('records an error for non-component repositories', async () => {
-      mockGetGlobalConfig('5');
-      const res = await extractAllPackageFiles({}, ['class/yuhu.yml']);
+    it("records an error for repositories which don't have exactly 2 package files", async () => {
+      const res = await extractAllPackageFiles({}, ['class/defaults.yml']);
+      expect(res).toBeNull();
+      const errors = getLoggerErrors();
+      expect(errors.length).toBe(1);
+      const err0 = errors[0];
+      expect(err0.msg).toBe('Expected exactly two package files, aborting.');
+    });
+    it('records an error for non-component repositories which have two package files', async () => {
+      const res = await extractAllPackageFiles({}, [
+        'class/test1.yml',
+        'class/test2.yml',
+      ]);
       expect(res).toBeNull();
       const errors = getLoggerErrors();
       expect(errors.length).toBe(1);
       const err0 = errors[0];
       expect(err0.msg).toBe(
         'Component repository has no `class/defaults.ya?ml`'
-      );
-    });
-    it('records an error for non-component repositories which have `class/defaults.yml`', async () => {
-      mockGetGlobalConfig('5');
-      const res = await extractAllPackageFiles({}, ['class/defaults.yml']);
-      expect(res).toBeNull();
-      const errors = getLoggerErrors();
-      expect(errors.length).toBe(1);
-      const err0 = errors[0];
-      expect(err0.msg).toBe(
-        'Unable to identify component name from package files'
       );
     });
   });

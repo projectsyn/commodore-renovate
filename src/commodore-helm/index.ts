@@ -88,6 +88,14 @@ export async function extractAllPackageFiles(
   let componentName: string | null = null;
   let defaults_file: string | null = null;
 
+  if (packageFiles.length != 2) {
+    logger.error(
+      { packageFiles },
+      'Expected exactly two package files, aborting.'
+    );
+    return null;
+  }
+
   for (const file of packageFiles) {
     const content = await readLocalFile(file, 'utf8');
     const key = path.parse(file).name;
