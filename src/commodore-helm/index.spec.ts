@@ -27,6 +27,7 @@ beforeEach(() => {
 const defaults1 = loadFixture('1/class/defaults.yml');
 const defaults3 = loadFixture('3/class/defaults.yml');
 const defaults4 = loadFixture('4/class/defaults.yml');
+const defaults7 = loadFixture('7/class/defaults.yml');
 const config1 = {
   depName: 'chart-1',
   baseDeps: [
@@ -128,6 +129,14 @@ describe('manager/commodore-helm/index', () => {
     });
     it('extracts Helm chart versions when called with sufficient config', () => {
       const res = extractPackageFile(defaults1, 'class/defaults.yml', config1);
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.deps).toMatchSnapshot();
+        expect(res.deps.length).toBe(2);
+      }
+    });
+    it('extracts Helm chart versions from new and old standard', () => {
+      const res = extractPackageFile(defaults7, 'class/defaults.yml', config1);
       expect(res).not.toBeNull();
       if (res) {
         expect(res.deps).toMatchSnapshot();
@@ -300,6 +309,29 @@ describe('manager/commodore-helm/index', () => {
       expect(err0.msg).toBe(
         'Component repository has no `class/defaults.ya?ml`'
       );
+    });
+    it('extracts new and old standard Helm dependencies in the same file', async () => {
+      mockGetGlobalConfig('7');
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.length).toBe(1);
+        if (res.length == 1) {
+          const res0 = res[0];
+          expect(res0.packageFile).toBe('class/defaults.yml');
+          const deps = res0.deps;
+          expect(deps).toMatchSnapshot();
+          expect(deps.length).toBe(2);
+        }
+      }
     });
   });
 });

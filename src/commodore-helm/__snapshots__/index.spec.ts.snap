@@ -23,13 +23,12 @@ Array [
 ]
 `;
 
-exports[`manager/commodore-helm/index extractAllPackageFiles() extracts standard Helm dependencies 1`] = `
+exports[`manager/commodore-helm/index extractAllPackageFiles() extracts new and old standard Helm dependencies in the same file 1`] = `
 Array [
   Object {
     "currentValue": "1.2.3",
     "depName": "chart-1",
     "groupName": "component-name",
-    "propSource": "chart-1",
     "registryUrls": Array [
       "https://charts.example.com/",
     ],
@@ -38,7 +37,27 @@ Array [
     "currentValue": "4.5.6",
     "depName": "chart-2",
     "groupName": "component-name",
-    "propSource": "chart-2",
+    "registryUrls": Array [
+      "https://charts2.example.com/",
+    ],
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractAllPackageFiles() extracts standard Helm dependencies 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "groupName": "component-name",
+    "registryUrls": Array [
+      "https://charts.example.com/",
+    ],
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+    "groupName": "component-name",
     "registryUrls": Array [
       "https://charts2.example.com/",
     ],
@@ -52,7 +71,6 @@ Array [
     "currentValue": "1.2.3",
     "depName": "chart-1",
     "groupName": "long-component-name",
-    "propSource": "chart-1",
     "registryUrls": Array [
       "https://charts.example.com/",
     ],
@@ -61,7 +79,6 @@ Array [
     "currentValue": "4.5.6",
     "depName": "chart-2",
     "groupName": "long-component-name",
-    "propSource": "chart-2",
     "registryUrls": Array [
       "https://charts2.example.com/",
     ],
@@ -75,7 +92,6 @@ Array [
     "currentValue": "1.2.3",
     "depName": "chart-1",
     "groupName": "component-name",
-    "propSource": "chart-1",
     "skipReason": "invalid-dependency-specification",
   },
 ]
@@ -87,7 +103,6 @@ Array [
     "currentValue": "4.5.6",
     "depName": "chart-1",
     "groupName": "component-name-2",
-    "propSource": "chart-1",
     "skipReason": "invalid-dependency-specification",
   },
 ]
@@ -98,6 +113,22 @@ Array [
   Object {
     "currentValue": "1.2.3",
     "depName": "chart-1",
+  },
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractPackageFile() extracts Helm chart versions from new and old standard 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "registryUrls": Array [
+      "https://charts.example.com/",
+    ],
   },
   Object {
     "currentValue": "4.5.6",

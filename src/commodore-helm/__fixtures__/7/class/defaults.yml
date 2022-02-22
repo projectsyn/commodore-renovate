@@ -1,0 +1,12 @@
+parameters:
+  component_name:
+    charts:
+      chart-1:
+        version: 1.2.3
+        source: https://charts.example.com/
+      chart-2: 4.5.6
+    other_parameter: test
+  other_key:
+    testing: true
+    charts:
+      chart-3: 7.8.9
