@@ -69,6 +69,30 @@ Array [
 ]
 `;
 
+exports[`manager/commodore-helm/index extractAllPackageFiles() gracefully ignores components with old standard \`charts\` parameter but no Kapitan config 1`] = `
+Array [
+  Object {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+    "groupName": "component-name",
+    "propSource": "chart-1",
+    "skipReason": "invalid-dependency-specification",
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index extractAllPackageFiles() gracefully ignores components with old standard \`charts\` parameter but no Kapitan helm dependencies 1`] = `
+Array [
+  Object {
+    "currentValue": "4.5.6",
+    "depName": "chart-1",
+    "groupName": "component-name-2",
+    "propSource": "chart-1",
+    "skipReason": "invalid-dependency-specification",
+  },
+]
+`;
+
 exports[`manager/commodore-helm/index extractPackageFile() extracts Helm chart versions for mismatched keys when called with sufficient config 1`] = `
 Array [
   Object {
@@ -99,7 +123,7 @@ exports[`manager/commodore-helm/index extractPackageFile() handles wrong depende
 Array [
   Object {
     "currentValue": "1.2.3",
-    "skipReason": "invalid-dependency-specification",
+    "depName": "chart-1",
   },
   Object {
     "currentValue": "4.5.6",

@@ -70,7 +70,7 @@ export function extractPackageFile(
   let deps: PackageDependency[] = Object.entries(charts).map(
     ([chartName, chartVersion]) => {
       let d = config.baseDeps.find((d: PackageDependency) => {
-        return d.propSource == chartName;
+        return (d.propSource ?? d.depName) == chartName;
       });
       let res: PackageDependency = {
         currentValue: chartVersion,
@@ -200,18 +200,6 @@ function extractHelmChartDependencies(
   }
   logger.debug({ chartVersions }, 'chart versions');
 
-  if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
-    logger.info('No Kapitan dependencies found');
-    return [];
-  }
-
-  const kapitanHelmDeps: KapitanHelmDependency[] =
-    componentParams.kapitan.dependencies.filter(
-      (dep: KapitanDependency): dep is KapitanHelmDependency =>
-        dep.type === 'helm'
-    );
-  logger.debug({ kapitanHelmDeps }, 'kapitan helm dependencies');
-
   const deps: PackageDependency[] = Object.entries(chartVersions).map(
     ([chartName, chartVersion]) => {
       let res: PackageDependency = {
@@ -227,45 +215,69 @@ function extractHelmChartDependencies(
         currentValue: chartVersion,
       };
 
-      const versionReference =
-        '${' + componentKey + ':charts:' + chartName + '}';
-      const dep = kapitanHelmDeps.find((d) => {
-        return d.version === versionReference;
-      });
-      logger.debug({ chartName, dep }, 'kapitan dependency for chart');
-
-      if (!dep || !dep.chart_name) {
-        if (!dep) {
-          logger.warn(
-            { chartName, versionReference },
-            'no Kapitan dependency found for chart'
-          );
-        }
+      if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
+        logger.info('No Kapitan denendencies found');
         res.skipReason = SkipReason.InvalidDependencySpecification;
         return res;
       }
-      if (!dep.source) {
-        logger.warn(
-          { chartName },
-          'Kapitan dependency has no source, skipping...'
-        );
-        res.skipReason = SkipReason.NoSource;
-        return res;
-      }
 
-      if (dep.chart_name !== res.depName) {
-        logger.info(
-          { dependencyName: dep.chart_name, versionName: res.depName },
-          'mismatched chart name between version and dependency, using depedency name for version lookup.'
-        );
-        res.depName = dep.chart_name;
-      }
-      res.registryUrls = [dep.source];
-
-      return res;
+      return extractKapitanHelmDependency(
+        res,
+        componentParams.kapitan.dependencies,
+        chartName,
+        componentKey
+      );
     }
   );
 
   logger.debug({ deps }, 'extracted');
   return deps;
+}
+
+function extractKapitanHelmDependency(
+  res: PackageDependency,
+  kapitanDeps: KapitanDependency[],
+  chartName: string,
+  componentKey: string
+): PackageDependency {
+  const versionReference = '${' + componentKey + ':charts:' + chartName + '}';
+  const kdep = kapitanDeps.find((d) => {
+    return (
+      d.type === 'helm' &&
+      (d as KapitanHelmDependency).version === versionReference
+    );
+  });
+  logger.debug({ chartName, kdep }, 'kapitan dependency for chart');
+  const dep: KapitanHelmDependency = kdep as KapitanHelmDependency;
+
+  if (!dep || !dep.chart_name) {
+    if (!dep) {
+      logger.warn(
+        { chartName, versionReference, dep },
+        'no Kapitan dependency found for chart'
+      );
+    }
+    res.skipReason = SkipReason.InvalidDependencySpecification;
+    return res;
+  }
+  if (!dep.source) {
+    logger.warn({ chartName }, 'Kapitan dependency has no source, skipping...');
+    res.skipReason = SkipReason.NoSource;
+    return res;
+  }
+
+  if (dep.chart_name !== res.depName) {
+    logger.info(
+      { dependencyName: dep.chart_name, versionName: res.depName },
+      'mismatched chart name between version and dependency, using depedency name for version lookup.'
+    );
+    res.depName = dep.chart_name;
+
+    // store name of chart version in `class/defaults.yml` in propSource.
+    // This field is only used by the Maven manager, so we should be able
+    // to safely use it to propagate the chart's version field.
+    res.propSource = chartName;
+  }
+  res.registryUrls = [dep.source];
+  return res;
 }

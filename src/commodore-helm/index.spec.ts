@@ -32,12 +32,10 @@ const config1 = {
   baseDeps: [
     {
       depName: 'chart-1',
-      propSource: 'chart-1',
       groupName: 'component-name',
     },
     {
       depName: 'chart-2',
-      propSource: 'chart-2',
       groupName: 'component-name',
     },
   ],
@@ -51,11 +49,9 @@ const config1partial2 = {
   baseDeps: [
     {
       depName: 'chart-1',
-      propSource: 'chart-1',
     },
     {
       depName: 'chart-2',
-      propSource: 'chart-2',
     },
   ],
 };
@@ -67,9 +63,8 @@ const config1wrong1 = {
       groupName: 'component-name',
     },
     {
-      depName: 'chart-2',
+      depName: 'chart-3',
       groupName: 'component-name',
-      propSource: 'chart-5',
     },
   ],
 };
@@ -237,7 +232,7 @@ describe('manager/commodore-helm/index', () => {
       expect(errors.length).toBe(0);
       expect(res).toBeNull();
     });
-    it('gracefully ignores components with `charts` parameter but no Kapitan config', async () => {
+    it('gracefully ignores components with old standard `charts` parameter but no Kapitan config', async () => {
       mockGetGlobalConfig('5');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
@@ -248,9 +243,20 @@ describe('manager/commodore-helm/index', () => {
         console.log(errors);
       }
       expect(errors.length).toBe(0);
-      expect(res).toBeNull();
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.length).toBe(1);
+        const res0 = res[0];
+        expect(res0).not.toBeNull();
+        if (res0) {
+          expect(res0.packageFile).toBe('class/defaults.yml');
+          const deps = res0.deps;
+          expect(deps).toMatchSnapshot();
+          expect(deps.length).toBe(1);
+        }
+      }
     });
-    it('gracefully ignores components with `charts` parameter but no Kapitan helm dependencies', async () => {
+    it('gracefully ignores components with old standard `charts` parameter but no Kapitan helm dependencies', async () => {
       mockGetGlobalConfig('5');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
@@ -261,7 +267,18 @@ describe('manager/commodore-helm/index', () => {
         console.log(errors);
       }
       expect(errors.length).toBe(0);
-      expect(res).toBeNull();
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.length).toBe(1);
+        const res0 = res[0];
+        expect(res0).not.toBeNull();
+        if (res0) {
+          expect(res0.packageFile).toBe('class/defaults.yml');
+          const deps = res0.deps;
+          expect(deps).toMatchSnapshot();
+          expect(deps.length).toBe(1);
+        }
+      }
     });
     it("records an error for repositories which don't have exactly 2 package files", async () => {
       const res = await extractAllPackageFiles({}, ['class/defaults.yml']);
