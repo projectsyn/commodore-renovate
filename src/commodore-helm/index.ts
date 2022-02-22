@@ -107,7 +107,7 @@ export async function extractAllPackageFiles(
     }
   }
 
-  if (!fileContents.has('defaults')) {
+  if (!fileContents.has('defaults') || !defaults_file) {
     logger.error('Component repository has no `class/defaults.ya?ml`');
     return null;
   }
