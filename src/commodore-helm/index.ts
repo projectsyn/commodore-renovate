@@ -8,7 +8,6 @@ import type {
   PackageDependency,
 } from 'renovate/dist/manager/types';
 
-import { SkipReason } from 'renovate/dist/types';
 import { HelmDatasource } from 'renovate/dist/datasource/helm';
 
 import { logger } from 'renovate/dist/logger';
@@ -97,7 +96,7 @@ export function extractPackageFile(
         if (d && d.depName) {
           res.depName = d.depName;
         } else {
-          res.skipReason = SkipReason.InvalidDependencySpecification;
+          res.skipReason = 'invalid-dependency-specification';
         }
         return res;
       } else if (typeof chartSpec === 'object') {
@@ -112,7 +111,7 @@ export function extractPackageFile(
       } else {
         return {
           depName: chartName,
-          skipReason: SkipReason.InvalidDependencySpecification,
+          skipReason: 'invalid-dependency-specification',
         } as PackageDependency;
       }
     }
@@ -237,7 +236,7 @@ function extractHelmChartDependencies(
         res.currentValue = chartSpec;
         if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
           logger.info('No Kapitan dependencies found');
-          res.skipReason = SkipReason.InvalidDependencySpecification;
+          res.skipReason = 'invalid-dependency-specification';
           return res;
         }
 
@@ -259,7 +258,7 @@ function extractHelmChartDependencies(
         return res;
       } else {
         logger.warn({ chartSpec }, 'Unable to parse chart specification');
-        res.skipReason = SkipReason.InvalidDependencySpecification;
+        res.skipReason = 'invalid-dependency-specification';
         return res;
       }
     }
@@ -292,12 +291,12 @@ function extractKapitanHelmDependency(
         'no Kapitan dependency found for chart'
       );
     }
-    res.skipReason = SkipReason.InvalidDependencySpecification;
+    res.skipReason = 'invalid-dependency-specification';
     return res;
   }
   if (!dep.source) {
     logger.warn({ chartName }, 'Kapitan dependency has no source, skipping...');
-    res.skipReason = SkipReason.NoSource;
+    res.skipReason = 'no-source';
     return res;
   }
 
