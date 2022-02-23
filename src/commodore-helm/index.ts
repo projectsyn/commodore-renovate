@@ -186,7 +186,7 @@ export async function extractAllPackageFiles(
     return null;
   }
 
-  return [{ packageFile: defaults_file, datasource: 'helm', deps }];
+  return [{ packageFile: defaults_file, datasource: HelmDatasource.id, deps }];
 }
 
 function extractHelmChartDependencies(
