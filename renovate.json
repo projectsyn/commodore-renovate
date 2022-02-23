@@ -12,5 +12,6 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     }
-  ]
+  ],
+  "labels": ["dependency"]
 }
