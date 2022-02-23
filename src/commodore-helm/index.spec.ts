@@ -159,7 +159,7 @@ describe('manager/commodore-helm/index', () => {
   // This test also covers `extractHelmChartDependencies()`, since that's the
   // function which does the heavy lifting for `extractAllPackageFiles()`.
   describe('extractAllPackageFiles()', () => {
-    it('extracts standard Helm dependencies', async () => {
+    it('extracts old standard Helm dependencies', async () => {
       mockGetGlobalConfig('1');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
@@ -182,7 +182,7 @@ describe('manager/commodore-helm/index', () => {
         }
       }
     });
-    it('extracts standard Helm dependencies for components with long names', async () => {
+    it('extracts old standard Helm dependencies for components with long names', async () => {
       mockGetGlobalConfig('2');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
@@ -205,7 +205,7 @@ describe('manager/commodore-helm/index', () => {
         }
       }
     });
-    it('extracts Helm dependencies with mismatched names', async () => {
+    it('extracts old-style Helm dependencies with mismatched names', async () => {
       mockGetGlobalConfig('3');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
