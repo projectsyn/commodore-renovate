@@ -44,6 +44,8 @@ export const defaultExtraConfig = {
   factsMap: {} as any,
 };
 
+export const supportedDatasources = [gitRef.GitRefsDatasource.id];
+
 function factsFromAny(facts: any): Facts {
   return {
     distribution: facts.distribution || null,

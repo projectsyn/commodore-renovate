@@ -5,12 +5,15 @@ import type {
   PackageDependency,
 } from 'renovate/dist/manager/types';
 
+import { DockerDatasource } from 'renovate/dist/datasource/docker';
 import { getDep } from 'renovate/dist/manager/dockerfile/extract';
 import { id as dockerVersioning } from 'renovate/dist/versioning/docker';
 
 export const defaultConfig = {
   fileMatch: ['class/defaults.ya?ml$'],
 };
+
+export const supportedDatasources = [DockerDatasource.id];
 
 export function extractPackageFile(
   content: string,

@@ -9,6 +9,7 @@ import type {
 } from 'renovate/dist/manager/types';
 
 import { SkipReason } from 'renovate/dist/types';
+import { HelmDatasource } from 'renovate/dist/datasource/helm';
 
 import { logger } from 'renovate/dist/logger';
 
@@ -29,6 +30,8 @@ export const defaultConfig = {
   // match all class files of the component
   fileMatch: ['class/[^.]+.ya?ml$'],
 };
+
+export const supportedDatasources = [HelmDatasource.id];
 
 function componentKeyFromName(componentName: string): string {
   return componentName.replace(/-/g, '_');
