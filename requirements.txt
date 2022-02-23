@@ -1,5 +1,5 @@
 addict==2.4.0
-arrow==1.2.1
+arrow==1.2.2
 attrs==21.2.0
 azure-common==1.1.27
 azure-core==1.17.0
@@ -13,12 +13,12 @@ certifi==2021.5.30
 cffi==1.14.6
 chardet==4.0.0
 charset-normalizer==2.0.4
-click==8.0.3
+click==8.0.4
 cookiecutter==1.7.3
 cryptography==3.4.7
 docker==5.0.0
 gitdb==4.0.7
-GitPython==3.1.20
+GitPython==3.1.24
 google-api-core==1.31.1
 google-api-python-client==2.15.0
 google-auth==1.34.0
@@ -27,14 +27,14 @@ googleapis-common-protos==1.53.0
 httplib2==0.19.1
 hvac==0.11.0
 idna==3.2
-importlib-metadata==4.8.2
+importlib-metadata==4.11.1
 isodate==0.6.0
 Jinja2==3.0.1
 jinja2-time==0.2.0
 jmespath==0.10.0
 jsonnet==0.17.0
 jsonschema==3.2.0
-kapitan==0.30.0rc0
+kapitan==0.30.0rc1
 MarkupSafe==2.0.1
 msal==1.13.0
 msal-extensions==0.3.0
@@ -54,7 +54,7 @@ pyrsistent==0.18.0
 python-dateutil==2.8.2
 python-dotenv==0.19.2
 python-gnupg==0.4.7
-python-slugify==5.0.2
+python-slugify==6.1.0
 pytz==2021.1
 PyYAML==5.4.1
 requests==2.26.0
@@ -64,7 +64,7 @@ rsa==4.7.2
 s3transfer==0.5.0
 six==1.16.0
 smmap==4.0.0
-syn-commodore==0.13.1
+syn-commodore==0.14.0
 text-unidecode==1.3
 toml==0.10.2
 typing-extensions==3.10.0.0
@@ -73,4 +73,4 @@ url-normalize==1.4.3
 urllib3==1.26.6
 websocket-client==1.1.1
 yamllint==1.26.2
-zipp==3.6.0
+zipp==3.7.0
