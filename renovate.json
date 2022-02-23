@@ -1,5 +1,5 @@
 {
-  "extends": ["config:base"],
+  "extends": ["config:base", "schedule:weekly"],
   "python": {
     "enabled": false
   },
@@ -12,5 +12,6 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     }
-  ]
+  ],
+  "labels": ["dependency"]
 }
