@@ -7,13 +7,13 @@ import { mkdir, readFile, writeFile } from 'fs/promises';
 import { URL } from 'url';
 
 import { logger } from 'renovate/dist/logger';
-import { getGlobalConfig } from 'renovate/dist/config/global';
+import { GlobalConfig } from 'renovate/dist/config/global';
 import { simpleGitConfig } from 'renovate/dist/util/git/config';
 
 import type { Facts, RepoConfig } from './types';
 
 export function cacheDir(): string {
-  let cacheDir: string | undefined = getGlobalConfig().cacheDir;
+  let cacheDir: string | undefined = GlobalConfig.get('cacheDir');
   if (cacheDir === undefined) {
     cacheDir = '/tmp/renovate';
   }
