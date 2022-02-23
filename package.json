@@ -33,7 +33,7 @@
     "@babel/preset-typescript": "7.16.7",
     "@ls-lint/ls-lint": "1.10.0",
     "@types/bunyan": "1.8.8",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "27.4.1",
     "babel-jest": "27.5.1",
     "bunyan": "1.8.15",
     "cross-env": "7.0.3",
