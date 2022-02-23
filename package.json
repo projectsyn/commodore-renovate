@@ -24,7 +24,7 @@
     "just-clone": "^5.0.1",
     "normalize-url": "6.1.0",
     "renovate": "^28.20.2",
-    "simple-git": "^2.48.0",
+    "simple-git": "^3.0.0",
     "typescript": "^4.4.4"
   },
   "devDependencies": {
