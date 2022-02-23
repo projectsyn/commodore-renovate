@@ -14,6 +14,17 @@ import { logger } from 'renovate/dist/logger';
 
 import { readLocalFile } from 'renovate/dist/util/fs';
 
+interface KapitanDependency {
+  type: string;
+  source: string;
+  output_path: string;
+}
+
+interface KapitanHelmDependency extends KapitanDependency {
+  chart_name: string;
+  version: string;
+}
+
 export const defaultConfig = {
   // match all class files of the component
   fileMatch: ['class/[^.]+.ya?ml$'],
@@ -68,19 +79,39 @@ export function extractPackageFile(
   }
 
   let deps: PackageDependency[] = Object.entries(charts).map(
-    ([chartName, chartVersion]) => {
-      let d = config.baseDeps.find((d: PackageDependency) => {
-        return d.propSource == chartName;
-      });
-      let res: PackageDependency = {
-        currentValue: chartVersion,
-      };
-      if (d && d.depName) {
-        res.depName = d.depName;
+    ([chartName, chartSpec]) => {
+      if (typeof chartSpec === 'string') {
+        // handle old best practice format by looking up the "real"
+        // dependency name in the provided baseDeps based on the chart version
+        // field name in `class/defaults.yml`.
+
+        let d = config.baseDeps.find((d: PackageDependency) => {
+          return (d.propSource ?? d.depName) == chartName;
+        });
+        let res: PackageDependency = {
+          currentValue: chartSpec,
+        };
+        if (d && d.depName) {
+          res.depName = d.depName;
+        } else {
+          res.skipReason = SkipReason.InvalidDependencySpecification;
+        }
+        return res;
+      } else if (typeof chartSpec === 'object') {
+        // Handle new best practice format. The new format requires that the
+        // chart spec key matches the chart name.
+
+        return {
+          depName: chartName,
+          currentValue: chartSpec.version,
+          registryUrls: [chartSpec.source],
+        } as PackageDependency;
       } else {
-        res.skipReason = SkipReason.InvalidDependencySpecification;
+        return {
+          depName: chartName,
+          skipReason: SkipReason.InvalidDependencySpecification,
+        } as PackageDependency;
       }
-      return res;
     }
   );
 
@@ -156,16 +187,6 @@ export async function extractAllPackageFiles(
   return [{ packageFile: defaults_file, datasource: 'helm', deps }];
 }
 
-interface KapitanDependency {
-  type: string;
-  source: string;
-  output_path: string;
-}
-interface KapitanHelmDependency extends KapitanDependency {
-  chart_name: string;
-  version: string;
-}
-
 function extractHelmChartDependencies(
   componentName: string,
   defaults: Record<string, any>,
@@ -193,79 +214,102 @@ function extractHelmChartDependencies(
     return [];
   }
 
-  const chartVersions: Map<string, string> = defaults[componentKey].charts;
-  if (!chartVersions) {
+  const charts: Map<string, any> = defaults[componentKey].charts;
+  if (!charts) {
     logger.info('No Helm chart versions found');
     return [];
   }
-  logger.debug({ chartVersions }, 'chart versions');
+  logger.debug({ charts }, 'chart versions');
 
-  if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
-    logger.info('No Kapitan dependencies found');
-    return [];
-  }
-
-  const kapitanHelmDeps: KapitanHelmDependency[] =
-    componentParams.kapitan.dependencies.filter(
-      (dep: KapitanDependency): dep is KapitanHelmDependency =>
-        dep.type === 'helm'
-    );
-  logger.debug({ kapitanHelmDeps }, 'kapitan helm dependencies');
-
-  const deps: PackageDependency[] = Object.entries(chartVersions).map(
-    ([chartName, chartVersion]) => {
+  const deps: PackageDependency[] = Object.entries(charts).map(
+    ([chartName, chartSpec]) => {
       let res: PackageDependency = {
         depName: chartName,
-        // store name of chart version in `class/defaults.yml` in propSource.
-        // This field is only used by the Maven manager, so we should be able
-        // to safely use it to propagate the chart's version field.
-        // This is technically only necessary for charts whose version field
-        // in the component doesn't match the chart's name, but we just set
-        // and use the field unconditionally to keep the code simpler.
-        propSource: chartName,
         groupName: componentName,
-        currentValue: chartVersion,
       };
 
-      const versionReference =
-        '${' + componentKey + ':charts:' + chartName + '}';
-      const dep = kapitanHelmDeps.find((d) => {
-        return d.version === versionReference;
-      });
-      logger.debug({ chartName, dep }, 'kapitan dependency for chart');
-
-      if (!dep || !dep.chart_name) {
-        if (!dep) {
-          logger.warn(
-            { chartName, versionReference },
-            'no Kapitan dependency found for chart'
-          );
+      if (typeof chartSpec === 'string') {
+        // old best-practice format, expect source to be in Kapitan
+        // dependency.
+        res.currentValue = chartSpec;
+        if (!componentParams.kapitan || !componentParams.kapitan.dependencies) {
+          logger.info('No Kapitan dependencies found');
+          res.skipReason = SkipReason.InvalidDependencySpecification;
+          return res;
         }
+
+        return extractKapitanHelmDependency(
+          res,
+          componentParams.kapitan.dependencies,
+          chartName,
+          componentKey
+        );
+      } else if (
+        typeof chartSpec === 'object' &&
+        chartSpec.version &&
+        chartSpec.source
+      ) {
+        // For the new schema, the key in `charts` **MUST** match the Helm
+        // chart name.
+        res.registryUrls = [chartSpec.source];
+        res.currentValue = chartSpec.version;
+        return res;
+      } else {
+        logger.warn({ chartSpec }, 'Unable to parse chart specification');
         res.skipReason = SkipReason.InvalidDependencySpecification;
         return res;
       }
-      if (!dep.source) {
-        logger.warn(
-          { chartName },
-          'Kapitan dependency has no source, skipping...'
-        );
-        res.skipReason = SkipReason.NoSource;
-        return res;
-      }
-
-      if (dep.chart_name !== res.depName) {
-        logger.info(
-          { dependencyName: dep.chart_name, versionName: res.depName },
-          'mismatched chart name between version and dependency, using depedency name for version lookup.'
-        );
-        res.depName = dep.chart_name;
-      }
-      res.registryUrls = [dep.source];
-
-      return res;
     }
   );
 
   logger.debug({ deps }, 'extracted');
   return deps;
+}
+
+function extractKapitanHelmDependency(
+  res: PackageDependency,
+  kapitanDeps: KapitanDependency[],
+  chartName: string,
+  componentKey: string
+): PackageDependency {
+  const versionReference = '${' + componentKey + ':charts:' + chartName + '}';
+  const kdep = kapitanDeps.find((d) => {
+    return (
+      d.type === 'helm' &&
+      (d as KapitanHelmDependency).version === versionReference
+    );
+  });
+  logger.debug({ chartName, kdep }, 'kapitan dependency for chart');
+  const dep: KapitanHelmDependency = kdep as KapitanHelmDependency;
+
+  if (!dep || !dep.chart_name) {
+    if (!dep) {
+      logger.warn(
+        { chartName, versionReference, dep },
+        'no Kapitan dependency found for chart'
+      );
+    }
+    res.skipReason = SkipReason.InvalidDependencySpecification;
+    return res;
+  }
+  if (!dep.source) {
+    logger.warn({ chartName }, 'Kapitan dependency has no source, skipping...');
+    res.skipReason = SkipReason.NoSource;
+    return res;
+  }
+
+  if (dep.chart_name !== res.depName) {
+    logger.info(
+      { dependencyName: dep.chart_name, versionName: res.depName },
+      'mismatched chart name between version and dependency, using depedency name for version lookup.'
+    );
+    res.depName = dep.chart_name;
+
+    // store name of chart version in `class/defaults.yml` in propSource.
+    // This field is only used by the Maven manager, so we should be able
+    // to safely use it to propagate the chart's version field.
+    res.propSource = chartName;
+  }
+  res.registryUrls = [dep.source];
+  return res;
 }
