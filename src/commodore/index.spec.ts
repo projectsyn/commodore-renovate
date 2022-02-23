@@ -1,10 +1,10 @@
-import { beforeAll, afterAll, describe, expect, it, jest } from '@jest/globals';
+import { beforeAll, afterAll, describe, expect, it } from '@jest/globals';
 import { copyFile, mkdir, readdir } from 'fs/promises';
 import { rmSync } from 'fs';
 
 import Git from 'simple-git';
 
-import { getGlobalConfig } from 'renovate/dist/config/global';
+import { GlobalConfig } from 'renovate/dist/config/global';
 
 import { getFixturePath, getLoggerErrors, loadFixture } from '../test/util';
 import { defaultConfig, extractPackageFile } from './index';
@@ -20,20 +20,10 @@ const pin4 = loadFixture('4/pins.yml');
 const tenant1 = loadFixture('5/tenant/c-foo.yml');
 const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
 
-jest.mock('renovate/dist/config/global');
-function mockGetGlobalConfig(
-  fixtureId: string,
-  isTenantFixture: boolean
-): void {
-  const mockGetGlobalConfigFn = getGlobalConfig as jest.MockedFunction<
-    typeof getGlobalConfig
-  >;
-  mockGetGlobalConfigFn.mockImplementation(() => {
-    return {
-      localDir: getFixturePath(fixtureId) + (isTenantFixture ? '/tenant' : ''),
-      cacheDir: '/tmp/renovate',
-    };
-  });
+function setGlobalConfig(fixtureId: string, isTenantFixture: boolean): void {
+  GlobalConfig.get().localDir =
+    getFixturePath(fixtureId) + (isTenantFixture ? '/tenant' : '');
+  GlobalConfig.get().cacheDir = '/tmp/renovate';
 }
 
 async function setupGlobalRepo(
@@ -116,13 +106,13 @@ afterAll(() => {
 describe('src/commodore/index', () => {
   describe('extractPackageFile()', () => {
     it('returns null for empty', () => {
-      mockGetGlobalConfig('1', false);
+      setGlobalConfig('1', false);
       return expect(
         extractPackageFile('nothing here', 'no.yml', defaultConfig)
       ).resolves.toBeNull();
     });
     it('extracts component versions', async () => {
-      mockGetGlobalConfig('2', false);
+      setGlobalConfig('2', false);
       const res = await extractPackageFile(
         params1,
         '1/params.yml',
@@ -141,13 +131,13 @@ describe('src/commodore/index', () => {
       ).resolves.toBeNull();
     });
     it('returns null for invalid yaml', () => {
-      mockGetGlobalConfig('3', false);
+      setGlobalConfig('3', false);
       return expect(
         extractPackageFile(invalid3, '3/params.yml', defaultConfig)
       ).resolves.toBeNull();
     });
     it('extracts component urls for version pins', async () => {
-      mockGetGlobalConfig('4', false);
+      setGlobalConfig('4', false);
       const res = await extractPackageFile(pin4, '4/pins.yml', defaultConfig);
       expect(res).not.toBeNull();
       if (res) {
@@ -157,7 +147,7 @@ describe('src/commodore/index', () => {
       }
     });
     it('extracts component urls for version pins in tenant repo', async () => {
-      mockGetGlobalConfig('5', true);
+      setGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '5');
       const config: any = { ...defaultConfig };
       config.tenantId = 't-bar';
@@ -183,7 +173,7 @@ describe('src/commodore/index', () => {
       rmSync('/tmp/renovate/5', { recursive: true });
     });
     it('uses cluster info returned by Lieutenant', async () => {
-      mockGetGlobalConfig('5', true);
+      setGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '6');
       const scope = setupNock('c-foo-2', 200, '', true);
       const config: any = { ...defaultConfig };
@@ -215,7 +205,7 @@ describe('src/commodore/index', () => {
       rmSync('/tmp/renovate/6', { recursive: true });
     });
     it('proceeds without cluster info on 404', async () => {
-      mockGetGlobalConfig('5', true);
+      setGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '7');
       const scope = setupNock('c-foo-3', 404, 'cluster not found', false);
       const config: any = { ...defaultConfig };
@@ -272,7 +262,7 @@ describe('src/commodore/index', () => {
       rmSync('/tmp/renovate/8', { recursive: true });
     });
     it('generates valid Commodore parameters for clusters with no dynamic facts', async () => {
-      mockGetGlobalConfig('5', true);
+      setGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '9');
       const scope = setupNock('c-foo-4', 200, '', false);
       const config: any = { ...defaultConfig };

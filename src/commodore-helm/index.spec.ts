@@ -2,21 +2,13 @@ import { loadFixture, getFixturePath, getLoggerErrors } from '../test/util';
 import { extractPackageFile, extractAllPackageFiles } from './index';
 import { beforeEach, expect, describe, it } from '@jest/globals';
 
-import { getGlobalConfig } from 'renovate/dist/config/global';
+import { GlobalConfig } from 'renovate/dist/config/global';
 
 import { clearProblems } from 'renovate/dist/logger';
 
-jest.mock('renovate/dist/config/global');
-function mockGetGlobalConfig(fixtureId: string): void {
-  const mockGetGlobalConfigFn = getGlobalConfig as jest.MockedFunction<
-    typeof getGlobalConfig
-  >;
-  mockGetGlobalConfigFn.mockImplementation(() => {
-    return {
-      localDir: getFixturePath(fixtureId),
-      cacheDir: '/tmp/renovate',
-    };
-  });
+function setGlobalConfig(fixtureId: string): void {
+  GlobalConfig.get().localDir = getFixturePath(fixtureId);
+  GlobalConfig.get().cacheDir = '/tmp/renovate';
 }
 
 beforeEach(() => {
@@ -160,7 +152,7 @@ describe('manager/commodore-helm/index', () => {
   // function which does the heavy lifting for `extractAllPackageFiles()`.
   describe('extractAllPackageFiles()', () => {
     it('extracts old standard Helm dependencies', async () => {
-      mockGetGlobalConfig('1');
+      setGlobalConfig('1');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name.yml',
@@ -183,7 +175,7 @@ describe('manager/commodore-helm/index', () => {
       }
     });
     it('extracts old standard Helm dependencies for components with long names', async () => {
-      mockGetGlobalConfig('2');
+      setGlobalConfig('2');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/long-component-name.yml',
@@ -206,7 +198,7 @@ describe('manager/commodore-helm/index', () => {
       }
     });
     it('extracts old-style Helm dependencies with mismatched names', async () => {
-      mockGetGlobalConfig('3');
+      setGlobalConfig('3');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name.yml',
@@ -229,7 +221,7 @@ describe('manager/commodore-helm/index', () => {
       }
     });
     it('gracefully ignores components without Helm chart dependencies', async () => {
-      mockGetGlobalConfig('4');
+      setGlobalConfig('4');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name.yml',
@@ -242,7 +234,7 @@ describe('manager/commodore-helm/index', () => {
       expect(res).toBeNull();
     });
     it('gracefully ignores components with old standard `charts` parameter but no Kapitan config', async () => {
-      mockGetGlobalConfig('5');
+      setGlobalConfig('5');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name.yml',
@@ -266,7 +258,7 @@ describe('manager/commodore-helm/index', () => {
       }
     });
     it('gracefully ignores components with old standard `charts` parameter but no Kapitan helm dependencies', async () => {
-      mockGetGlobalConfig('5');
+      setGlobalConfig('5');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name-2.yml',
@@ -311,7 +303,7 @@ describe('manager/commodore-helm/index', () => {
       );
     });
     it('extracts new and old standard Helm dependencies in the same file', async () => {
-      mockGetGlobalConfig('7');
+      setGlobalConfig('7');
       const res = await extractAllPackageFiles({}, [
         'class/defaults.yml',
         'class/component-name.yml',

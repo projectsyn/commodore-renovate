@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 
 import * as gitRef from 'renovate/dist/datasource/git-refs';
 import { logger } from 'renovate/dist/logger';
-import { getGlobalConfig } from 'renovate/dist/config/global';
+import { GlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
 import type { PackageFile } from 'renovate/dist/manager/types';
 
@@ -43,6 +43,8 @@ export const defaultExtraConfig = {
   // map facts to files
   factsMap: {} as any,
 };
+
+export const supportedDatasources = [gitRef.GitRefsDatasource.id];
 
 function factsFromAny(facts: any): Facts {
   return {
@@ -128,7 +130,7 @@ export async function extractPackageFile(
 
   let components: CommodoreComponentDependency[];
 
-  const repoDir: string | undefined = getGlobalConfig().localDir;
+  const repoDir: string | undefined = GlobalConfig.get('localDir');
   let globalDir: string = '';
   // Tenant repos must have `commodore.tenantId` set
   const isTenantRepo: boolean =
