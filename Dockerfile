@@ -33,7 +33,7 @@ COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases lookupName=containerbase/python-prebuild
-RUN install-tool python 3.9.0
+RUN install-tool python 3.9.10
 RUN install-apt build-essential
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
