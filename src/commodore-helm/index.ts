@@ -129,9 +129,9 @@ export async function extractAllPackageFiles(
   let defaults_file: string | null = null;
 
   if (packageFiles.length != 2) {
-    logger.error(
+    logger.warn(
       { packageFiles },
-      'Expected exactly two package files, aborting.'
+      'Expected exactly two package files, skipping.'
     );
     return null;
   }
@@ -148,14 +148,14 @@ export async function extractAllPackageFiles(
   }
 
   if (!fileContents.has('defaults') || !defaults_file) {
-    logger.error('Component repository has no `class/defaults.ya?ml`');
+    logger.warn('Repository has no `class/defaults.ya?ml`, skipping');
     return null;
   }
 
   if (!componentName) {
-    logger.error(
+    logger.warn(
       { packageFiles },
-      'Unable to identify component name from package files'
+      'Unable to identify component name from package files, skipping'
     );
     return null;
   }
