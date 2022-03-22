@@ -14,7 +14,7 @@ WORKDIR /usr/src/app
 FROM base as tsbuild
 
 # renovate: datasource=npm versioning=npm
-RUN install-tool yarn 1.22.17
+RUN install-tool yarn 1.22.18
 
 COPY package.json yarn.lock ./
 RUN yarn install --production
