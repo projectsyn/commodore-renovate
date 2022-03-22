@@ -38,6 +38,20 @@ RUN install-apt build-essential
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
+# Install Commodore binary dependencies
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
+ && chmod 700 get_helm.sh \
+ && ./get_helm.sh \
+ && mv /usr/local/bin/helm /usr/local/bin/helm3 \
+ && curl -LO https://git.io/get_helm.sh \
+ && chmod 700 get_helm.sh \
+ && ./get_helm.sh \
+ && mv /usr/local/bin/helm /usr/local/bin/helm2 \
+ && rm ./get_helm.sh \
+ && ln -s /usr/local/bin/helm3 /usr/local/bin/helm \
+ && curl -fsSLo /usr/local/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64 \
+ && chmod +x /usr/local/bin/jb
+
 RUN set -ex; \
   chmod +x /usr/src/app/bin/index.js; \
   ln -sf /usr/src/app/bin/index.js /usr/local/bin/renovate;
