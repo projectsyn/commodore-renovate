@@ -49,3 +49,17 @@ jobs:
       - name: Test
         run: |
           yarn test
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v2
+      - name: Build
+        if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: 'ghcr.io/${{ env.IMAGE }}:test'
