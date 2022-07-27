@@ -3,10 +3,11 @@ export interface CommodoreConfig {
 }
 
 export interface CommodoreParameters {
-  components: Map<string, CommodoreComponentDependency>;
+  components: Map<string, CommodoreDependency>;
+  packages: Map<string, CommodoreDependency>;
 }
 
-export interface CommodoreComponentDependency {
+export interface CommodoreDependency {
   name: string;
   url: string;
   version: string;

@@ -49,12 +49,16 @@ export async function renderInventory(
     const result: string = execSync(command, { stdio: 'pipe' }).toString();
     const params: CommodoreParameters = {
       components: new Map(Object.entries(JSON.parse(result))),
+      packages: new Map(),
     };
     versionCache.set(ck, params);
     return params;
   } catch (e: any) {
     const stderr = e.stderr.toString();
     logger.error(`Error rendering reclass inventory: ${stderr}`);
-    return { components: new Map() };
+    return {
+      components: new Map(),
+      packages: new Map(),
+    };
   }
 }
