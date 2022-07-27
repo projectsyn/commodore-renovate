@@ -96,15 +96,21 @@ async function extractDependencies(
 
   const components = parseDependency(
     doc.parameters.components,
-    params.components
+    params.components,
+    'component'
   );
-  const packages = parseDependency(doc.parameters.packages, params.packages);
+  const packages = parseDependency(
+    doc.parameters.packages,
+    params.packages,
+    'package'
+  );
   return components.concat(packages);
 }
 
 function parseDependency(
   deps: Map<string, CommodoreDependency>,
-  versions: Map<string, CommodoreDependency>
+  versions: Map<string, CommodoreDependency>,
+  depType: string
 ): CommodoreDependency[] {
   if (deps === undefined || deps === null) {
     return [];
@@ -116,7 +122,7 @@ function parseDependency(
         dep.url = rc.url;
       }
     }
-    dep.name = key;
+    dep.name = depType + '-' + key;
     return dep;
   });
 }
