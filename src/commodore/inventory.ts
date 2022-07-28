@@ -44,12 +44,18 @@ export async function renderInventory(
   const factsPath: string = await writeFactsFile(cacheKey('', facts), facts);
 
   /* construct and execute Commodore command */
-  var command = `commodore inventory components ${globalPath} ${repoPath} -ojson -f ${factsPath} -f ${extraValuesPath}`;
+  var command = `commodore inventory show ${globalPath} ${repoPath} -ojson -f ${factsPath} -f ${extraValuesPath}`;
   try {
     const result: string = execSync(command, { stdio: 'pipe' }).toString();
+    const resp: any = JSON.parse(result);
+
+    const components: Object =
+      resp.components !== undefined ? resp.components : {};
+    const packages: Object = resp.packages !== undefined ? resp.packages : {};
+
     const params: CommodoreParameters = {
-      components: new Map(Object.entries(JSON.parse(result))),
-      packages: new Map(),
+      components: new Map(Object.entries(components)),
+      packages: new Map(Object.entries(packages)),
     };
     versionCache.set(ck, params);
     return params;
