@@ -278,7 +278,7 @@ export async function extractPackageFile(
 
   const deps = components.map((v: CommodoreDependency) => ({
     depName: `${v.name} in ${fileName}`,
-    lookupName: v.url,
+    packageName: v.url,
     currentValue: v.version,
   }));
   return { deps, datasource: gitRef.GitRefsDatasource.id };
