@@ -137,7 +137,7 @@ export async function extractAllPackageFiles(
   }
 
   for (const file of packageFiles) {
-    const content = await readLocalFile(file, 'utf8');
+    const content = (await readLocalFile(file, 'utf8')) ?? '';
     const key = path.parse(file).name;
     fileContents.set(key, content);
     if (key != 'defaults') {
