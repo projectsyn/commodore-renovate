@@ -1,11 +1,11 @@
 import { parse } from 'path';
 import yaml from 'js-yaml';
 
-import * as gitRef from 'renovate/dist/datasource/git-refs';
+import * as gitRef from 'renovate/dist/modules/datasource/git-refs';
 import { logger } from 'renovate/dist/logger';
 import { GlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
-import type { PackageFile } from 'renovate/dist/manager/types';
+import type { PackageFile } from 'renovate/dist/modules/manager/types';
 
 import type {
   CommodoreDependency,
