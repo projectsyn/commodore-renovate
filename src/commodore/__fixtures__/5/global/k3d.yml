@@ -2,3 +2,6 @@ parameters:
   components:
     argocd:
       url: https://github.com/projectsyn/component-argocd-k3d.git
+  packages:
+    monitoring:
+      url: https://github.com/projectsyn/package-k3d-monitoring

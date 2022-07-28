@@ -19,6 +19,9 @@ const invalid3 = loadFixture('3/params.yml');
 const pin4 = loadFixture('4/pins.yml');
 const tenant1 = loadFixture('5/tenant/c-foo.yml');
 const tenant2 = loadFixture('5/tenant/c-foo-2.yml');
+const tenant3 = loadFixture('5/tenant/c-foo-3.yml');
+const tenant4 = loadFixture('5/tenant/c-foo-4.yml');
+const tenantTest = loadFixture('5/tenant/test.yml');
 
 function setGlobalConfig(fixtureId: string, isTenantFixture: boolean): void {
   GlobalConfig.get().localDir =
@@ -111,7 +114,7 @@ describe('src/commodore/index', () => {
         extractPackageFile('nothing here', 'no.yml', defaultConfig)
       ).resolves.toBeNull();
     });
-    it('extracts component versions', async () => {
+    it('extracts component and package versions', async () => {
       setGlobalConfig('2', false);
       const res = await extractPackageFile(
         params1,
@@ -122,10 +125,10 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(6);
+        expect(deps).toHaveLength(7);
       }
     });
-    it('returns no component version for files without components', () => {
+    it('returns no component or package version for files without components or packages', () => {
       return expect(
         extractPackageFile(kube2, '2/kubernetes.yml', defaultConfig)
       ).resolves.toBeNull();
@@ -136,17 +139,17 @@ describe('src/commodore/index', () => {
         extractPackageFile(invalid3, '3/params.yml', defaultConfig)
       ).resolves.toBeNull();
     });
-    it('extracts component urls for version pins', async () => {
+    it('extracts component and package urls for version pins', async () => {
       setGlobalConfig('4', false);
       const res = await extractPackageFile(pin4, '4/pins.yml', defaultConfig);
       expect(res).not.toBeNull();
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
     });
-    it('extracts component urls for version pins in tenant repo', async () => {
+    it('extracts component and package urls for version pins in tenant repo', async () => {
       setGlobalConfig('5', true);
       const globalRepoDir: string = await setupGlobalRepo('5/global', '5');
       const config: any = { ...defaultConfig };
@@ -166,7 +169,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
 
       // Clean up global repo for this test case
@@ -197,7 +200,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
       expect(scope.isDone()).toBe(true);
 
@@ -215,7 +218,7 @@ describe('src/commodore/index', () => {
       config.tenantId = 't-bar';
       config.globalRepoURL = `file://${globalRepoDir}`;
       const res = await extractPackageFile(
-        tenant2,
+        tenant3,
         '5/tenant/c-foo-3.yml',
         config
       );
@@ -228,7 +231,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
       expect(scope.isDone()).toBe(true);
 
@@ -242,7 +245,7 @@ describe('src/commodore/index', () => {
       config.globalRepoURL = `file://${globalRepoDir}`;
       config.extraConfig = 'renovate.commodore.json';
       const res = await extractPackageFile(
-        tenant2,
+        tenantTest,
         '5/tenant/test.yml',
         config
       );
@@ -255,7 +258,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
 
       // Clean up global repo for this test case
@@ -272,7 +275,7 @@ describe('src/commodore/index', () => {
       config.tenantId = 't-bar';
       config.globalRepoURL = `file://${globalRepoDir}`;
       const res = await extractPackageFile(
-        tenant2,
+        tenant4,
         '5/tenant/c-foo-4.yml',
         config
       );
@@ -285,7 +288,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(2);
+        expect(deps).toHaveLength(3);
       }
       expect(scope.isDone()).toBe(true);
 

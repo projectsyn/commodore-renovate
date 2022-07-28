@@ -18,3 +18,7 @@ parameters:
     lieutenant:
       url: https://github.com/projectsyn/component-lieutenant.git
       version: v2.2.0
+  packages:
+    monitoring:
+      url: https://github.com/projectsyn/package-monitoring
+      version: v1.0.0

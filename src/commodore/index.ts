@@ -8,7 +8,7 @@ import { readLocalFile } from 'renovate/dist/util/fs';
 import type { PackageFile } from 'renovate/dist/manager/types';
 
 import type {
-  CommodoreComponentDependency,
+  CommodoreDependency,
   CommodoreParameters,
   CommodoreConfig,
   ClusterInfo,
@@ -62,53 +62,68 @@ function dynamicFactsFromAny(dynamicFacts: any): any {
   }
 }
 
-// extractComponents will extract all component dependencies.
+// extractDependencies will extract all component and package dependencies.
 // It will return an error if the content is not valid yaml.
-async function extractComponents(
+async function extractDependencies(
   content: string,
   repoDir: string | undefined,
   globalDir: string,
   extraValuesPath: string,
   facts: Facts
-): Promise<CommodoreComponentDependency[]> {
+): Promise<CommodoreDependency[]> {
   const doc: CommodoreConfig = yaml.load(content) as CommodoreConfig;
   if (
     doc === undefined ||
     doc === null ||
     doc.parameters === undefined ||
-    doc.parameters === null ||
-    doc.parameters.components === undefined ||
-    doc.parameters.components === null
+    doc.parameters === null
   ) {
     return [];
   }
 
   /* Render inventory with commodore to extract full dependency information */
-  let versions: Map<string, CommodoreComponentDependency> = new Map();
+  let params: CommodoreParameters = {
+    components: new Map(),
+    packages: new Map(),
+  };
   if (repoDir === undefined) {
     logger.warn(
-      'Unable to determine repo directory, cannot infer component URLs from rendered inventory.'
+      'Unable to determine repo directory, cannot infer component or package URLs from rendered inventory.'
     );
   } else {
-    const renderedParams: CommodoreParameters = await renderInventory(
-      repoDir,
-      globalDir,
-      extraValuesPath,
-      facts
-    );
-    versions = renderedParams.components;
+    params = await renderInventory(repoDir, globalDir, extraValuesPath, facts);
   }
 
-  return Object.entries(doc.parameters.components).map(([key, component]) => {
-    const c = component;
-    const rc: CommodoreComponentDependency | undefined = versions.get(key);
-    if (c.url === undefined || c.url === null || c.url === '') {
+  const components = parseDependency(
+    doc.parameters.components,
+    params.components,
+    'component'
+  );
+  const packages = parseDependency(
+    doc.parameters.packages,
+    params.packages,
+    'package'
+  );
+  return components.concat(packages);
+}
+
+function parseDependency(
+  deps: Map<string, CommodoreDependency>,
+  versions: Map<string, CommodoreDependency>,
+  depType: string
+): CommodoreDependency[] {
+  if (deps === undefined || deps === null) {
+    return [];
+  }
+  return Object.entries(deps).map(([key, dep]) => {
+    const rc: CommodoreDependency | undefined = versions.get(key);
+    if (dep.url === undefined || dep.url === null || dep.url === '') {
       if (rc !== undefined && rc !== null) {
-        c.url = rc.url;
+        dep.url = rc.url;
       }
     }
-    c.name = key;
-    return c;
+    dep.name = depType + '-' + key;
+    return dep;
   });
 }
 
@@ -128,7 +143,7 @@ export async function extractPackageFile(
   // Inject Lieutenant token into config object
   injectLieutenantToken(config);
 
-  let components: CommodoreComponentDependency[];
+  let components: CommodoreDependency[];
 
   const repoDir: string | undefined = GlobalConfig.get('localDir');
   let globalDir: string = '';
@@ -246,7 +261,7 @@ export async function extractPackageFile(
   }
 
   try {
-    components = await extractComponents(
+    components = await extractDependencies(
       content,
       repoDir,
       globalDir,
@@ -261,7 +276,7 @@ export async function extractPackageFile(
     return null;
   }
 
-  const deps = components.map((v: CommodoreComponentDependency) => ({
+  const deps = components.map((v: CommodoreDependency) => ({
     depName: `${v.name} in ${fileName}`,
     lookupName: v.url,
     currentValue: v.version,
