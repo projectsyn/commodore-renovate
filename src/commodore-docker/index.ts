@@ -3,11 +3,11 @@ import yaml from 'js-yaml';
 import type {
   PackageFile,
   PackageDependency,
-} from 'renovate/dist/manager/types';
+} from 'renovate/dist/modules/manager/types';
 
-import { DockerDatasource } from 'renovate/dist/datasource/docker';
-import { getDep } from 'renovate/dist/manager/dockerfile/extract';
-import { id as dockerVersioning } from 'renovate/dist/versioning/docker';
+import { DockerDatasource } from 'renovate/dist/modules/datasource/docker';
+import { getDep } from 'renovate/dist/modules/manager/dockerfile/extract';
+import { id as dockerVersioning } from 'renovate/dist/modules/versioning/docker';
 
 export const defaultConfig = {
   fileMatch: ['class/defaults.ya?ml$'],

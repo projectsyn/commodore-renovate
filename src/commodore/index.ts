@@ -1,11 +1,11 @@
 import { parse } from 'path';
 import yaml from 'js-yaml';
 
-import * as gitRef from 'renovate/dist/datasource/git-refs';
+import * as gitRef from 'renovate/dist/modules/datasource/git-refs';
 import { logger } from 'renovate/dist/logger';
 import { GlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
-import type { PackageFile } from 'renovate/dist/manager/types';
+import type { PackageFile } from 'renovate/dist/modules/manager/types';
 
 import type {
   CommodoreDependency,
@@ -278,7 +278,7 @@ export async function extractPackageFile(
 
   const deps = components.map((v: CommodoreDependency) => ({
     depName: `${v.name} in ${fileName}`,
-    lookupName: v.url,
+    packageName: v.url,
     currentValue: v.version,
   }));
   return { deps, datasource: gitRef.GitRefsDatasource.id };

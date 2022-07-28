@@ -6,9 +6,9 @@ import type {
   ExtractConfig,
   PackageFile,
   PackageDependency,
-} from 'renovate/dist/manager/types';
+} from 'renovate/dist/modules/manager/types';
 
-import { HelmDatasource } from 'renovate/dist/datasource/helm';
+import { HelmDatasource } from 'renovate/dist/modules/datasource/helm';
 
 import { logger } from 'renovate/dist/logger';
 

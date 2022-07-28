@@ -5,17 +5,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 4/pins.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 4/pins.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 4/pins.yml",
-    "lookupName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "https://github.com/projectsyn/package-monitoring",
   },
 ]
 `;
@@ -25,17 +25,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo.yml",
-    "lookupName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "https://github.com/projectsyn/package-monitoring",
   },
 ]
 `;
@@ -45,37 +45,37 @@ Array [
   Object {
     "currentValue": "v1.1.0",
     "depName": "component-appuio-cloud in 1/params.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.0.0",
     "depName": "component-appuio-cloud2 in 1/params.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.0.0",
     "depName": "component-argocd in 1/params.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
   Object {
     "currentValue": "v2.1.0",
     "depName": "component-backup-k8up in 1/params.yml",
-    "lookupName": "https://github.com/projectsyn/component-backup-k8up.git",
+    "packageName": "https://github.com/projectsyn/component-backup-k8up.git",
   },
   Object {
     "currentValue": "v1.0.0",
     "depName": "component-kyverno in 1/params.yml",
-    "lookupName": "https://github.com/projectsyn/component-kyverno.git",
+    "packageName": "https://github.com/projectsyn/component-kyverno.git",
   },
   Object {
     "currentValue": "v2.2.0",
     "depName": "component-lieutenant in 1/params.yml",
-    "lookupName": "https://github.com/projectsyn/component-lieutenant.git",
+    "packageName": "https://github.com/projectsyn/component-lieutenant.git",
   },
   Object {
     "currentValue": "v1.0.0",
     "depName": "package-monitoring in 1/params.yml",
-    "lookupName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "https://github.com/projectsyn/package-monitoring",
   },
 ]
 `;
@@ -85,17 +85,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-4.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-4.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-4.yml",
-    "lookupName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
   },
 ]
 `;
@@ -105,17 +105,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-3.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-3.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-3.yml",
-    "lookupName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "https://github.com/projectsyn/package-monitoring",
   },
 ]
 `;
@@ -125,17 +125,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-2.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-2.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-2.yml",
-    "lookupName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
   },
 ]
 `;
@@ -145,17 +145,17 @@ Array [
   Object {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/test.yml",
-    "lookupName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
   Object {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/test.yml",
-    "lookupName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
   Object {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/test.yml",
-    "lookupName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
   },
 ]
 `;

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, rmSync } from 'fs';
-import api from 'renovate/dist/manager/api.js';
+import api from 'renovate/dist/modules/manager/api.js';
 import { logger } from 'renovate/dist/logger';
 
 import * as commodore from './commodore';
