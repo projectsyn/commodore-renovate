@@ -38,7 +38,7 @@ export const defaultExtraConfig = {
   distributionRegex:
     /^distribution\/(?<distribution>[^\/]+)(?:\/cloud\/(?<cloud>.+)\.ya?ml|(?:\/.+)?\.ya?ml)$/,
   cloudRegionRegex:
-    /^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>[^\/]+)\.ya?ml|.*\.ya?ml)$/,
+    /^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>[^\/]+)\.ya?ml|.+\.ya?ml)$/,
   ignoreValues: ['params'],
   // map facts to files
   factsMap: {} as any,
