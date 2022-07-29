@@ -52,6 +52,8 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    env:
+      IMAGE: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v3
       - name: Get changed files
