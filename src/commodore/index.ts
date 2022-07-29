@@ -215,9 +215,13 @@ export async function extractPackageFile(
     parse(fileName).name
   }-extra.yaml`;
 
-  const extraConfigStr: string = config.extraConfig
-    ? (await readLocalFile(config.extraConfig)).toString()
-    : '{}';
+  let extraConfigStr: string = '{}';
+  if (config.extraConfig) {
+    const file = await readLocalFile(config.extraConfig);
+    if (file !== null) {
+      extraConfigStr = file.toString();
+    }
+  }
   // Merge user-supplied extra config with defaults
   let extraConfig = { ...defaultExtraConfig };
   extraConfig = mergeConfig(extraConfig, globalExtraConfig);
