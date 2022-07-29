@@ -61,7 +61,7 @@ jobs:
         uses: tj-actions/changed-files@v2
       - name: Build
         if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: false
           tags: 'ghcr.io/${{ env.IMAGE }}:test'
