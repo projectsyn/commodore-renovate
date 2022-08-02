@@ -62,12 +62,13 @@ The manager currently understands the following keys in the extra configuration 
   The manager will also use a named capture group `region` as the cloud provider region, if it exists.
   The regex pattern should be written such that it matches the relative file path of a cloud class in the global defaults repository.
 
-  Default: `/^cloud\/(?<cloud>[^\/]+)(?:\/(?<region>.+)\.ya?ml|\.ya?ml)$/`.
+  Default: `/^cloud\/(?<cloud>[^\/]+)(?:\/(?:(?<region>[^\/]+)|.+)\.ya?ml|\.ya?ml)$/`
 
   The default regex pattern extracts the cloud (and optionally cloud region) name from file names in the following forms (and additionally the same forms with `.yaml` file extensions):
 
   - `cloud/<cloud>.yml`
   - `cloud/<cloud>/<region>.yml`
+  - `cloud/<cloud>/foo/bar.yml`
 
 - `ignoreValues`: An array of strings to ignore if they appear as distribution, cloud or region values.
   The manager will not use distribution, cloud, or region values which match an entry in this array when calling `commodore inventory show`.

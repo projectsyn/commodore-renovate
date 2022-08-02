@@ -32,7 +32,18 @@ describe('src/commodore/util', () => {
       ${'distribution/dist.yml'}             | ${{ distribution: 'dist', cloud: null, region: null }}
       ${'cloud/cloud.yml'}                   | ${{ distribution: null, cloud: 'cloud', region: null }}
       ${'cloud/cloud/region.yml'}            | ${{ distribution: null, cloud: 'cloud', region: 'region' }}
+      ${'cloud/cloud2/region2.yaml'}         | ${{ distribution: null, cloud: 'cloud2', region: 'region2' }}
       ${'cloud/cloud/params.yml'}            | ${{ distribution: null, cloud: 'cloud', region: null }}
+      ${'cloud/cloud2/params.yaml'}          | ${{ distribution: null, cloud: 'cloud2', region: null }}
+      ${'cloud/cloud/params/param.yml'}      | ${{ distribution: null, cloud: 'cloud', region: null }}
+      ${'cloud/cloud/foo/bar.yml'}           | ${{ distribution: null, cloud: 'cloud', region: null }}
+      ${'cloud/cloud2/foo/bar/buzz.yaml'}    | ${{ distribution: null, cloud: 'cloud2', region: null }}
+      ${'cloud/cloud2/foo/.yaml'}            | ${{ distribution: null, cloud: 'cloud2', region: null }}
+      ${'cloud/cloud//.yml'}                 | ${{ distribution: null, cloud: 'cloud', region: null }}
+      ${'cloud/cloud/.yml'}                  | ${{ distribution: null, cloud: null, region: null }}
+      ${'cloud/cloudnt/.yaml'}               | ${{ distribution: null, cloud: null, region: null }}
+      ${'cloud/cloud/notyml.json'}           | ${{ distribution: null, cloud: null, region: null }}
+      ${'cloud/cloud/notyml.sh'}             | ${{ distribution: null, cloud: null, region: null }}
       ${'distribution/dist/cloud/cloud.yml'} | ${{ distribution: 'dist', cloud: 'cloud', region: null }}
     `('returns $fact for $file', ({ file, fact }) => {
       const f = util.parseFileName(
@@ -42,7 +53,6 @@ describe('src/commodore/util', () => {
         defaultExtraConfig.ignoreValues
       );
 
-      expect(hasFact(f)).toBe(true);
       expect(f.distribution).toBe(fact.distribution);
       expect(f.cloud).toBe(fact.cloud);
       expect(f.region).toBe(fact.region);
