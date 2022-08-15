@@ -1,4 +1,4 @@
-FROM renovate/buildpack:6@sha256:72043b5318d6876dda202be77dd7025ad9305b347f1c275a4ed4b028774b2caf AS base
+FROM renovate/buildpack:6@sha256:3b4b7d0a920867cf2ec495632b159a3f7e10af1f7c454b0a076ad385edc2331d AS base
 
 LABEL name="commodore-renovate"
 LABEL org.opencontainers.image.source="https://github.com/projectsyn/commodore-renovate" \
