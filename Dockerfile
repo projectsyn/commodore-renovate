@@ -5,7 +5,7 @@ LABEL org.opencontainers.image.source="https://github.com/projectsyn/commodore-r
   org.opencontainers.image.licenses="AGPL-3.0-only"
 
 # renovate: datasource=node
-RUN install-tool node v16.16.0
+RUN install-tool node v16.17.0
 
 WORKDIR /usr/src/app
 
