@@ -5449,10 +5449,10 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-just-clone@^5.0.1:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/just-clone/-/just-clone-5.1.0.tgz#ad46808a5c99505e13f5c25b38bf4006f1c22a0a"
-  integrity sha512-LiIL2BG6WIjSMo0HI5/LD2iuXoQj9nh+cZgaaxR538z53XM+g/M2Yra+o9dz/s6cRSnghwENrE8zDEfsOPduOg==
+just-clone@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/just-clone/-/just-clone-6.1.1.tgz#05a67155558c6517362db424303bb76f4f7f23df"
+  integrity sha512-V24KLIid8uaG7ayOymGfheNHtxgrbpzj1UznQnF9vQZMHlKGTSLT3WWmFx62OXSQPwk1Tn+uo+H5/Xhb4bL9pA==
 
 keyv@^4.0.0:
   version "4.3.3"
