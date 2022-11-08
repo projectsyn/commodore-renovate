@@ -34,6 +34,10 @@ COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases lookupName=containerbase/python-prebuild
 RUN install-tool python 3.11.0
+# Create a symlink from /opt/buildpack/tools/python to /usr/local/python
+# because otherwise the python packages which need to build C extensions can't
+# find Python.h
+RUN ln -s /opt/buildpack/tools/python /usr/local/python
 RUN install-apt build-essential libffi-dev
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
