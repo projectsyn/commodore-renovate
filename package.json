@@ -23,7 +23,7 @@
     "jest": "^28.0.0",
     "just-clone": "^6.0.0",
     "normalize-url": "6.1.0",
-    "renovate": "^32.0.0",
+    "renovate": "^34.0.0",
     "simple-git": "^3.0.0",
     "typescript": "^4.4.4"
   },
