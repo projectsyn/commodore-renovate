@@ -42,6 +42,8 @@ RUN install-apt build-essential libffi-dev
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
+ARG KUSTOMIZE_VERSION=4.5.7
+
 # Install Commodore binary dependencies
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
  && chmod 700 get_helm.sh \
@@ -54,7 +56,11 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
  && rm ./get_helm.sh \
  && ln -s /usr/local/bin/helm3 /usr/local/bin/helm \
  && curl -fsSLo /usr/local/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64 \
- && chmod +x /usr/local/bin/jb
+ && chmod +x /usr/local/bin/jb \
+ && curl -fsSLO "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" \
+ && chmod +x install_kustomize.sh \
+ && ./install_kustomize.sh ${KUSTOMIZE_VERSION} /usr/local/bin \
+ && rm ./install_kustomize.sh
 
 RUN set -ex; \
   chmod +x /usr/src/app/bin/index.js; \
