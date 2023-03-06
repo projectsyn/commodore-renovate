@@ -38,7 +38,7 @@ RUN install-tool python 3.11.1
 # because otherwise the python packages which need to build C extensions can't
 # find Python.h
 RUN ln -s /opt/buildpack/tools/python /usr/local/python
-RUN install-apt build-essential libffi-dev
+RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
