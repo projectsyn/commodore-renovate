@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`src/commodore/index extractPackageFile() extracts component and package urls for version pins 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 4/pins.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 4/pins.yml",
     "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 4/pins.yml",
     "packageName": "https://github.com/projectsyn/package-monitoring",
@@ -21,18 +21,18 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() extracts component and package urls for version pins in tenant repo 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo.yml",
     "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo.yml",
     "packageName": "https://github.com/projectsyn/package-monitoring",
@@ -41,38 +41,38 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() extracts component and package versions 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v1.1.0",
     "depName": "component-appuio-cloud in 1/params.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.0.0",
     "depName": "component-appuio-cloud2 in 1/params.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.0.0",
     "depName": "component-argocd in 1/params.yml",
     "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
-  Object {
+  {
     "currentValue": "v2.1.0",
     "depName": "component-backup-k8up in 1/params.yml",
     "packageName": "https://github.com/projectsyn/component-backup-k8up.git",
   },
-  Object {
+  {
     "currentValue": "v1.0.0",
     "depName": "component-kyverno in 1/params.yml",
     "packageName": "https://github.com/projectsyn/component-kyverno.git",
   },
-  Object {
+  {
     "currentValue": "v2.2.0",
     "depName": "component-lieutenant in 1/params.yml",
     "packageName": "https://github.com/projectsyn/component-lieutenant.git",
   },
-  Object {
+  {
     "currentValue": "v1.0.0",
     "depName": "package-monitoring in 1/params.yml",
     "packageName": "https://github.com/projectsyn/package-monitoring",
@@ -81,18 +81,18 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() generates valid Commodore parameters for clusters with no dynamic facts 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-4.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-4.yml",
     "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-4.yml",
     "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
@@ -101,18 +101,18 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() proceeds without cluster info on 404 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-3.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-3.yml",
     "packageName": "https://github.com/projectsyn/component-argocd.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-3.yml",
     "packageName": "https://github.com/projectsyn/package-monitoring",
@@ -121,18 +121,18 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() uses cluster info returned by Lieutenant 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-2.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/c-foo-2.yml",
     "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/c-foo-2.yml",
     "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
@@ -141,18 +141,18 @@ Array [
 `;
 
 exports[`src/commodore/index extractPackageFile() uses facts from factsMap 1`] = `
-Array [
-  Object {
+[
+  {
     "currentValue": "v3.0.0",
     "depName": "component-appuio-cloud in 5/tenant/test.yml",
     "packageName": "https://github.com/appuio/component-appuio-cloud.git",
   },
-  Object {
+  {
     "currentValue": "v1.2.3",
     "depName": "component-argocd in 5/tenant/test.yml",
     "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
   },
-  Object {
+  {
     "currentValue": "v0.9.0",
     "depName": "package-monitoring in 5/tenant/test.yml",
     "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
