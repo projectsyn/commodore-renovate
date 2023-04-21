@@ -5,6 +5,7 @@ import path from 'path';
 import type {
   ExtractConfig,
   PackageFile,
+  PackageFileContent,
   PackageDependency,
 } from 'renovate/dist/modules/manager/types';
 
@@ -45,7 +46,7 @@ export function extractPackageFile(
   content: string,
   fileName: string,
   config: any
-): PackageFile | null {
+): PackageFileContent | null {
   logger.debug(
     { fileName, depName: config.depName, baseDeps: config.baseDeps },
     'extractPackageFile upgrade'

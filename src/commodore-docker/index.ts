@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 
 import type {
-  PackageFile,
+  PackageFileContent,
   PackageDependency,
 } from 'renovate/dist/modules/manager/types';
 
@@ -18,7 +18,7 @@ export const supportedDatasources = [DockerDatasource.id];
 export function extractPackageFile(
   content: string,
   fileName: string
-): PackageFile | null {
+): PackageFileContent | null {
   const doc: any = yaml.load(content);
 
   if (
