@@ -5,7 +5,7 @@ import * as gitRef from 'renovate/dist/modules/datasource/git-refs';
 import { logger } from 'renovate/dist/logger';
 import { GlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
-import type { PackageFile } from 'renovate/dist/modules/manager/types';
+import type { PackageFileContent } from 'renovate/dist/modules/manager/types';
 
 import type {
   CommodoreDependency,
@@ -139,7 +139,7 @@ export async function extractPackageFile(
   content: string,
   fileName: string,
   config: any
-): Promise<PackageFile | null> {
+): Promise<PackageFileContent | null> {
   // Inject Lieutenant token into config object
   injectLieutenantToken(config);
 
