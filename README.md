@@ -10,7 +10,7 @@ It does this by depending on renovate and patching in an additional manager for 
 You need the following dependencies for local development:
 
 - Git `>=2.33.0`
-- Node.js `>=16.14.0`
+- Node.js `>=18.15.0`
 - Yarn `^1.22.5`
 - C++ compiler
 - Python `>=3.8`
