@@ -1,4 +1,4 @@
-FROM ghcr.io/containerbase/base:7.8.4@sha256:b11860aed3f6bb5129c087b1ac434105d9459b7f09ce6292b9c50d22555fec65 AS base
+FROM ghcr.io/containerbase/base:7.8.6@sha256:d5b5bfdac94337930559be51e8beefa4e21ac693723a98f38cdd97f4082754c1 AS base
 
 LABEL name="commodore-renovate"
 LABEL org.opencontainers.image.source="https://github.com/projectsyn/commodore-renovate" \
