@@ -14,5 +14,12 @@
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     }
   ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "labels": ["ignore"],
+    "automerge": true,
+    "automergeType": "pr",
+    "platformAutomerge": true
+  },
   "labels": ["dependency"]
 }
