@@ -28,8 +28,8 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.22.8",
-    "@babel/preset-env": "7.22.7",
+    "@babel/core": "7.22.9",
+    "@babel/preset-env": "7.22.9",
     "@babel/preset-typescript": "7.22.5",
     "@ls-lint/ls-lint": "2.0.1",
     "@types/bunyan": "1.8.8",
