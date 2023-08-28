@@ -33,7 +33,7 @@ COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases lookupName=containerbase/python-prebuild
-RUN install-tool python 3.11.4
+RUN install-tool python 3.11.5
 # Create a symlink from /opt/buildpack/tools/python to /usr/local/python
 # because otherwise the python packages which need to build C extensions can't
 # find Python.h
