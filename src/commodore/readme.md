@@ -12,6 +12,9 @@ The manager will optionally try to fetch cluster info from Lieutenant.
 Data returned from Lieutenant will be provided to `commodore inventory show` to infer more accurate component and package URLs (e.g. if an URL is overridden for a distribution).
 This feature is only available for tenant repositories, and only if configuration parameters `lieutenantURL` and `lieutenantToken` are set.
 
+For Commodore components hosted on GitHub, the manager will use GitHub releases as the data source for detecting new versions.
+For all other git hosts, it will use git refs, detecting versions from among the repository's git tags and git heads.
+
 ## Configuration
 
 The Commodore manager requires some non-standard configurations.
@@ -81,6 +84,10 @@ The manager currently understands the following keys in the extra configuration 
   However, values returned from Lieutenant have precedence over values provided in the `factsMap`.
 
   Default: `{}`.
+
+- `githubBaseUrl`: A string containing the base URL of GitHub, used to distinguish between GitHub repositories and other git hosts.
+
+  Default: `https://github.com/`
 
 The manager uses the results of the `distributionRegex` and `cloudRegionRegex` patterns, the values provided in `factsMap`, and the Lieutenant API response to construct an inventory class providing the facts to Commodore.
 
