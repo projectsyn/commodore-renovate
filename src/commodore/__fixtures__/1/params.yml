@@ -22,6 +22,8 @@ parameters:
     foo-test:
       url: https://gitlab.com/projectsyn/component-foo-test.git
       version: v2.2.0
+    bar-test:
+      version: v2.2.0
   packages:
     monitoring:
       url: https://github.com/projectsyn/package-monitoring

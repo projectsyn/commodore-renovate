@@ -286,15 +286,23 @@ export async function extractPackageFile(
   }
 
   const githubBaseUrl = extraConfig.githubBaseUrl;
-  const deps = components.map((v: CommodoreDependency) => ({
-    depName: `${v.name} in ${fileName}`,
-    packageName: v.url.startsWith(githubBaseUrl)
-      ? v.url.slice(githubBaseUrl.length).replace(/\.git$/, '')
-      : v.url,
-    currentValue: v.version,
-    datasource: v.url.startsWith(githubBaseUrl)
-      ? githubRelease.GithubReleasesDatasource.id
-      : gitRef.GitRefsDatasource.id,
-  }));
+  const deps = components
+    .filter((dep: CommodoreDependency) => {
+      if (dep.url !== undefined) return true;
+      logger.warn(
+        `Could not infer package for dependency: ${dep.name} in ${fileName}. Skipping package.`
+      );
+      return false;
+    })
+    .map((v: CommodoreDependency) => ({
+      depName: `${v.name} in ${fileName}`,
+      packageName: v.url?.startsWith(githubBaseUrl)
+        ? v.url.slice(githubBaseUrl.length).replace(/\.git$/, '')
+        : v.url,
+      currentValue: v.version,
+      datasource: v.url?.startsWith(githubBaseUrl)
+        ? githubRelease.GithubReleasesDatasource.id
+        : gitRef.GitRefsDatasource.id,
+    }));
   return { deps };
 }
