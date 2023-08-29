@@ -2,6 +2,7 @@ import { parse } from 'path';
 import yaml from 'js-yaml';
 
 import * as gitRef from 'renovate/dist/modules/datasource/git-refs';
+import * as githubRelease from 'renovate/dist/modules/datasource/github-releases';
 import { logger } from 'renovate/dist/logger';
 import { GlobalConfig } from 'renovate/dist/config/global';
 import { readLocalFile } from 'renovate/dist/util/fs';
@@ -42,9 +43,13 @@ export const defaultExtraConfig = {
   ignoreValues: ['params'],
   // map facts to files
   factsMap: {} as any,
+  githubBaseUrl: 'https://github.com/',
 };
 
-export const supportedDatasources = [gitRef.GitRefsDatasource.id];
+export const supportedDatasources = [
+  gitRef.GitRefsDatasource.id,
+  githubRelease.GithubReleasesDatasource.id,
+];
 
 function factsFromAny(facts: any): Facts {
   return {
@@ -280,10 +285,16 @@ export async function extractPackageFile(
     return null;
   }
 
+  const githubBaseUrl = extraConfig.githubBaseUrl;
   const deps = components.map((v: CommodoreDependency) => ({
     depName: `${v.name} in ${fileName}`,
-    packageName: v.url,
+    packageName: v.url.startsWith(githubBaseUrl)
+      ? v.url.slice(githubBaseUrl.length).replace(/\.git$/, '')
+      : v.url,
     currentValue: v.version,
+    datasource: v.url.startsWith(githubBaseUrl)
+      ? githubRelease.GithubReleasesDatasource.id
+      : gitRef.GitRefsDatasource.id,
   }));
-  return { deps, datasource: gitRef.GitRefsDatasource.id };
+  return { deps };
 }
