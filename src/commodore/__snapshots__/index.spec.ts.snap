@@ -4,18 +4,21 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 4/pins.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 4/pins.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "projectsyn/component-argocd",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 4/pins.yml",
-    "packageName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "projectsyn/package-monitoring",
   },
 ]
 `;
@@ -24,18 +27,21 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 5/tenant/c-foo.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 5/tenant/c-foo.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "projectsyn/component-argocd",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 5/tenant/c-foo.yml",
-    "packageName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "projectsyn/package-monitoring",
   },
 ]
 `;
@@ -44,38 +50,51 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 [
   {
     "currentValue": "v1.1.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 1/params.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud2 in 1/params.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.0.0",
+    "datasource": "github-releases",
     "depName": "component-argocd in 1/params.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "projectsyn/component-argocd",
   },
   {
     "currentValue": "v2.1.0",
+    "datasource": "github-releases",
     "depName": "component-backup-k8up in 1/params.yml",
-    "packageName": "https://github.com/projectsyn/component-backup-k8up.git",
+    "packageName": "projectsyn/component-backup-k8up",
   },
   {
     "currentValue": "v1.0.0",
+    "datasource": "github-releases",
     "depName": "component-kyverno in 1/params.yml",
-    "packageName": "https://github.com/projectsyn/component-kyverno.git",
+    "packageName": "projectsyn/component-kyverno",
   },
   {
     "currentValue": "v2.2.0",
+    "datasource": "github-releases",
     "depName": "component-lieutenant in 1/params.yml",
-    "packageName": "https://github.com/projectsyn/component-lieutenant.git",
+    "packageName": "projectsyn/component-lieutenant",
+  },
+  {
+    "currentValue": "v2.2.0",
+    "datasource": "git-refs",
+    "depName": "component-foo-test in 1/params.yml",
+    "packageName": "https://gitlab.com/projectsyn/component-foo-test.git",
   },
   {
     "currentValue": "v1.0.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 1/params.yml",
-    "packageName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "projectsyn/package-monitoring",
   },
 ]
 `;
@@ -84,18 +103,21 @@ exports[`src/commodore/index extractPackageFile() generates valid Commodore para
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-4.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 5/tenant/c-foo-4.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "projectsyn/component-argocd-k3d",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 5/tenant/c-foo-4.yml",
-    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "projectsyn/package-k3d-monitoring",
   },
 ]
 `;
@@ -104,18 +126,21 @@ exports[`src/commodore/index extractPackageFile() proceeds without cluster info 
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-3.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 5/tenant/c-foo-3.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd.git",
+    "packageName": "projectsyn/component-argocd",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 5/tenant/c-foo-3.yml",
-    "packageName": "https://github.com/projectsyn/package-monitoring",
+    "packageName": "projectsyn/package-monitoring",
   },
 ]
 `;
@@ -124,18 +149,21 @@ exports[`src/commodore/index extractPackageFile() uses cluster info returned by 
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 5/tenant/c-foo-2.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 5/tenant/c-foo-2.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "projectsyn/component-argocd-k3d",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 5/tenant/c-foo-2.yml",
-    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "projectsyn/package-k3d-monitoring",
   },
 ]
 `;
@@ -144,18 +172,21 @@ exports[`src/commodore/index extractPackageFile() uses facts from factsMap 1`] =
 [
   {
     "currentValue": "v3.0.0",
+    "datasource": "github-releases",
     "depName": "component-appuio-cloud in 5/tenant/test.yml",
-    "packageName": "https://github.com/appuio/component-appuio-cloud.git",
+    "packageName": "appuio/component-appuio-cloud",
   },
   {
     "currentValue": "v1.2.3",
+    "datasource": "github-releases",
     "depName": "component-argocd in 5/tenant/test.yml",
-    "packageName": "https://github.com/projectsyn/component-argocd-k3d.git",
+    "packageName": "projectsyn/component-argocd-k3d",
   },
   {
     "currentValue": "v0.9.0",
+    "datasource": "github-releases",
     "depName": "package-monitoring in 5/tenant/test.yml",
-    "packageName": "https://github.com/projectsyn/package-k3d-monitoring",
+    "packageName": "projectsyn/package-k3d-monitoring",
   },
 ]
 `;

@@ -125,7 +125,7 @@ describe('src/commodore/index', () => {
       if (res) {
         const deps = res.deps;
         expect(deps).toMatchSnapshot();
-        expect(deps).toHaveLength(7);
+        expect(deps).toHaveLength(8);
       }
     });
     it('returns no component or package version for files without components or packages', () => {
