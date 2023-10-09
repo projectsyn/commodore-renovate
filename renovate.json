@@ -14,6 +14,15 @@
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     }
   ],
+  "packageRules": [
+    {
+      "matchDepType": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "platformAutomerge": true,
+      "automergeType": "pr"
+    }
+  ],
   "lockFileMaintenance": {
     "enabled": true,
     "labels": ["ignore"],
