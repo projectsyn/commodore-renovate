@@ -1,6 +1,6 @@
 {
   "extends": ["config:base", "schedule:weekly"],
-  "prHourlyLimit": 5,
+  "prHourlyLimit": 10,
   "python": {
     "enabled": true
   },
@@ -12,6 +12,15 @@
         "# renovate: datasource=(?<datasource>[a-z-]+?)(?: lookupName=(?<lookupName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\sRUN install-[a-z]+? (?<depName>[a-z-]+?) (?<currentValue>.+?)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepType": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "platformAutomerge": true,
+      "automergeType": "pr"
     }
   ],
   "lockFileMaintenance": {
