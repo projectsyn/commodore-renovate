@@ -31,7 +31,7 @@
     "@babel/core": "7.23.9",
     "@babel/preset-env": "7.23.9",
     "@babel/preset-typescript": "7.23.3",
-    "@ls-lint/ls-lint": "2.2.2",
+    "@ls-lint/ls-lint": "2.2.3",
     "@types/bunyan": "1.8.11",
     "@types/jest": "29.5.12",
     "babel-jest": "29.7.0",
