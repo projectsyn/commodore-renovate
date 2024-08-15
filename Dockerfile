@@ -4,7 +4,7 @@ LABEL name="commodore-renovate"
 LABEL org.opencontainers.image.source="https://github.com/projectsyn/commodore-renovate" \
   org.opencontainers.image.licenses="AGPL-3.0-only"
 
-# renovate: datasource=node
+# renovate: datasource=node-version
 RUN install-tool node v20.16.0
 
 WORKDIR /usr/src/app
