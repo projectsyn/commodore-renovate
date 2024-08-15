@@ -44,6 +44,8 @@ RUN pip install  -r requirements.txt
 
 # renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=4.5.7
+# renovate: datasource=github-releases lookupName=projectsyn/jsonnet-bundler
+ARG JSONNET_BUNDLER_VERSION=v0.6.2
 
 # Install Commodore binary dependencies
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
@@ -56,7 +58,7 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
  && mv /usr/local/bin/helm /usr/local/bin/helm2 \
  && rm ./get_helm.sh \
  && ln -s /usr/local/bin/helm3 /usr/local/bin/helm \
- && curl -fsSLo /usr/local/bin/jb https://github.com/jsonnet-bundler/jsonnet-bundler/releases/download/v0.4.0/jb-linux-amd64 \
+ && curl -fsSLo /usr/local/bin/jb https://github.com/projectsyn/jsonnet-bundler/releases/download/${JSONNET_BUNDLER_VERSION}/jb_linux_amd64 \
  && chmod +x /usr/local/bin/jb \
  && curl -fsSLO "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" \
  && chmod +x install_kustomize.sh \
