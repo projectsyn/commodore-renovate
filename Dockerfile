@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 
 
 
-FROM base as tsbuild
+FROM base AS tsbuild
 
 # renovate: datasource=npm versioning=npm
 RUN install-tool yarn 1.22.22
@@ -25,9 +25,9 @@ RUN yarn build
 
 
 
-FROM base as final
+FROM base AS final
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
