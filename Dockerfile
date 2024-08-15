@@ -42,6 +42,7 @@ RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
+# renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=4.5.7
 
 # Install Commodore binary dependencies
