@@ -42,9 +42,9 @@ RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
-# renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize
+# renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize depname=kustomize
 ARG KUSTOMIZE_VERSION=4.5.7
-# renovate: datasource=github-releases lookupName=projectsyn/jsonnet-bundler
+# renovate: datasource=github-releases lookupName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.2
 
 # Install Commodore binary dependencies
