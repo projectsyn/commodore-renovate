@@ -49,6 +49,9 @@ jobs:
       - name: Test
         run: |
           yarn test
+      - name: Build TypeScript
+        run: |
+          yarn build
 
   docker-build:
     runs-on: ubuntu-latest
