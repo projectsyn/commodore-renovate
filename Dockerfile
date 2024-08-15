@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 
 
 
-FROM base as tsbuild
+FROM base AS tsbuild
 
 # renovate: datasource=npm versioning=npm
 RUN install-tool yarn 1.22.22
@@ -25,22 +25,23 @@ RUN yarn build
 
 
 
-FROM base as final
+FROM base AS final
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
-# renovate: datasource=github-releases lookupName=containerbase/python-prebuild
-RUN install-tool python 3.11.9
-# Create a symlink from /opt/buildpack/tools/python to /usr/local/python
-# because otherwise the python packages which need to build C extensions can't
-# find Python.h
-RUN ln -s /opt/buildpack/tools/python /usr/local/python
+# renovate: datasource=github-releases lookupName=containerbase/python-prebuild depname=python
+ARG PYTHON_VERSION=3.11.9
+RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
+# Containerbase v11 doesn't put /opt/containerbase/tools/python/<VERSION>/bin
+# into the path anymore, so we do it ourselves by appending it to
+# /usr/local/etc/env which is sourced by the containerbase entrypoint script.
+RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize depname=kustomize
 ARG KUSTOMIZE_VERSION=4.5.7
