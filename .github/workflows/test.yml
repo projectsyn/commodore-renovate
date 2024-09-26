@@ -71,4 +71,16 @@ jobs:
       - name: Test that Commodore is available in PATH in the built container
         if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
         run: |
-          docker run --rm ghcr.io/${{ env.IMAGE }}:test commodore
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test commodore --version
+      - name: Test that Helm is available in PATH in the built container
+        if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
+        run: |
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test helm version
+      - name: Test that Kustomize is available in PATH in the built container
+        if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
+        run: |
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test kustomize version
+      - name: Test that jsonnet-bundler is available in PATH in the built container
+        if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
+        run: |
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test jb --version
