@@ -64,7 +64,9 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
  && curl -fsSLO "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" \
  && chmod +x install_kustomize.sh \
  && ./install_kustomize.sh ${KUSTOMIZE_VERSION} /usr/local/bin \
- && rm ./install_kustomize.sh
+ && rm ./install_kustomize.sh \
+ && curl -L https://raw.githubusercontent.com/projectsyn/reclass-rs/main/hack/kapitan_0.32_reclass_rs.patch \
+ | patch -p1 -d "$(python -c 'import kapitan; print(kapitan.__path__[0])')"
 
 RUN set -ex; \
   chmod +x /usr/src/app/bin/index.js; \
