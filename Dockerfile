@@ -32,7 +32,7 @@ ENV NODE_ENV=production
 COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
-# renovate: datasource=github-releases lookupName=containerbase/python-prebuild depname=python
+# renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
 ARG PYTHON_VERSION=3.11.9
 RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
@@ -43,9 +43,9 @@ RUN pip install  -r requirements.txt
 # /usr/local/etc/env which is sourced by the containerbase entrypoint script.
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
-# renovate: datasource=github-releases lookupName=kubernetes-sigs/kustomize depname=kustomize
+# renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize versionTemplate=^kustomize/v(?<version>.*)$
 ARG KUSTOMIZE_VERSION=4.5.7
-# renovate: datasource=github-releases lookupName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
+# renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.2
 
 # Install Commodore binary dependencies
