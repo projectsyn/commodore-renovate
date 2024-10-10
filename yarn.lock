@@ -3472,9 +3472,9 @@
   integrity sha512-eXQpwnkI4Ntw5uJg6i2PINdRFWLr55dqjuYQaLHNjvqTzF14QdNWbCbml9sza0byyXNA0hZlHtcdN+VNDcgVHA==
 
 "@types/node@*", "@types/node@>=13.7.0":
-  version "22.7.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.7.4.tgz#e35d6f48dca3255ce44256ddc05dee1c23353fcc"
-  integrity sha512-y+NPi1rFzDs1NdQHHToqeiX2TIS79SWEAw9GYhkkx8bD0ChpfqC+n2j5OXOCpzfojBEBt6DnEnnG9MY0zk1XLg==
+  version "22.7.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.7.5.tgz#cfde981727a7ab3611a481510b473ae54442b92b"
+  integrity sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==
   dependencies:
     undici-types "~6.19.2"
 
@@ -6712,10 +6712,15 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-nan@^2.14.0, nan@^2.20.0:
+nan@^2.14.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.20.0.tgz#08c5ea813dd54ed16e5bd6505bf42af4f7838ca3"
   integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==
+
+nan@^2.20.0:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.21.0.tgz#203ab765a02e6676c8cb92e1cad9503e7976d55b"
+  integrity sha512-MCpOGmdWvAOMi4RWnpxS5G24l7dVMtdSHtV87I3ltjaLdFOTO74HVJ+DfYiAXjxGKsYR/UCmm1rBwhMN7KqS1A==
 
 nanoid@3.3.7:
   version "3.3.7"
@@ -7473,9 +7478,9 @@ remark@13.0.0:
     unified "^9.1.0"
 
 renovate@^38.0.0:
-  version "38.110.2"
-  resolved "https://registry.yarnpkg.com/renovate/-/renovate-38.110.2.tgz#1c99dbf883da4bee88a32c6abfaa2064c77d817e"
-  integrity sha512-ra5BEWHVnRfvZYyqfm7O4DjT3z6GvxmQeCJnYE8Mtloepi7/DF4ofagb8+RG1yHuG+Ugrr/NbaRirs1WyBju2g==
+  version "38.116.0"
+  resolved "https://registry.yarnpkg.com/renovate/-/renovate-38.116.0.tgz#71d6dd7c9e7f3ef5a01148421d0eef8ffba9276d"
+  integrity sha512-leh1XkwvN75P2Z7UpXwWY2jqm4t+T6xZF2mNwwlX7u0xh/bKM8lsFF2lAs9I4WoOroXy3/Qeiuq7m/aMZIB+bw==
   dependencies:
     "@aws-sdk/client-codecommit" "3.658.1"
     "@aws-sdk/client-ec2" "3.658.1"
