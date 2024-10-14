@@ -44,7 +44,7 @@ RUN pip install  -r requirements.txt
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
-ARG KUSTOMIZE_VERSION=5.4.3
+ARG KUSTOMIZE_VERSION=5.5.0
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.2
 
