@@ -23,8 +23,6 @@ COPY src/ src/
 COPY tsconfig.json tsconfig-build.json ./
 RUN yarn build
 
-
-
 FROM base AS final
 
 ENV NODE_ENV=production
@@ -35,6 +33,9 @@ COPY --from=tsbuild /usr/src/app/node_modules node_modules
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
 ARG PYTHON_VERSION=3.11.9
 RUN install-tool python ${PYTHON_VERSION}
+# renovate: datasource=github-releases packageName=containerbase/golang-prebuild depname=golang
+ARG GO_VERSION=1.23.5
+RUN install-tool golang ${GO_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
@@ -64,9 +65,7 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master
  && curl -fsSLO "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" \
  && chmod +x install_kustomize.sh \
  && ./install_kustomize.sh ${KUSTOMIZE_VERSION} /opt/containerbase/bin \
- && rm ./install_kustomize.sh \
- && curl -L https://raw.githubusercontent.com/projectsyn/reclass-rs/main/hack/kapitan_0.32_reclass_rs.patch \
- | patch -p1 -d "$(python -c 'import kapitan; print(kapitan.__path__[0])')"
+ && rm ./install_kustomize.sh
 
 RUN set -ex; \
   chmod +x /usr/src/app/bin/index.js; \
