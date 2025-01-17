@@ -30,6 +30,13 @@
       "automerge": true,
       "platformAutomerge": true,
       "automergeType": "pr"
+    },
+    {
+      "matchPackageNames": "containerbase/python-prebuild",
+      "separateMajorMinor": true,
+      "separateMinorPatch": true,
+      "separateMultipleMajor": true,
+      "separateMultipleMinor": true
     }
   ],
   "lockFileMaintenance": {
