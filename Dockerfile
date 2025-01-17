@@ -31,7 +31,7 @@ COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
-ARG PYTHON_VERSION=3.11.9
+ARG PYTHON_VERSION=3.12.8
 RUN install-tool python ${PYTHON_VERSION}
 # renovate: datasource=github-releases packageName=containerbase/golang-prebuild depname=golang
 ARG GO_VERSION=1.23.5
