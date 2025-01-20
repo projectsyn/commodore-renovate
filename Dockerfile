@@ -27,10 +27,6 @@ FROM base AS final
 
 ENV NODE_ENV=production
 
-# Setup real user for UID 1000 so ssh Git clones work
-RUN useradd --create-home --no-user-group --gid 0 --uid 1000 renovate
-ENV HOME=/home/renovate
-
 COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
@@ -76,4 +72,4 @@ RUN set -ex; \
   ln -sf /usr/src/app/bin/index.js /usr/local/bin/renovate;
 CMD ["renovate"]
 
-USER 1000
+USER 12021
