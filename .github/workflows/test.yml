@@ -84,3 +84,9 @@ jobs:
         if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
         run: |
           docker run --rm ghcr.io/${{ env.IMAGE }}:test jb --version
+      - name: Check container user and home directory
+        if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
+        run: |
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test whoami
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test sh -c 'echo $HOME'
+          docker run --rm ghcr.io/${{ env.IMAGE }}:test sh -c 'ls $HOME'
