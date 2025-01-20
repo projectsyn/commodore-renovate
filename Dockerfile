@@ -28,7 +28,7 @@ FROM base AS final
 ENV NODE_ENV=production
 
 # Setup real user for UID 1000 so ssh Git clones work
-RUN useradd --no-create-home --no-user-group --gid 0 --uid 1000 renovate
+RUN useradd --create-home --no-user-group --gid 0 --uid 1000 renovate
 
 COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
