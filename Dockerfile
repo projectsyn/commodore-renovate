@@ -47,7 +47,7 @@ RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${P
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
 ARG KUSTOMIZE_VERSION=5.6.0
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
-ARG JSONNET_BUNDLER_VERSION=v0.6.2
+ARG JSONNET_BUNDLER_VERSION=v0.6.3
 
 # Install Commodore binary dependencies
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
