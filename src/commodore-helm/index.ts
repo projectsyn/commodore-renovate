@@ -28,7 +28,7 @@ interface KapitanHelmDependency extends KapitanDependency {
 
 export const defaultConfig = {
   // match all class files of the component
-  fileMatch: ['class/[^.]+.ya?ml$'],
+  fileMatch: ['^class/[^.]+.ya?ml$'],
 };
 
 export const supportedDatasources = [HelmDatasource.id];
