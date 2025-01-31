@@ -1,1 +1,1 @@
-syn-commodore==1.26.0
+syn-commodore==1.26.1
