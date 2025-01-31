@@ -1,5 +1,9 @@
 import { loadFixture, getFixturePath, getLoggerErrors } from '../test/util';
-import { extractPackageFile, extractAllPackageFiles } from './index';
+import {
+  defaultConfig,
+  extractPackageFile,
+  extractAllPackageFiles,
+} from './index';
 import { beforeEach, expect, describe, it } from '@jest/globals';
 
 import { GlobalConfig } from 'renovate/dist/config/global';
@@ -324,6 +328,15 @@ describe('manager/commodore-helm/index', () => {
           expect(deps.length).toBe(2);
         }
       }
+    });
+    it("doesn't match golden test files as files to renovate", async () => {
+      expect(defaultConfig.fileMatch.length).toBe(1);
+      const re = new RegExp(defaultConfig.fileMatch[0]);
+      expect(re.test('class/defaults.yml')).toBe(true);
+      expect(re.test('class/component-name.yml')).toBe(true);
+      expect(re.test('class/name.yaml')).toBe(true);
+      expect(re.test('tests/golden/storageclass/sc.yaml')).toBe(false);
+      expect(re.test('tests/golden/class/class.yaml')).toBe(false);
     });
   });
 });
