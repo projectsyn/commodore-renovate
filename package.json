@@ -28,9 +28,9 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.26.9",
-    "@babel/preset-env": "7.26.9",
-    "@babel/preset-typescript": "7.26.0",
+    "@babel/core": "7.27.1",
+    "@babel/preset-env": "7.27.2",
+    "@babel/preset-typescript": "7.27.1",
     "@ls-lint/ls-lint": "2.2.3",
     "@types/bunyan": "1.8.11",
     "@types/jest": "29.5.14",
