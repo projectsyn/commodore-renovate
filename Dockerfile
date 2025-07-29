@@ -33,9 +33,6 @@ COPY --from=tsbuild /usr/src/app/node_modules node_modules
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
 ARG PYTHON_VERSION=3.12.11
 RUN install-tool python ${PYTHON_VERSION}
-# renovate: datasource=github-releases packageName=containerbase/golang-prebuild depname=golang
-ARG GO_VERSION=1.23.5
-RUN install-tool golang ${GO_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
