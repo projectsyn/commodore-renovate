@@ -31,6 +31,10 @@ export const defaultConfig = {
   fileMatch: ['^class/[^.]+.ya?ml$'],
 };
 
+interface MultiFilePackageDependency extends PackageDependency {
+  groupName?: string;
+}
+
 export const supportedDatasources = [HelmDatasource.id];
 
 function componentKeyFromName(componentName: string): string {
@@ -71,7 +75,7 @@ export function extractPackageFile(
   }
   const dep = config.baseDeps.find((d: PackageDependency) => {
     return d.depName === config.depName;
-  });
+  }) as MultiFilePackageDependency;
   if (!dep || !dep.groupName) {
     return null;
   }
@@ -226,7 +230,7 @@ function extractHelmChartDependencies(
 
   const deps: PackageDependency[] = Object.entries(charts).map(
     ([chartName, chartSpec]) => {
-      let res: PackageDependency = {
+      let res: MultiFilePackageDependency = {
         depName: chartName,
         groupName: componentName,
       };
@@ -256,7 +260,7 @@ function extractHelmChartDependencies(
         // chart name.
         res.registryUrls = [chartSpec.source];
         res.currentValue = chartSpec.version;
-        return res;
+        return res as PackageDependency;
       } else {
         logger.warn({ chartSpec }, 'Unable to parse chart specification');
         res.skipReason = 'invalid-dependency-specification';
