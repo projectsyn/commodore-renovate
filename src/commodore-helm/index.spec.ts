@@ -4,7 +4,7 @@ import {
   extractPackageFile,
   extractAllPackageFiles,
 } from './index';
-import { beforeEach, expect, describe, it } from '@jest/globals';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { GlobalConfig } from 'renovate/dist/config/global';
 

@@ -1,4 +1,4 @@
-import { beforeAll, afterAll, describe, expect, it } from '@jest/globals';
+import { beforeAll, afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { copyFile, mkdir, readdir } from 'fs/promises';
 import { rmSync } from 'fs';
 

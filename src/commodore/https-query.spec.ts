@@ -1,5 +1,5 @@
 import { createReadStream } from 'fs';
-import { expect, describe, it } from '@jest/globals';
+import { expect, describe, it } from 'vitest';
 import nock from 'nock';
 
 import { loadFixture, getFixturePath } from '../test/util';

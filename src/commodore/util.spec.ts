@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import { readFile, unlink } from 'fs/promises';
 
-import { expect, describe, it } from '@jest/globals';
+import { expect, describe, it } from 'vitest';
 
 import { defaultExtraConfig } from './index';
 import * as util from './util';

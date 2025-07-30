@@ -1,6 +1,6 @@
 import { loadFixture } from '../test/util';
 import { extractPackageFile, parseImageDependency } from './index';
-import { expect, describe, it } from '@jest/globals';
+import { expect, describe, it, test } from 'vitest';
 
 const params1 = loadFixture('1/params.yml');
 const params2 = loadFixture('2/params.yml');
@@ -156,13 +156,15 @@ describe('manager/commodore/index/parseImageDependency', () => {
     },
   ];
   describe.each(table)('parseImageDependency', (tc) => {
-    if (tc?.noImage) {
-      expect(parseImageDependency(tc.image)).toBeNull();
-    } else {
-      expect(parseImageDependency(tc.image)?.depName).toBe(tc.depName);
-      expect(parseImageDependency(tc.image)?.currentValue).toBe(
-        tc.currentValue
-      );
-    }
+    test('case', () => {
+      if (tc?.noImage) {
+        expect(parseImageDependency(tc.image)).toBeNull();
+      } else {
+        expect(parseImageDependency(tc.image)?.depName).toBe(tc.depName);
+        expect(parseImageDependency(tc.image)?.currentValue).toBe(
+          tc.currentValue
+        );
+      }
+    });
   });
 });
