@@ -55,7 +55,6 @@ The manager currently understands the following keys in the extra configuration 
   Default: `/^distribution\/(?<distribution>[^\/]+)(?:\/cloud\/(?<cloud>.+)\.ya?ml|(?:\/.+)?\.ya?ml)$/`.
 
   The default regex pattern extracts the distribution (and optionally cloud) name from file names in the following forms (and additionally the same forms with `.yaml` file extensions):
-
   - `distribution/<distribution>.yml`
   - `distribution/<distribution>/file.yml`
   - `distribution/<distribution>/cloud/<cloud>.yml`
@@ -68,7 +67,6 @@ The manager currently understands the following keys in the extra configuration 
   Default: `/^cloud\/(?<cloud>[^\/]+)(?:\/(?:(?<region>[^\/]+)|.+)\.ya?ml|\.ya?ml)$/`
 
   The default regex pattern extracts the cloud (and optionally cloud region) name from file names in the following forms (and additionally the same forms with `.yaml` file extensions):
-
   - `cloud/<cloud>.yml`
   - `cloud/<cloud>/<region>.yml`
   - `cloud/<cloud>/foo/bar.yml`
