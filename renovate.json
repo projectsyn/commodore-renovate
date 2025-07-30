@@ -1,21 +1,26 @@
 {
-  "extends": ["config:base", "schedule:weekly"],
+  "extends": ["config:recommended", "schedule:weekly"],
   "prHourlyLimit": 10,
-  "python": {
-    "enabled": true
-  },
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Update install-* Buildpack commands in Dockerfiles",
-      "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
+      "managerFilePatterns": [
+        "/(^|/|\\.)Dockerfile$/",
+        "/(^|/)Dockerfile\\.[^/]*$/"
+      ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+?)(?: packageName=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\sRUN install-[a-z]+? (?<depName>[a-z-]+?) (?<currentValue>.+?)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
     },
     {
+      "customType": "regex",
       "description": "Update version ENV variables in Dockerfiles",
-      "fileMatch": ["(^|/|\\.)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
+      "managerFilePatterns": [
+        "/(^|/|\\.)Dockerfile$/",
+        "/(^|/)Dockerfile\\.[^/]*$/"
+      ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[a-z-]+?)(?: packageName=(?<packageName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?(?: depname=(?<depName>[a-z-]+?))?(?: tagPrefix=(?<tagPrefix>[a-z-/]+?))?\\sARG [A-Z_]+_VERSION=(?<currentValue>.+?)\\s"
       ],
@@ -24,6 +29,10 @@
     }
   ],
   "packageRules": [
+    {
+      "matchCategories": ["python"],
+      "enabled": true
+    },
     {
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor", "patch"],
