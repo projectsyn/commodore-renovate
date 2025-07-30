@@ -42,7 +42,7 @@ RUN pip install  -r requirements.txt
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
-ARG KUSTOMIZE_VERSION=5.6.0
+ARG KUSTOMIZE_VERSION=5.7.1
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.3
 # renovate: datasource=github-releases packageName=helm/helm depname=helm
