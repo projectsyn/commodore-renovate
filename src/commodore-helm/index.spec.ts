@@ -9,6 +9,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { GlobalConfig } from 'renovate/dist/config/global';
 
 import { clearProblems } from 'renovate/dist/logger';
+import { getRegexPredicate } from 'renovate/dist/util/string-match';
 
 function setGlobalConfig(fixtureId: string): void {
   GlobalConfig.get().localDir = getFixturePath(fixtureId);
@@ -330,13 +331,20 @@ describe('manager/commodore-helm/index', () => {
       }
     });
     it("doesn't match golden test files as files to renovate", async () => {
-      expect(defaultConfig.fileMatch.length).toBe(1);
-      const re = new RegExp(defaultConfig.fileMatch[0]);
-      expect(re.test('class/defaults.yml')).toBe(true);
-      expect(re.test('class/component-name.yml')).toBe(true);
-      expect(re.test('class/name.yaml')).toBe(true);
-      expect(re.test('tests/golden/storageclass/sc.yaml')).toBe(false);
-      expect(re.test('tests/golden/class/class.yaml')).toBe(false);
+      expect(defaultConfig.managerFilePatterns.length).toBe(1);
+      // Use renovate's `getRegexPredicate()` to parse the pattern. This is
+      // necessary, because managerFilePatterns now contains strings that are
+      // //-enclosed regex patterns and not raw regex patterns that can be
+      // passed to new RegExp().
+      const re = getRegexPredicate(defaultConfig.managerFilePatterns[0]);
+      expect(re).not.toBeNull();
+      if (re != null) {
+        expect(re('class/defaults.yml')).toBe(true);
+        expect(re('class/component-name.yml')).toBe(true);
+        expect(re('class/name.yaml')).toBe(true);
+        expect(re('tests/golden/storageclass/sc.yaml')).toBe(false);
+        expect(re('tests/golden/class/class.yaml')).toBe(false);
+      }
     });
   });
 });

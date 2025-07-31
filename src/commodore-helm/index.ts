@@ -28,7 +28,7 @@ interface KapitanHelmDependency extends KapitanDependency {
 
 export const defaultConfig = {
   // match all class files of the component
-  fileMatch: ['^class/[^.]+.ya?ml$'],
+  managerFilePatterns: ['/^class\/[^.]+.ya?ml$/'],
 };
 
 interface MultiFilePackageDependency extends PackageDependency {

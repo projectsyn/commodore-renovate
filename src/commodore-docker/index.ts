@@ -10,7 +10,7 @@ import { getDep } from 'renovate/dist/modules/manager/dockerfile/extract';
 import { id as dockerVersioning } from 'renovate/dist/modules/versioning/docker';
 
 export const defaultConfig = {
-  fileMatch: ['class/defaults.ya?ml$'],
+  managerFilePatterns: ['/class\/defaults.ya?ml$/'],
 };
 
 export const supportedDatasources = [DockerDatasource.id];
