@@ -14,13 +14,12 @@
     "ls-lint": "ls-lint",
     "prettier": "prettier --check \"**/*.{ts,js,mjs,json,md,yml}\"",
     "prettier-fix": "prettier --write \"**/*.{ts,js,mjs,json,md,yml}\"",
-    "jest": "cross-env NODE_ENV=test LOG_LEVEL=fatal TZ=UTC node --expose-gc node_modules/jest/bin/jest.js --logHeapUsage",
-    "test": "run-s jest"
+    "test": "run-s vitest",
+    "vitest": "GIT_ALLOW_PROTOCOL=file LOG_LEVEL=fatal vitest run --logHeapUsage"
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.4",
     "@types/node": "^22.0.0",
-    "jest": "^30.0.0",
     "just-clone": "^6.0.0",
     "normalize-url": "6.1.0",
     "renovate": "^39.0.0",
@@ -33,13 +32,13 @@
     "@babel/preset-typescript": "7.27.1",
     "@ls-lint/ls-lint": "2.3.1",
     "@types/bunyan": "1.8.11",
-    "@types/jest": "30.0.0",
-    "babel-jest": "30.0.5",
+    "@vitest/coverage-v8": "3.2.4",
     "bunyan": "1.8.15",
     "cross-env": "10.0.0",
     "nock": "14.0.7",
     "npm-run-all2": "8.0.4",
     "prettier": "3.6.2",
-    "ts-node": "10.9.2"
+    "ts-node": "10.9.2",
+    "vitest": "3.2.4"
   }
 }

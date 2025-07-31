@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`manager/commodore/index extractPackageFile() extracts standard images 1`] = `
+exports[`manager/commodore/index > extractPackageFile() > extracts standard images 1`] = `
 [
   {
     "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
@@ -45,7 +45,7 @@ exports[`manager/commodore/index extractPackageFile() extracts standard images 1
 ]
 `;
 
-exports[`manager/commodore/index extractPackageFile() returns images for non standard but common formats 1`] = `
+exports[`manager/commodore/index > extractPackageFile() > returns images for non standard but common formats 1`] = `
 [
   {
     "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
@@ -90,7 +90,7 @@ exports[`manager/commodore/index extractPackageFile() returns images for non sta
 ]
 `;
 
-exports[`manager/commodore/index extractPackageFile() returns images that are deeply nested in each other 1`] = `
+exports[`manager/commodore/index > extractPackageFile() > returns images that are deeply nested in each other 1`] = `
 [
   {
     "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",
@@ -135,7 +135,7 @@ exports[`manager/commodore/index extractPackageFile() returns images that are de
 ]
 `;
 
-exports[`manager/commodore/index extractPackageFile() returns images that are not declared in parameters.<component>.images 1`] = `
+exports[`manager/commodore/index > extractPackageFile() > returns images that are not declared in parameters.<component>.images 1`] = `
 [
   {
     "autoReplaceStringTemplate": "{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}",

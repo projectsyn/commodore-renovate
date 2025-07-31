@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`src/commodore/index extractPackageFile() extracts component and package urls for version pins 1`] = `
+exports[`src/commodore/index > extractPackageFile() > extracts component and package urls for version pins 1`] = `
 [
   {
     "currentValue": "v3.0.0",
@@ -23,7 +23,7 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() extracts component and package urls for version pins in tenant repo 1`] = `
+exports[`src/commodore/index > extractPackageFile() > extracts component and package urls for version pins in tenant repo 1`] = `
 [
   {
     "currentValue": "v3.0.0",
@@ -46,7 +46,7 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() extracts component and package versions 1`] = `
+exports[`src/commodore/index > extractPackageFile() > extracts component and package versions 1`] = `
 [
   {
     "currentValue": "v1.1.0",
@@ -99,7 +99,7 @@ exports[`src/commodore/index extractPackageFile() extracts component and package
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() generates valid Commodore parameters for clusters with no dynamic facts 1`] = `
+exports[`src/commodore/index > extractPackageFile() > generates valid Commodore parameters for clusters with no dynamic facts 1`] = `
 [
   {
     "currentValue": "v3.0.0",
@@ -122,7 +122,7 @@ exports[`src/commodore/index extractPackageFile() generates valid Commodore para
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() proceeds without cluster info on 404 1`] = `
+exports[`src/commodore/index > extractPackageFile() > proceeds without cluster info on 404 1`] = `
 [
   {
     "currentValue": "v3.0.0",
@@ -145,7 +145,7 @@ exports[`src/commodore/index extractPackageFile() proceeds without cluster info 
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() uses cluster info returned by Lieutenant 1`] = `
+exports[`src/commodore/index > extractPackageFile() > uses cluster info returned by Lieutenant 1`] = `
 [
   {
     "currentValue": "v3.0.0",
@@ -168,7 +168,7 @@ exports[`src/commodore/index extractPackageFile() uses cluster info returned by 
 ]
 `;
 
-exports[`src/commodore/index extractPackageFile() uses facts from factsMap 1`] = `
+exports[`src/commodore/index > extractPackageFile() > uses facts from factsMap 1`] = `
 [
   {
     "currentValue": "v3.0.0",

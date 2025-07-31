@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import { mkdir, readFile, unlink } from 'fs/promises';
 
-import { beforeAll, expect, describe, it } from '@jest/globals';
+import { beforeAll, expect, describe, it } from 'vitest';
 
 import * as inv from './inventory';
 import { cacheDir } from './util';
