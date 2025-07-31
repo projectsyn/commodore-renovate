@@ -30,7 +30,7 @@ import {
 } from './util';
 
 export const defaultConfig = {
-  fileMatch: ['^*.ya?ml$'],
+  managerFilePatterns: ['/^*.ya?ml$/'],
   extraConfig: '',
 };
 
