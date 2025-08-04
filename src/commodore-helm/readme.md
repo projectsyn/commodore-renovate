@@ -10,6 +10,9 @@ The manager is guaranteed to find Helm chart references which adhere to the [bes
 The manager doesn't support dependencies which don't have the chart versions specified in `parameters.<component-name>.charts`.
 Please be aware that the manager doesn't support Helm chart dependencies which are fetched using Kapitan's generic HTTPS dependency type.
 
+Since 0.21.0, the manager also supports renovating OCI Helm chart dependencies.
+For OCI Helm chart dependencies, the manager assumes that `source` (in either format) is the OCI URL of the chart.
+
 Finally, the manager also supports the old recommended format for Helm chart dependencies, where only the chart version is given in component parameter `charts`, and the source is only present in `parameters.kapitan.dependencies`.
 
 The old format roughly has the following structure:

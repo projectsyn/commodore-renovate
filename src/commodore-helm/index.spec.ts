@@ -3,6 +3,7 @@ import {
   defaultConfig,
   extractPackageFile,
   extractAllPackageFiles,
+  handleOCIChart,
 } from './index';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -10,6 +11,8 @@ import { GlobalConfig } from 'renovate/dist/config/global';
 
 import { clearProblems } from 'renovate/dist/logger';
 import { getRegexPredicate } from 'renovate/dist/util/string-match';
+import { PackageDependency } from 'renovate/dist/modules/manager/types';
+import { DockerDatasource } from 'renovate/dist/modules/datasource/docker';
 
 function setGlobalConfig(fixtureId: string): void {
   GlobalConfig.get().localDir = getFixturePath(fixtureId);
@@ -25,6 +28,7 @@ const defaults1 = loadFixture('1/class/defaults.yml');
 const defaults3 = loadFixture('3/class/defaults.yml');
 const defaults4 = loadFixture('4/class/defaults.yml');
 const defaults7 = loadFixture('7/class/defaults.yml');
+const defaults8 = loadFixture('8/class/defaults.yml');
 const config1 = {
   depName: 'chart-1',
   baseDeps: [
@@ -77,6 +81,21 @@ const config3 = {
     {
       depName: 'chart-2',
       propSource: 'chart2',
+      groupName: 'component-name',
+    },
+  ],
+};
+const config8 = {
+  depName: 'chart-1',
+  baseDeps: [
+    {
+      depName: 'chart-1',
+      propSource: 'chart-1',
+      groupName: 'component-name',
+    },
+    {
+      depName: 'chart-2',
+      propSource: 'chart-2',
       groupName: 'component-name',
     },
   ],
@@ -142,6 +161,14 @@ describe('manager/commodore-helm/index', () => {
     });
     it('extracts Helm chart versions for mismatched keys when called with sufficient config', () => {
       const res = extractPackageFile(defaults3, 'class/defaults.yml', config3);
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.deps).toMatchSnapshot();
+        expect(res.deps.length).toBe(2);
+      }
+    });
+    it('extracts OCI Helm chart versions when called with sufficient config', () => {
+      const res = extractPackageFile(defaults8, 'class/defaults.yml', config8);
       expect(res).not.toBeNull();
       if (res) {
         expect(res.deps).toMatchSnapshot();
@@ -330,6 +357,29 @@ describe('manager/commodore-helm/index', () => {
         }
       }
     });
+    it('extracts OCI charts from new and old Helm dependencies', async () => {
+      setGlobalConfig('8');
+      const res = await extractAllPackageFiles({}, [
+        'class/defaults.yml',
+        'class/component-name.yml',
+      ]);
+      const errors = getLoggerErrors();
+      if (errors.length > 0) {
+        console.log(errors);
+      }
+      expect(errors.length).toBe(0);
+      expect(res).not.toBeNull();
+      if (res) {
+        expect(res.length).toBe(1);
+        if (res.length == 1) {
+          const res0 = res[0];
+          expect(res0.packageFile).toBe('class/defaults.yml');
+          const deps = res0.deps;
+          expect(deps).toMatchSnapshot();
+          expect(deps.length).toBe(2);
+        }
+      }
+    });
     it("doesn't match golden test files as files to renovate", async () => {
       expect(defaultConfig.managerFilePatterns.length).toBe(1);
       // Use renovate's `getRegexPredicate()` to parse the pattern. This is
@@ -345,6 +395,64 @@ describe('manager/commodore-helm/index', () => {
         expect(re('tests/golden/storageclass/sc.yaml')).toBe(false);
         expect(re('tests/golden/class/class.yaml')).toBe(false);
       }
+    });
+  });
+  describe('handleOCIChart()', () => {
+    it('skips dependencies without registryUrls', async () => {
+      const dep = {
+        currentValue: '1.2.3',
+        depName: 'test',
+      } as PackageDependency;
+      const res = handleOCIChart(dep);
+      expect(res).not.toBeNull();
+      expect(res).toStrictEqual(dep);
+    });
+    it("doesn't modify regular Helm dependencies", async () => {
+      const dep = {
+        currentValue: '1.2.3',
+        depName: 'test',
+        registryUrls: ['https://charts.example.com'],
+      } as PackageDependency;
+      const res = handleOCIChart(dep);
+      expect(res).not.toBeNull();
+      expect(res).toStrictEqual(dep);
+    });
+    it('rewrites OCI Helm dependencies', async () => {
+      const dep = {
+        currentValue: '1.2.3',
+        depName: 'test',
+        registryUrls: ['oci://charts.example.com/test'],
+      } as PackageDependency;
+      const res = handleOCIChart(dep);
+      expect(res).not.toBeNull();
+      const expected = {
+        datasource: DockerDatasource.id,
+        packageName: 'charts.example.com/test',
+        currentValue: '1.2.3',
+        depName: 'test',
+        registryUrls: ['oci://charts.example.com'],
+      } as PackageDependency;
+      expect(res).toStrictEqual(expected);
+    });
+    it("doesn't double-rewrite OCI Helm dependencies", async () => {
+      const dep = {
+        currentValue: '1.2.3',
+        depName: 'test',
+        registryUrls: ['oci://charts.example.com/test'],
+      } as PackageDependency;
+      const res = handleOCIChart(dep);
+      expect(res).not.toBeNull();
+      const expected = {
+        datasource: DockerDatasource.id,
+        packageName: 'charts.example.com/test',
+        currentValue: '1.2.3',
+        depName: 'test',
+        registryUrls: ['oci://charts.example.com'],
+      } as PackageDependency;
+      expect(res).toStrictEqual(expected);
+      const res2 = handleOCIChart(res);
+      expect(res2).not.toBeNull();
+      expect(res2).toStrictEqual(expected);
     });
   });
 });

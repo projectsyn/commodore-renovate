@@ -9,7 +9,9 @@ import type {
   PackageDependency,
 } from 'renovate/dist/modules/manager/types';
 
+import { DockerDatasource } from 'renovate/dist/modules/datasource/docker';
 import { HelmDatasource } from 'renovate/dist/modules/datasource/helm';
+import { isOCIRegistry } from 'renovate/dist/modules/manager/helmv3/oci';
 
 import { logger } from 'renovate/dist/logger';
 
@@ -35,7 +37,7 @@ interface MultiFilePackageDependency extends PackageDependency {
   groupName?: string;
 }
 
-export const supportedDatasources = [HelmDatasource.id];
+export const supportedDatasources = [HelmDatasource.id, DockerDatasource.id];
 
 function componentKeyFromName(componentName: string): string {
   return componentName.replace(/-/g, '_');
@@ -259,7 +261,7 @@ function extractHelmChartDependencies(
         // chart name.
         res.registryUrls = [chartSpec.source];
         res.currentValue = chartSpec.version;
-        return res as PackageDependency;
+        return handleOCIChart(res);
       } else {
         logger.warn({ chartSpec }, 'Unable to parse chart specification');
         res.skipReason = 'invalid-dependency-specification';
@@ -317,5 +319,39 @@ function extractKapitanHelmDependency(
     res.propSource = chartName;
   }
   res.registryUrls = [dep.source];
+  return handleOCIChart(res);
+}
+
+export function handleOCIChart(res: PackageDependency): PackageDependency {
+  if (
+    res.registryUrls === undefined ||
+    res.registryUrls === null ||
+    res.registryUrls.length == 0
+  ) {
+    logger.warn(
+      { res },
+      'handleOCIChart called for a dependecy without registry URL, doing nothing...'
+    );
+    return res;
+  }
+  if (
+    res.datasource !== undefined &&
+    res.datasource !== null &&
+    res.datasource == DockerDatasource.id
+  ) {
+    return res;
+  }
+  let source = res.registryUrls[0];
+  // adapted from https://github.com/renovatebot/renovate/blob/9c9760a0ca46b62a3a6527bb57a643ff053aabbd/lib/modules/manager/helmfile/extract.ts#L89-L129
+  if (isOCIRegistry(source)) {
+    const v = source.substring(6).split('/');
+    let depName = v.pop()!;
+    let repoName = v.join('/');
+    res.datasource = DockerDatasource.id;
+    res.packageName = `${repoName}/${depName}`;
+    logger.debug({ depName, repoName }, 'oci chart');
+    res.registryUrls = [`oci://${repoName}`];
+  }
+
   return res;
 }
