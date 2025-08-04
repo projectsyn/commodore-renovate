@@ -126,9 +126,6 @@ exports[`manager/commodore-helm/index > extractPackageFile() > extracts Helm cha
   {
     "currentValue": "1.2.3",
     "depName": "chart-1",
-    "registryUrls": [
-      "https://charts.example.com/",
-    ],
   },
   {
     "currentValue": "4.5.6",

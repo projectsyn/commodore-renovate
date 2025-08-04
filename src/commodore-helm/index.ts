@@ -111,7 +111,6 @@ export function extractPackageFile(
         return {
           depName: chartName,
           currentValue: chartSpec.version,
-          registryUrls: [chartSpec.source],
         } as PackageDependency;
       } else {
         return {
