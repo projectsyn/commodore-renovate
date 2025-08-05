@@ -1,5 +1,30 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`manager/commodore-helm/index > extractAllPackageFiles() > extracts OCI charts from new and old Helm dependencies 1`] = `
+[
+  {
+    "currentValue": "1.2.3",
+    "datasource": "docker",
+    "depName": "chart-1",
+    "groupName": "component-name",
+    "packageName": "charts.example.com/chart-1",
+    "registryUrls": [
+      "oci://charts.example.com",
+    ],
+  },
+  {
+    "currentValue": "4.5.6",
+    "datasource": "docker",
+    "depName": "chart-2",
+    "groupName": "component-name",
+    "packageName": "charts2.example.com/chart-2",
+    "registryUrls": [
+      "oci://charts2.example.com",
+    ],
+  },
+]
+`;
+
 exports[`manager/commodore-helm/index > extractAllPackageFiles() > extracts new and old standard Helm dependencies in the same file 1`] = `
 [
   {
@@ -126,9 +151,6 @@ exports[`manager/commodore-helm/index > extractPackageFile() > extracts Helm cha
   {
     "currentValue": "1.2.3",
     "depName": "chart-1",
-    "registryUrls": [
-      "https://charts.example.com/",
-    ],
   },
   {
     "currentValue": "4.5.6",
@@ -138,6 +160,19 @@ exports[`manager/commodore-helm/index > extractPackageFile() > extracts Helm cha
 `;
 
 exports[`manager/commodore-helm/index > extractPackageFile() > extracts Helm chart versions when called with sufficient config 1`] = `
+[
+  {
+    "currentValue": "1.2.3",
+    "depName": "chart-1",
+  },
+  {
+    "currentValue": "4.5.6",
+    "depName": "chart-2",
+  },
+]
+`;
+
+exports[`manager/commodore-helm/index > extractPackageFile() > extracts OCI Helm chart versions when called with sufficient config 1`] = `
 [
   {
     "currentValue": "1.2.3",
