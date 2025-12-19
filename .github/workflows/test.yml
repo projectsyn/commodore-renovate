@@ -8,9 +8,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: yarn
@@ -22,20 +22,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
           cache: yarn
       - name: Installing dependencies
         run: yarn install --frozen-lockfile
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - name: Cache pip
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
@@ -58,10 +58,10 @@ jobs:
     env:
       IMAGE: ${{ github.repository }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
       - name: Build
         if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
         uses: docker/build-push-action@v6
