@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@types/js-yaml": "^4.0.4",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "just-clone": "^6.0.0",
     "normalize-url": "8.1.0",
     "renovate": "^42.0.0",
