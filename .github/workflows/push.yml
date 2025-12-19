@@ -12,7 +12,7 @@ jobs:
     env:
       IMAGE: ${{ github.repository }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set image version latest
         if: github.ref == 'refs/heads/master'
