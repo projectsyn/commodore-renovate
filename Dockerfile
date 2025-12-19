@@ -31,7 +31,7 @@ COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
-ARG PYTHON_VERSION=3.12.11
+ARG PYTHON_VERSION=3.12.12
 RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
