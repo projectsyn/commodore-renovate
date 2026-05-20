@@ -4143,6 +4143,11 @@ execa@8.0.1:
     signal-exit "^4.1.0"
     strip-final-newline "^3.0.0"
 
+exit-hook@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-5.1.0.tgz#f59338d192e150c6997d0af02d72d572d3d635d7"
+  integrity sha512-INjr2xyxHo7bhAqf5ong++GZPPnpcuBcaXUKt03yf7Fie9yWD7FapL4teOU0+awQazGs5ucBh7xWs/AD+6nhog==
+
 expand-template@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/expand-template/-/expand-template-2.0.3.tgz#6e14b3fcee0f3a6340ecb57d2e8918692052a47c"
