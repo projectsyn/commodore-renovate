@@ -31,7 +31,7 @@ COPY --from=tsbuild /usr/src/app/bin bin
 COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
-ARG PYTHON_VERSION=3.12.12
+ARG PYTHON_VERSION=3.14.5
 RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
@@ -42,14 +42,15 @@ RUN pip install  -r requirements.txt
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
-ARG KUSTOMIZE_VERSION=5.8.0
+ARG KUSTOMIZE_VERSION=5.8.1
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.3
 # renovate: datasource=github-releases packageName=helm/helm depname=helm
-ARG HELM_VERSION=v4.0.5
+ARG HELM_VERSION=v4.2.0
 
 # Install Commodore binary dependencies
-RUN HOME="${USER_HOME}" commodore tool install helm --version ${HELM_VERSION} \
+RUN --mount=type=secret,id=COMMODORE_GITHUB_TOKEN,env=COMMODORE_GITHUB_TOKEN \
+ HOME="${USER_HOME}" commodore tool install helm --version ${HELM_VERSION} \
  && HOME="${USER_HOME}" commodore tool install kustomize --version ${KUSTOMIZE_VERSION} \
  && HOME="${USER_HOME}" commodore tool install jb --version ${JSONNET_BUNDLER_VERSION} \
  && ln -s \
