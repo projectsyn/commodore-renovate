@@ -24,7 +24,7 @@
     "normalize-url": "9.0.1",
     "renovate": "^42.0.0",
     "simple-git": "^3.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
