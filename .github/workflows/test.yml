@@ -52,6 +52,13 @@ jobs:
       - name: Build TypeScript
         run: |
           yarn build
+      - name: Dry-run commodore-renovate
+        env:
+          RENOVATE_GITHUB_TOKEN: ${{ secrets.RENOVATE_GITHUB_TOKEN }}
+          RENOVATE_CONFIG_FILE: config.ci.js
+          LOG_LEVEL: debug
+        run: |
+          yarn dev --dry-run=full
 
   docker-build:
     runs-on: ubuntu-latest
