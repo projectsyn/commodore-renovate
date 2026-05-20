@@ -5,11 +5,15 @@ import {
   extractAllPackageFiles,
   handleOCIChart,
 } from './index';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { GlobalConfig } from 'renovate/dist/config/global';
 
-import { clearProblems } from 'renovate/dist/logger';
+import {
+  init as logger_init,
+  clearProblems as logger_clearProblems,
+} from 'renovate/dist/logger';
+
 import { getRegexPredicate } from 'renovate/dist/util/string-match';
 import { PackageDependency } from 'renovate/dist/modules/manager/types';
 import { DockerDatasource } from 'renovate/dist/modules/datasource/docker';
@@ -19,9 +23,13 @@ function setGlobalConfig(fixtureId: string): void {
   GlobalConfig.get().cacheDir = '/tmp/renovate';
 }
 
+beforeAll(async () => {
+  await logger_init();
+});
+
 beforeEach(() => {
   // clear logger
-  clearProblems();
+  logger_clearProblems();
 });
 
 const defaults1 = loadFixture('1/class/defaults.yml');

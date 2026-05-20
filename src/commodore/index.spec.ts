@@ -11,7 +11,10 @@ import { defaultConfig, extractPackageFile } from './index';
 
 import nock from 'nock';
 
-import { clearProblems } from 'renovate/dist/logger';
+import {
+  init as logger_init,
+  clearProblems as logger_clearProblems,
+} from 'renovate/dist/logger';
 
 const params1 = loadFixture('1/params.yml');
 const kube2 = loadFixture('2/kubernetes.yml');
@@ -93,12 +96,13 @@ function setupNock(
 }
 
 beforeAll(() => {
+  logger_init();
   return mkdir('/tmp/renovate', { recursive: true });
 });
 
 beforeEach(() => {
   // clear logger
-  clearProblems();
+  logger_clearProblems();
 });
 
 afterAll(() => {
