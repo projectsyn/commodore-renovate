@@ -27,9 +27,6 @@ FROM base AS final
 
 ENV NODE_ENV=production
 
-COPY --from=tsbuild /usr/src/app/bin bin
-COPY --from=tsbuild /usr/src/app/node_modules node_modules
-
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
 ARG PYTHON_VERSION=3.14.5
 RUN install-tool python ${PYTHON_VERSION}
@@ -58,6 +55,9 @@ RUN --mount=type=secret,id=COMMODORE_GITHUB_TOKEN,env=COMMODORE_GITHUB_TOKEN \
     "${USER_HOME}/.cache/commodore/tools/jb" \
     "${USER_HOME}/.cache/commodore/tools/kustomize" \
     "/usr/local/bin"
+
+COPY --from=tsbuild /usr/src/app/bin bin
+COPY --from=tsbuild /usr/src/app/node_modules node_modules
 
 RUN set -ex; \
   chmod +x /usr/src/app/bin/index.js; \
