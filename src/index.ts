@@ -8,9 +8,13 @@ import * as commodoreDocker from './commodore-docker';
 import * as commodoreHelm from './commodore-helm';
 import { globalRepos } from './commodore/util';
 
-api.set('commodore', commodore);
-api.set('commodore-docker', commodoreDocker);
-api.set('commodore-helm', commodoreHelm);
+// NOTE(sg): This import pulls in our extra renovate module declarations
+// which are defined in `src/renovate.d.ts`.
+import './renovate';
+
+api.default.set('commodore', commodore);
+api.default.set('commodore-docker', commodoreDocker);
+api.default.set('commodore-helm', commodoreHelm);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
