@@ -12,9 +12,9 @@ import { globalRepos } from './commodore/util';
 // which are defined in `src/renovate.d.ts`.
 import './renovate';
 
-api.default.set('commodore', commodore);
-api.default.set('commodore-docker', commodoreDocker);
-api.default.set('commodore-helm', commodoreHelm);
+api.set('commodore', commodore);
+api.set('commodore-docker', commodoreDocker);
+api.set('commodore-helm', commodoreHelm);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
