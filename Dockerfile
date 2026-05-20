@@ -42,11 +42,11 @@ RUN pip install  -r requirements.txt
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
-ARG KUSTOMIZE_VERSION=5.8.0
+ARG KUSTOMIZE_VERSION=5.8.1
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.3
 # renovate: datasource=github-releases packageName=helm/helm depname=helm
-ARG HELM_VERSION=v4.0.5
+ARG HELM_VERSION=v4.2.0
 
 # Install Commodore binary dependencies
 RUN HOME="${USER_HOME}" commodore tool install helm --version ${HELM_VERSION} \
