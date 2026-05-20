@@ -49,7 +49,8 @@ ARG JSONNET_BUNDLER_VERSION=v0.6.3
 ARG HELM_VERSION=v4.2.0
 
 # Install Commodore binary dependencies
-RUN HOME="${USER_HOME}" commodore tool install helm --version ${HELM_VERSION} \
+RUN --mount=type=secret,id=COMMODORE_GITHUB_TOKEN,env=COMMODORE_GITHUB_TOKEN \
+ HOME="${USER_HOME}" commodore tool install helm --version ${HELM_VERSION} \
  && HOME="${USER_HOME}" commodore tool install kustomize --version ${KUSTOMIZE_VERSION} \
  && HOME="${USER_HOME}" commodore tool install jb --version ${JSONNET_BUNDLER_VERSION} \
  && ln -s \

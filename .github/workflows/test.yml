@@ -68,6 +68,8 @@ jobs:
         with:
           push: false
           tags: 'ghcr.io/${{ env.IMAGE }}:test'
+          secret-envs: |
+            COMMODORE_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
       - name: Test that Commodore is available in PATH in the built container
         if: contains(steps.changed-files.outputs.modified_files, 'Dockerfile')
         run: |
