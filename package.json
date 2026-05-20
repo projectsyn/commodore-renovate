@@ -22,7 +22,7 @@
     "@types/node": "^24.0.0",
     "just-clone": "^6.0.0",
     "normalize-url": "9.0.1",
-    "renovate": "^42.0.0",
+    "renovate": "^43.0.0",
     "simple-git": "^3.0.0",
     "typescript": "^6.0.0"
   },
