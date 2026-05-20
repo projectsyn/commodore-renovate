@@ -56,8 +56,12 @@ jobs:
         env:
           RENOVATE_GITHUB_TOKEN: ${{ secrets.RENOVATE_GITHUB_TOKEN }}
           RENOVATE_CONFIG_FILE: config.ci.js
-          LOG_LEVEL: debug
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels[*].name) }}
         run: |
+          echo "Got PR labels: $PR_LABELS"
+          export LOG_LEVEL=$(jq -r -n --argjson labels "$PR_LABELS" \
+            '[$labels[]|select(test("ci-log-level:debug"))][0]//"ci-log-level:info"|sub("^ci-log-level:"; "")')
+          echo "Running commodore-renovate with LOG_LEVEL=$LOG_LEVEL"
           yarn dev --dry-run=full
 
   docker-build:
