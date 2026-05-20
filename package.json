@@ -28,17 +28,17 @@
   },
   "devDependencies": {
     "@babel/core": "7.29.0",
-    "@babel/preset-env": "7.29.0",
+    "@babel/preset-env": "7.29.5",
     "@babel/preset-typescript": "7.28.5",
     "@ls-lint/ls-lint": "2.3.1",
     "@types/bunyan": "1.8.11",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.7",
     "bunyan": "1.8.15",
     "cross-env": "10.1.0",
-    "nock": "14.0.10",
-    "npm-run-all2": "8.0.4",
-    "prettier": "3.8.1",
+    "nock": "14.0.15",
+    "npm-run-all2": "9.0.0",
+    "prettier": "3.8.3",
     "ts-node": "10.9.2",
-    "vitest": "4.0.18"
+    "vitest": "4.1.7"
   }
 }
