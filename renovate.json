@@ -1,6 +1,7 @@
 {
   "extends": ["config:recommended", "schedule:weekly"],
   "prHourlyLimit": 10,
+  "prConcurrentLimit": 25,
   "customManagers": [
     {
       "customType": "regex",
