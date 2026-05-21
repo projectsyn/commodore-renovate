@@ -1,12 +1,18 @@
 import yaml from 'js-yaml';
 import { readFile, unlink } from 'fs/promises';
 
-import { expect, describe, it } from 'vitest';
+import { beforeAll, expect, describe, it } from 'vitest';
+
+import { init as logger_init } from 'renovate/dist/logger';
 
 import { defaultExtraConfig } from './index';
 import * as util from './util';
 import { Facts } from './types';
 import { getFixturePath } from '../test/util';
+
+beforeAll(async () => {
+  await logger_init();
+});
 
 /* Check whether `facts` has any non-null field */
 function hasFact(facts: Facts): boolean {

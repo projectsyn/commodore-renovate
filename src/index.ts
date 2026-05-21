@@ -12,9 +12,9 @@ import { globalRepos } from './commodore/util';
 // which are defined in `src/renovate.d.ts`.
 import './renovate';
 
-api.default.set('commodore', commodore);
-api.default.set('commodore-docker', commodoreDocker);
-api.default.set('commodore-helm', commodoreHelm);
+api.set('commodore', commodore);
+api.set('commodore-docker', commodoreDocker);
+api.set('commodore-helm', commodoreHelm);
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
@@ -53,13 +53,8 @@ options.push({
   default: 'LIEUTENANT_API_TOKEN',
 });
 
-// Patch renovate finalizer, we need the require() here despite what the TS
-// hint indicates. However, seems that suggestions cannot be suppressed with
-// typescript hints (e.g. @ts-ignore).
-// @ts-ignore
-const init = require('renovate/dist/workers/global/initialize');
-const origGlobalFinalize: any = init.globalFinalize;
-function patchedGlobalFinalize(config: any) {
+function cleanupGlobalRepos() {
+  logger.info('cleaning up global defaults repos');
   globalRepos.forEach((repo, globalRepoURL) => {
     logger.info(
       { repo: repo.dir },
@@ -69,8 +64,10 @@ function patchedGlobalFinalize(config: any) {
       rmSync(repo.dir, { recursive: true });
     }
   });
-  origGlobalFinalize(config);
 }
-init.globalFinalize = patchedGlobalFinalize;
+// Run `cleanupGlobalRepos` at nodejs process exit with the `exit-hook`
+// package since we can't patch Renovate's `globalFinalize()` anymore.
+import exitHook from 'exit-hook';
+exitHook(cleanupGlobalRepos);
 
 require('renovate/dist/renovate.js');
