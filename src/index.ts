@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { existsSync, rmSync } from 'fs';
 import api from 'renovate/dist/modules/manager/api.js';
+import { managerDefaultConfigs } from 'renovate/dist/manager-default-configs.generated.js';
+import { AllManagersListLiteral } from 'renovate/dist/manager-list.generated.js';
 import { logger } from 'renovate/dist/logger';
 
 import * as commodore from './commodore';
@@ -15,6 +17,17 @@ import './renovate';
 api.set('commodore', commodore);
 api.set('commodore-docker', commodoreDocker);
 api.set('commodore-helm', commodoreHelm);
+
+// NOTE(sg): Recent renovate versions (>43.150.0) have pre-rendered imports
+// for all manager default configs. In order for our managers to continue to
+// work, we need to add them to the pre-rendered `AllManagersListLiteral` and
+// `managerDefaultConfigs`.
+AllManagersListLiteral.push('commodore');
+AllManagersListLiteral.push('commodore-docker');
+AllManagersListLiteral.push('commodore-helm');
+managerDefaultConfigs['commodore'] = commodore.defaultConfig;
+managerDefaultConfigs['commodore-docker'] = commodoreDocker.defaultConfig;
+managerDefaultConfigs['commodore-helm'] = commodoreHelm.defaultConfig;
 
 // Patch renovate option validation to accept `commodore.extraConfig`
 // parameter.
