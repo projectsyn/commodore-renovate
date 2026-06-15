@@ -38,7 +38,7 @@
     "cross-env": "10.1.0",
     "nock": "14.0.15",
     "npm-run-all2": "9.0.2",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "ts-node": "10.9.2",
     "vitest": "4.1.8"
   }
