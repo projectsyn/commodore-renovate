@@ -43,7 +43,7 @@ ARG KUSTOMIZE_VERSION=5.8.1
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
 ARG JSONNET_BUNDLER_VERSION=v0.6.3
 # renovate: datasource=github-releases packageName=helm/helm depname=helm
-ARG HELM_VERSION=v4.2.0
+ARG HELM_VERSION=v4.2.2
 
 # Install Commodore binary dependencies
 RUN --mount=type=secret,id=COMMODORE_GITHUB_TOKEN,env=COMMODORE_GITHUB_TOKEN \
