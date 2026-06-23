@@ -28,7 +28,7 @@ FROM base AS final
 ENV NODE_ENV=production
 
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
-ARG PYTHON_VERSION=3.14.5
+ARG PYTHON_VERSION=3.14.6
 RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
