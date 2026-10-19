@@ -1403,10 +1403,10 @@
   resolved "https://registry.yarnpkg.com/@kwsites/promise-deferred/-/promise-deferred-1.1.1.tgz#8ace5259254426ccef57f3175bc64ed7095ed919"
   integrity sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==
 
-"@ls-lint/ls-lint@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@ls-lint/ls-lint/-/ls-lint-2.3.1.tgz#a914be734a9947cc429f6a5c183b2fc578cfc060"
-  integrity sha512-vPe6IDByQnQRTxcAYjTxrmga/tSIui50VBFTB5KIJWY3OOFmxE2VtymjeSEfQfiMbhZV/ZPAqYy2lt8pZFQ0Rw==
+"@ls-lint/ls-lint@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@ls-lint/ls-lint/-/ls-lint-2.3.2.tgz#0937bd5eaf29038d4876e27564b105d44218b26b"
+  integrity sha512-8GPo2oRjpEEX/soVzWqb692mwrt9iKs3Z9xK7abSonyizmSVsdLwSQWS4OmqPIwwKdungwhNkzsmPwNFg9gSgg==
 
 "@mswjs/interceptors@^0.41.0":
   version "0.41.9"
