@@ -1,11 +1,11 @@
-FROM ghcr.io/containerbase/base:14.10.22@sha256:182494adbd10ed8df061d5a58fd31a95b7d299c550dc8f6d245a05bb062e833c AS base
+FROM ghcr.io/containerbase/base:14.52.0@sha256:ea18b24a88bf0e155bba8fe5cf2766f044356c306fe9112312de54459943b3dd AS base
 
 LABEL name="commodore-renovate"
 LABEL org.opencontainers.image.source="https://github.com/projectsyn/commodore-renovate" \
   org.opencontainers.image.licenses="AGPL-3.0-only"
 
 # renovate: datasource=node-version
-RUN install-tool node v24.16.0
+RUN install-tool node v24.22.1
 
 WORKDIR /usr/src/app
 
@@ -28,7 +28,7 @@ FROM base AS final
 ENV NODE_ENV=production
 
 # renovate: datasource=github-releases packageName=containerbase/python-prebuild depname=python
-ARG PYTHON_VERSION=3.14.5
+ARG PYTHON_VERSION=3.14.9
 RUN install-tool python ${PYTHON_VERSION}
 RUN install-apt build-essential libffi-dev libmagic1
 COPY requirements.txt .
@@ -39,11 +39,11 @@ RUN pip install  -r requirements.txt
 RUN echo "export PATH=/opt/containerbase/tools/python/${PYTHON_VERSION}/bin:\${PATH}" >> /usr/local/etc/env
 
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kustomize depname=kustomize tagPrefix=kustomize/v
-ARG KUSTOMIZE_VERSION=5.8.1
+ARG KUSTOMIZE_VERSION=5.8.3
 # renovate: datasource=github-releases packageName=projectsyn/jsonnet-bundler depname=jsonnet-bundler
-ARG JSONNET_BUNDLER_VERSION=v0.6.3
+ARG JSONNET_BUNDLER_VERSION=v0.6.4
 # renovate: datasource=github-releases packageName=helm/helm depname=helm
-ARG HELM_VERSION=v4.2.0
+ARG HELM_VERSION=v4.3.1
 
 # Install Commodore binary dependencies
 RUN --mount=type=secret,id=COMMODORE_GITHUB_TOKEN,env=COMMODORE_GITHUB_TOKEN \
