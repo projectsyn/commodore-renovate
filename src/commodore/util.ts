@@ -1,6 +1,6 @@
 import clone from 'just-clone';
 import yaml from 'js-yaml';
-import Git from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 import { parse } from 'path';
 import { mkdir, readFile, writeFile } from 'fs/promises';
@@ -137,7 +137,7 @@ export async function cloneGlobalRepo(config: any): Promise<RepoConfig> {
   const dir: string = globalRepoDir(config.globalRepoURL);
   await mkdir(dir, { recursive: true });
   // TODO(sg): support Git-https?
-  const git: any = Git(dir, simpleGitConfig());
+  const git: any = simpleGit(dir, simpleGitConfig());
   await git.clone(config.globalRepoURL, '.');
   const globalExtraConfig = await parseGlobalRepoConfig(dir);
   const rc: RepoConfig = {
