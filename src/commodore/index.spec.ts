@@ -2,7 +2,7 @@ import { beforeAll, afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { copyFile, mkdir, readdir } from 'fs/promises';
 import { rmSync } from 'fs';
 
-import Git from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 import { GlobalConfig } from 'renovate/dist/config/global';
 
@@ -38,7 +38,7 @@ async function setupGlobalRepo(
 ): Promise<string> {
   const repoDir = `/tmp/renovate/${targetId}/commodore-defaults`;
   await mkdir(repoDir, { recursive: true });
-  const git = Git({ baseDir: repoDir });
+  const git = simpleGit({ baseDir: repoDir });
   await git.init();
   await git.addConfig('user.name', 'Commodore-Renovate Unit Tests');
   await git.addConfig('user.email', 'ahoy@syn.tools');
