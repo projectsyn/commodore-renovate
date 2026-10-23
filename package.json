@@ -14,7 +14,7 @@
     "ls-lint": "ls-lint",
     "prettier": "prettier --check \"**/*.{ts,js,mjs,json,md,yml}\"",
     "prettier-fix": "prettier --write \"**/*.{ts,js,mjs,json,md,yml}\"",
-    "test": "run-s vitest",
+    "test": "LOG_LEVEL=fatal vitest run --silent passed-only",
     "vitest": "GIT_ALLOW_PROTOCOL=file LOG_LEVEL=fatal vitest run --logHeapUsage"
   },
   "dependencies": {
@@ -39,7 +39,7 @@
     "nock": "15.0.5",
     "npm-run-all2": "9.0.3",
     "prettier": "3.9.10",
-    "ts-node": "10.9.2",
+    "ts-node": "^10.9.2",
     "vite": "^8.3.5",
     "vitest": "5.0.5"
   }
