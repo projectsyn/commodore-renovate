@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc -p tsconfig-build.json",
     "start": "node ./bin/index.js",
-    "dev": "ts-node ./src/index.ts",
+    "dev": "run-s build start",
     "lint": "run-s ls-lint prettier",
     "ls-lint": "ls-lint",
     "prettier": "prettier --check \"**/*.{ts,js,mjs,json,md,yml}\"",
@@ -39,7 +39,6 @@
     "nock": "15.0.5",
     "npm-run-all2": "9.0.3",
     "prettier": "3.9.10",
-    "ts-node": "^10.9.2",
     "vite": "^8.3.5",
     "vitest": "5.0.5"
   }
